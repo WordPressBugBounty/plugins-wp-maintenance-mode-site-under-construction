@@ -1,0 +1,499 @@
+#conte_textures [type=radio] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    width: unset !important;
+}
+.form-table td p {
+    max-width: 90%;
+}
+/* IMAGE STYLES */
+#conte_textures [type=radio] + img {
+    cursor: pointer;
+    width: 100px;
+}
+
+/* CHECKED STYLES */
+#conte_textures [type=radio]:checked + img {
+    outline: 2px solid #2196F3;
+    width: 100px;
+}
+
+img.custom_media_image {
+    max-width: 210px;
+    height: auto !important;
+}
+
+span.on_off {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 4px 10px;
+    margin: 0px;
+    height: 26px;
+    display: inline-block;
+}
+
+input#showcase_tax_media_button {
+    width: 100px !important;
+}
+
+input#showcase_tax_media_remove {
+    width: 106px !important;
+}
+#dashboard-widgets form .input-text-wrap input {
+    width: 100%;
+    opacity: 0 !important;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 21px;
+    margin-right: 10px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 17px;
+    width: 17px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+    padding-left: 2px;
+    margin-right: -3px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* The container */
+.containercheckbox {
+    display: block;
+    position: relative;
+    padding-left: 27px;
+    cursor: pointer;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin: 0px 55px 20px 0px !important;
+}
+
+/* Hide the browser's default checkbox */
+.containercheckbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.containercheckbox .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 19px;
+    width: 19px;
+    background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.containercheckbox:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.containercheckbox input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* When the checkbox is disabled, add a blue background */
+.containercheckbox input:disabled ~ .checkmark {
+    background-color: #7F9CB3;
+}
+
+.MM_And_SUC_Free_inp{
+    width: 25em  !important;
+}
+.MM_And_SUC_Free_textarea {
+    height: 80px  !important;
+    width: 25em  !important;
+}
+/* Create the checkmark/indicator (hidden when not checked) */
+.containercheckbox .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.containercheckbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.containercheckbox .checkmark:after {
+    left: 6px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+label.containercheckbox {
+    width: 14%;
+}
+@media screen and (max-width: 768px){
+    label.containercheckbox {
+        width: 20%;
+    }
+    .MM_And_SUC_Free_inp {
+        width: 100% !important;
+    }
+    .MM_And_SUC_Free_textarea {
+        width: 100% !important;
+    }
+}
+
+
+
+
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted #ccc;
+    zcursor: help;
+    color: #006080;
+}
+.tooltip .tooltiptext {
+    visibility: hidden;
+    position: absolute;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity .6s;
+}
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+.tooltip .tooltiptext2 {
+    visibility: hidden;
+    position: absolute;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    z-index: 1;
+}
+.tooltip:hover .tooltiptext2 {
+    visibility: visible;
+}
+.tooltip-right {
+    top: -5px;
+    left: 125%;
+}
+.tooltip-right2 {
+    top: -5px;
+    left: 105%;
+}
+
+.tooltip-right::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #555 transparent transparent;
+}
+
+.tooltip-bottom {
+    top: 135%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip-bottom2 {
+    top: 125%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip-bottom::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #555 transparent;
+}
+
+.tooltip-top {
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+}
+.tooltip-top2 {
+    bottom: 115%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip-top::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltip-left {
+    top: -5px;
+    bottom:auto;
+    right: 128%;
+}
+
+.tooltip-left2 {
+    top: -5px;
+    bottom:auto;
+    right: 105%;
+}
+
+.tooltip-left::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent #555;
+}
+
+.tooltip .tooltiptext-bottomarrow {
+    visibility: hidden;
+    width: 120px;
+    background-color: #111;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 130%;
+    left: 50%;
+    margin-left: -60px;
+}
+.tooltip .tooltiptext-bottomarrow::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+.tooltip:hover .tooltiptext-bottomarrow {
+    visibility: visible;
+}
+
+.tooltip .tooltiptext-toparrow {
+    visibility: hidden;
+    width: 120px;
+    background-color: #111;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+.tooltip .tooltiptext-toparrow::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+.tooltip:hover .tooltiptext-toparrow {
+    visibility: visible;
+}
+
+.tooltip .tooltiptext-leftarrow {
+    visibility: hidden;
+    width: 120px;
+    background-color: #111;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: 110%;
+}
+.tooltip .tooltiptext-leftarrow::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent black transparent transparent;
+}
+.tooltip:hover .tooltiptext-leftarrow {
+    visibility: visible;
+}
+.tooltip .tooltiptext-rightarrow {
+    visibility: hidden;
+    width: 120px;
+    background-color: #111;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    right: 110%;
+}
+.tooltip .tooltiptext-rightarrow::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent black;
+}
+.tooltip:hover .tooltiptext-rightarrow {
+    visibility: visible;
+}
+
+
+
+
+
+
+
+.MM_And_SUC_Free_admin_card > .card > h2:first-child {
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    color: white;
+    background-color: #1d2327;
+    border-bottom: 1px solid #e6e7e9;
+    font-size: 18px !important;
+}
+
+.MM_And_SUC_Free_admin_card > .card:first-child {
+    padding: unset !important;
+    max-width: unset !important;
+}
+
+.MM_And_SUC_Free_admin_card > .card > table {
+    margin: 0px 0px 0px 45px !important;
+}
+
+.MM_And_SUC_Free_admin_card > .card .form-table th {
+    width: 120px !important;
+}
+
+.form-control {
+    width: 77% !important;
+    padding: 0.375rem 0.75rem !important;
+    line-height: 1.5 !important;
+    color: #212529 !important;
+    background-color: #fff !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.25rem !important;
+}
+
+.form-switch .form-check-input {
+    width: 2em !important;
+    background-repeat-x: no-repeat !important;
+}
+
+#conte_textures > label.tooltip {
+    position: unset !important;
+    opacity: 1;
+    margin: 5px 5px 0px 0px;
+}
+
+
+
+.form-switch .form-check-input{
+    width: 44px !important;
+    height: 17px !important;
+}
