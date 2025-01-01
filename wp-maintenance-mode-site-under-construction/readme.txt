@@ -2,8 +2,10 @@
 Contributors: wp-buy, mohmmedalagha
 Tags: under construction, coming soon, coming soon page, landing page, maintenance mode
 Requires at least: 4.8
-Tested up to: 6.4.3
-Stable tag: 3.1
+Tested up to: 6.7.1
+Stable tag: 4.1
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 WP plugin for Under Construction Page, Maintenance Mode & Coming Soon Page. Go Under Construction Mode in one click & view a landing page for your visitors.
 
@@ -61,6 +63,15 @@ Want to say “thank you”? Please leave a review.
 Thanks!
 
 == Changelog ==
+
+
+= 4.1 =
+<ul>
+<li>Introduced slim mode for improved functionality.</li>
+<li>Added new options and features for enhanced customization.</li>
+<li>Ensured compatibility with the latest WordPress version 6.7</li>
+</ul>
+
 = 3.1 =
 <ul>
 <li>New admin panel design</li>
