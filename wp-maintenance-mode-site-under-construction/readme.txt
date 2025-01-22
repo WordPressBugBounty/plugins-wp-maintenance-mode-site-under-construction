@@ -3,7 +3,7 @@ Contributors: wp-buy, mohmmedalagha
 Tags: under construction, coming soon, coming soon page, landing page, maintenance mode
 Requires at least: 4.8
 Tested up to: 6.7.1
-Stable tag: 4.1
+Stable tag: 4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,10 @@ Thanks!
 
 == Changelog ==
 
+= 4.2 =
+<ul>
+<li>Slim mode - bug fixing</li>
+</ul>
 
 = 4.1 =
 <ul>

@@ -879,6 +879,11 @@ if (! class_exists('MM_And_SUC_Free_page_template')) {
             }
             if (is_user_logged_in()) {
 
+                $user = wp_get_current_user();
+                if (in_array('administrator', (array) $user->roles)) {
+                    return true; // Allow administrators
+                }
+
                 //No user rule selected, but the user is logged in
                 if (!isset($options['MM_And_SUC_Free_role']) || (isset($options['MM_And_SUC_Free_role']) && empty($options['MM_And_SUC_Free_role']))) {
                     return true; //Site opened
