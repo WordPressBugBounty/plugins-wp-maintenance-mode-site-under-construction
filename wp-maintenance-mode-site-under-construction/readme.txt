@@ -2,47 +2,61 @@
 Contributors: wp-buy, mohmmedalagha
 Tags: under construction, coming soon, coming soon page, landing page, maintenance mode
 Requires at least: 4.8
-Tested up to: 6.7.1
-Stable tag: 4.2
+Tested up to: 6.7.2
+Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WP plugin for Under Construction Page, Maintenance Mode & Coming Soon Page. Go Under Construction Mode in one click & view a landing page for your visitors.
+WP plugin for Under Construction, Maintenance Mode & Coming Soon Pages. Enable with one click & show a landing page to visitors easily.
 
 == Description ==
-Losing users trust is very bad, keep it with simple plugin settings and very nice responsive interface which made to look good on all devices, even a very small mobile devices.
 
-Do you want to put your website  under maintenance without losing your visitors trust? Then you have to told them about it
+<strong>WP Maintenance Mode & Site Under Construction</strong>– Seamlessly Manage Your Site's Downtime!  
 
-Lets tell your visitors about the maintenance time you want, also let them know when you are online again by showing a very beautiful counter.
+<strong>Keep your visitors engaged while your site is under maintenance or construction—without losing their trust!</strong> 
 
-Losing users trust is very bad, keep it with simple plugin settings and very nice responsive interface which made to look good on all devices, even a very small mobile devices.
+With WP Maintenance Mode & Site Under Construction, you can effortlessly set up a stunning "Coming Soon" or "Maintenance Mode" page in just one click. Let your visitors know you're working on improvements while building anticipation for your comeback. No technical skills required—just simple settings, a responsive design, and powerful features to maintain your site's professionalism during downtime.  
 
-With this plugin  you will be able to work on your site in private & at the same time visitors see a “Coming Soon” or “Maintenance Mode” page.
+### 🌟 <strong>Key Features to Keep Visitors Engaged:</strong> 
 
-Simply, Choose your title, put your logo and choose any background you want or keep the default one (which is great).
+🔧 <strong>One-Click Activation:</strong> 
+Switch to maintenance or construction mode with a single click.  
 
-Set your maintenance finish date & time and everything done!
+🖼️<strong>Customizable Full-Screen Background:</strong> 
+Upload your own image or choose from sleek default options to create a visually appealing page.  
 
-You have an option to activate the plugin functionality or keep you website online even when you set maintenance time.
+⏱️<strong>Dynamic Countdown Timer:</strong> 
+Let visitors know when you’ll be back with an eye-catching countdown.  
 
-Exclude administrators, subscribers, editors, and any type of users from seeing your website maintenance mode even when  maintenance mode is activated.
+👥<strong>User Role Exclusion:</strong> 
+Allow admins, editors, or specific user roles to access the site while visitors see the maintenance page.  
 
-**FEATURES:**
-1. Simple & Easy to use
-2. Full screen background image
-3. Upload your own background image
-4. Smart timer settings
-5. Exclude user types from maintenance mode
-6. Convert from offline to online without deactivate the plugin
-7. No conflict with other plugins, specially caching plugins
-8. Options to add title and description
-9. Ability to contact website admin using beautiful built in contact form
-10. Full screen mode without contact form
-11. Half screen mode with contact form
-12. fully responsive
+🛠️<strong>Seamless Plugin Integration:</strong> 
+No conflicts with caching or other essential plugins.  
 
-**SUPPORT:**
+📝<strong>Customizable Titles & Descriptions:</strong> 
+Easily add personalized messages to communicate with your visitors.  
+
+💌<strong>Built-In Contact Form:</strong> 
+Enable visitors to reach you even while your site is offline.  
+
+📱<strong>Fully Responsive Design:</strong> 
+Looks fantastic on all devices, from desktops to smartphones.  
+
+🌗<strong>Flexible Display Modes:</strong> 
+Choose between full-screen mode or a half-screen layout with the contact form.  
+
+### 🎯<strong>Why Choose WP Maintenance Mode?</strong> 
+-<strong>Easy Setup:</strong>No complicated configurations—just activate and customize.  
+-<strong>Professional Appearance:</strong>Maintain trust with a sleek and informative maintenance page.  
+-<strong>Marketing Advantage:</strong>Use the downtime to generate excitement and capture leads.  
+
+<strong>🚀 Don’t Let Downtime Cost You Visitors!</strong> 
+Install WP Maintenance Mode & Site Under Construction today to maintain your site's credibility while you work behind the scenes.  
+
+👉<strong>Get Started Now – Because First Impressions Matter!<strong>
+
+<strong>SUPPORT:<strong>
 
 If you have any problems, questions or recommendations about WP Maintenance please feel free to contact us directly. We try to answer all questions as fast as possible!
 Want to say “thank you”? Please leave a review.
@@ -53,16 +67,21 @@ Want to say “thank you”? Please leave a review.
 3. Its responsive on all devices
 4. very simple easy to use options page
 
-== Installation Guide ==
-**Installation steps**
+== Installation ==
+<strong>Installation steps<strong>
 1.Download the package.
 2.Extract the contents of the downloaded zip file to wp-content/plugins/ folder  You should get a folder called wp-maintenance-mode-and-site-under-construction
 3.Activate the Plugin in WP-Admin.
-4.Goto plugins list > **WP Maintenance Mode & Site Under Construction** > Settings to configure options.
+4.Goto plugins list ><strong>WP Maintenance Mode & Site Under Construction</strong>> Settings to configure options.
 5.You will find all options there.
 Thanks!
 
 == Changelog ==
+
+= 4.3 =
+<ul>
+<li>Allowing xmlrpc.php and media access</li>
+</ul>
 
 = 4.2 =
 <ul>

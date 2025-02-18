@@ -3,7 +3,7 @@
  * Plugin Name: WP Maintenance Mode & Site Under Construction
  * Plugin URI: https://wordpress.org/plugins/wp-maintenance-mode-site-under-construction
  * Description:  Lets tell your visitors about the maintenance time you want, also let them know when you are online again by showing a very beautiful counter
- * Version: 4.2
+ * Version: 4.3
  * Author: wp-buy
  * Text Domain: wp-maintenance-mode-site-under-construction
  * Domain Path: /languages
@@ -21,6 +21,11 @@ if(!function_exists('MM_And_SUC_Free_load_textdomain')) {
         load_plugin_textdomain('wp-maintenance-mode-site-under-construction', false, dirname(plugin_basename(__FILE__)) . '/languages');
     }
     add_action('init', 'MM_And_SUC_Free_load_textdomain');
+	
+	if ( strpos( $_SERVER['REQUEST_URI'], 'xmlrpc.php' ) !== false || preg_match('/wp-content\/uploads/', $_SERVER['REQUEST_URI']) ) {
+    return;
+}
+
 }
 //--------------------------------------------------------------------------------------------
 
