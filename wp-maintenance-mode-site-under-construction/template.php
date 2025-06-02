@@ -15,7 +15,7 @@ if (! class_exists('MM_And_SUC_Free_page_template')) {
         }
         public function template()
         {
-            $options = get_option('MM_And_SUC_Free_options');
+            $options = get_option('MM_And_SUC_Free_options', array());
 
             if ($this->UserConditional($options)) {
                 return;
@@ -31,86 +31,87 @@ if (! class_exists('MM_And_SUC_Free_page_template')) {
                 $slim_text = $options['MM_And_SUC_Free_slim_text'] ?? __('This site is under maintenance, We’re working hard to improve your experience. Stay tuned as we count down to launch day!', 'wp-maintenance-mode-site-under-construction');
 ?>
 
-                <!DOCTYPE HTML>
-                <html lang="en">
+<!DOCTYPE HTML>
+<html lang="en">
 
-                <head>
-                    <title><?php echo esc_html(get_option('blogname')); ?></title>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1">
-                    <?php wp_head(); ?>
-                    <style>
-                        /* General Reset */
-                        * {
-                            margin: 0;
-                            padding: 0;
-                            box-sizing: border-box;
-                        }
+<head>
+    <title><?php echo esc_html(get_option('blogname')); ?></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php wp_head(); ?>
+    <style>
+    /* General Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-                        /* Body */
-                        html,
-                        body {
-                            background-color: #f4f4f4;
-                            /* Light gray background */
-                            font-family: Arial, sans-serif;
-                        }
+    /* Body */
+    html,
+    body {
+        background-color: #f4f4f4;
+        /* Light gray background */
+        font-family: Arial, sans-serif;
+    }
 
-                        /* Container */
-                        .maintenance-box {
-                            background-color: #ffffff;
-                            /* White background */
-                            border: 1px solid #ddd;
-                            /* Light border */
-                            /* Subtle shadow */
-                            max-width: 780px;
-                            /* Increase width */
-                            margin: 50px auto;
-                            /* Top margin and horizontal centering */
-                            padding: 30px;
-                            text-align: left;
-                        }
+    /* Container */
+    .maintenance-box {
+        background-color: #ffffff;
+        /* White background */
+        border: 1px solid #ddd;
+        /* Light border */
+        /* Subtle shadow */
+        max-width: 780px;
+        /* Increase width */
+        margin: 50px auto;
+        /* Top margin and horizontal centering */
+        padding: 30px;
+        text-align: left;
+    }
 
-                        /* Header */
-                        .maintenance-box h1 {
-                            font-size: 1.3em;
-                            /* Smaller font size */
-                            font-weight: normal;
-                            /* Regular weight */
-                            color: #666666;
-                            /* Grey color */
-                            margin-bottom: 10px;
-                            border-bottom: 1px solid #ddd;
-                            /* Horizontal line */
-                            padding-bottom: 10px;
-                            padding-top: 20px;
-                            font-weight: bold;
-                        }
+    /* Header */
+    .maintenance-box h1 {
+        font-size: 1.3em;
+        /* Smaller font size */
+        font-weight: normal;
+        /* Regular weight */
+        color: #666666;
+        /* Grey color */
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        /* Horizontal line */
+        padding-bottom: 10px;
+        padding-top: 20px;
+        font-weight: bold;
+    }
 
-                        /* Description */
-                        .maintenance-box p {
-                            font-size: 0.9em;
-                            /* Slightly larger text */
-                            color: #333;
-                            /* Lighter gray text */
-                            margin-top: 10px;
-                            line-height: 1.5;
-                            /* Improved readability */
-                            padding-top: 20px;
+    /* Description */
+    .maintenance-box p {
+        font-size: 0.9em;
+        /* Slightly larger text */
+        color: #333;
+        /* Lighter gray text */
+        margin-top: 10px;
+        line-height: 1.5;
+        /* Improved readability */
+        padding-top: 20px;
 
-                        }
-                    </style>
-                </head>
+    }
+    </style>
+</head>
 
-                <body>
-                    <div class="maintenance-box">
-                        <h1><?php echo esc_html($slim_title ?: 'Under Maintenance'); ?></h1>
-                        <p><?php echo esc_html($slim_text ?: "This site is under maintenance. We're working hard to improve your experience. Stay tuned as we count down to launch day!"); ?></p>
-                    </div>
-                    <?php wp_footer(); ?>
-                </body>
+<body>
+    <div class="maintenance-box">
+        <h1><?php echo esc_html($slim_title ?: 'Under Maintenance'); ?></h1>
+        <p><?php echo esc_html($slim_text ?: "This site is under maintenance. We're working hard to improve your experience. Stay tuned as we count down to launch day!"); ?>
+        </p>
+    </div>
+    <?php wp_footer(); ?>
+</body>
 
-                </html>
-            <?php
+</html>
+<?php
                 exit;
             }
 
@@ -128,150 +129,152 @@ if (! class_exists('MM_And_SUC_Free_page_template')) {
                     ? (new DateTime($options['MM_And_SUC_Free_date']))->format('Y-m-d\TH:i:s')
                     : '2024-12-31T23:59:59';
             ?>
-                <!DOCTYPE HTML>
-                <html lang="en">
+<!DOCTYPE HTML>
+<html lang="en">
 
-                <head>
-                    <title><?php echo esc_html(get_option('blogname')); ?></title>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1">
-                    <?php wp_head(); ?>
-                    <style>
-                        /* General Reset */
-                        * {
-                            margin: 0;
-                            padding: 0;
-                            box-sizing: border-box;
-                        }
+<head>
+    <title><?php echo esc_html(get_option('blogname')); ?></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php wp_head(); ?>
+    <style>
+    /* General Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-                        /* Body */
-                        html,
-                        body {
+    /* Body */
+    html,
+    body {
 
-                            overflow: hidden;
-                        }
-                    </style>
-                </head>
+        overflow: hidden;
+    }
+    </style>
+</head>
 
-                <body>
-                    <style>
-                        * {
-                            margin: 0;
-                            padding: 0;
-                            box-sizing: border-box;
-                        }
+<body>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-                        /* Full Page Layout */
-                        html,
-                        body {
-                            height: 100%;
-                            /* Full height */
-                            overflow: hidden;
-                            /* Prevent scrolling */
-                            font-family: Arial, sans-serif;
-                        }
+    /* Full Page Layout */
+    html,
+    body {
+        height: 100%;
+        /* Full height */
+        overflow: hidden;
+        /* Prevent scrolling */
+        font-family: Arial, sans-serif;
+    }
 
-                        body {
-                            font-family: Arial, sans-serif;
-                            margin: 0;
-                        }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+    }
 
-                        .countdown-container {
-                            text-align: center;
-                            color: #333;
-                            margin-bottom: 20px;
-                        }
+    .countdown-container {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
 
-                        .countdown-container h1 {
-                            font-size: 2em;
-                            text-transform: uppercase;
-                            margin-bottom: 20px;
-                        }
+    .countdown-container h1 {
+        font-size: 2em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
 
-                        .countdown-container ul {
-                            list-style: none;
-                            padding: 0;
-                            display: flex;
-                            justify-content: center;
-                            gap: 20px;
-                        }
+    .countdown-container ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
 
-                        .countdown-container li {
-                            text-align: center;
-                        }
+    .countdown-container li {
+        text-align: center;
+    }
 
-                        .countdown-container li span {
-                            display: block;
-                            font-size: 2em;
-                            font-weight: bold;
-                        }
-                    </style>
-                    <div class="main-area" style="overflow:hidden;">
-                        <div class="container-fluid full-height position-static">
-                            <?php if ($timer_mode === 'timer_with_contact') { ?>
-                                <!-- Left Section (Contact Form) -->
-                                <section class="left-section col full-height">
-                                    <div class="display-table">
-                                        <div class="main-content" style="padding: 10px;">
-                                            <h3 class="title"><b><?php _e('Contact us:', 'wp-maintenance-mode-site-under-construction'); ?></b></h3>
-                                            <p><?php _e('We will be back soon! For more information, feel free to contact us anytime', 'wp-maintenance-mode-site-under-construction'); ?></p>
-                                            <div class="email-input-area">
-                                                <form class="contact2-form validate-form" id="contactform">
-                                                    <div class="wrap-input2 validate-input" data-validate="Name is required">
-                                                        <label for="name">Your Name</label>
-                                                        <input class="input2" id="name" type="text" name="name" placeholder="Enter your full name">
-                                                    </div>
-                                                    <div class="wrap-input2 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                                                        <label for="email">Your Email Address</label>
-                                                        <input class="input2" id="email" type="text" name="email" placeholder="Enter your email address (e.g., example@example.com)">
-                                                    </div>
-                                                    <div class="wrap-input2 validate-input" data-validate="Message is required">
-                                                        <label for="message">Your Message</label>
-                                                        <textarea class="input2" name="message" id="message" placeholder="Type your message or query here"></textarea>
-                                                    </div>
-                                                    <div id="contact-msg"></div>
-                                                    <div class="container-contact2-form-btn">
-                                                        <div class="wrap-contact2-form-btn">
-                                                            <div class="contact2-form-bgbtn"></div>
-                                                            <button class="contact2-form-btn" id="contactbutton">
-                                                                <?php esc_html_e('Send Message', 'wp-maintenance-mode-site-under-construction'); ?>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <?php echo wp_nonce_field('contactform_action', '_acf_nonce', true, false); ?>
-                                                    <input type="hidden" name="action" value="contactform_action" />
-                                                </form>
-                                            </div><!-- email-input-area -->
-                                        </div><!-- main-content -->
-                                    </div><!-- display-table -->
-                                </section><!-- left-section -->
+    .countdown-container li span {
+        display: block;
+        font-size: 2em;
+        font-weight: bold;
+    }
+    </style>
+    <div class="main-area" style="overflow:hidden;">
+        <div class="container-fluid full-height position-static">
+            <?php if ($timer_mode === 'timer_with_contact') { ?>
+            <!-- Left Section (Contact Form) -->
+            <section class="left-section col full-height">
+                <div class="display-table">
+                    <div class="main-content" style="padding: 10px;">
+                        <h3 class="title">
+                            <b><?php _e('Contact us:', 'wp-maintenance-mode-site-under-construction'); ?></b></h3>
+                        <p><?php _e('We will be back soon! For more information, feel free to contact us anytime', 'wp-maintenance-mode-site-under-construction'); ?>
+                        </p>
+                        <div class="email-input-area">
+                            <form class="contact2-form validate-form" id="contactform">
+                                <div class="wrap-input2 validate-input" data-validate="Name is required">
+                                    <label for="name">Your Name</label>
+                                    <input class="input2" id="name" type="text" name="name"
+                                        placeholder="Enter your full name">
+                                </div>
+                                <div class="wrap-input2 validate-input"
+                                    data-validate="Valid email is required: ex@abc.xyz">
+                                    <label for="email">Your Email Address</label>
+                                    <input class="input2" id="email" type="text" name="email"
+                                        placeholder="Enter your email address (e.g., example@example.com)">
+                                </div>
+                                <div class="wrap-input2 validate-input" data-validate="Message is required">
+                                    <label for="message">Your Message</label>
+                                    <textarea class="input2" name="message" id="message"
+                                        placeholder="Type your message or query here"></textarea>
+                                </div>
+                                <div id="contact-msg"></div>
+                                <div class="container-contact2-form-btn">
+                                    <div class="wrap-contact2-form-btn">
+                                        <div class="contact2-form-bgbtn"></div>
+                                        <button class="contact2-form-btn" id="contactbutton">
+                                            <?php esc_html_e('Send Message', 'wp-maintenance-mode-site-under-construction'); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <?php echo wp_nonce_field('contactform_action', '_acf_nonce', true, false); ?>
+                                <input type="hidden" name="action" value="contactform_action" />
+                            </form>
+                        </div><!-- email-input-area -->
+                    </div><!-- main-content -->
+                </div><!-- display-table -->
+            </section><!-- left-section -->
 
-                                <!-- Right Section -->
-                                <section class="right-section half_width_mode"
-                                    <?php if ($timer_style === 'colored_background') { ?>
-
-                                    style="background-color: <?php echo esc_attr($background_color); ?>; display : flex; justify-content : center; align-items : center; "
-                                    <?php } elseif ($timer_style === 'background_image' && $options['MM_And_SUC_Free_option_type_of_bg'] == 2) {
+            <!-- Right Section -->
+            <section class="right-section half_width_mode" <?php if ($timer_style === 'colored_background') { ?>
+                style="background-color: <?php echo esc_attr($background_color); ?>; display : flex; justify-content : center; align-items : center; " <?php } elseif ($timer_style === 'background_image' && $options['MM_And_SUC_Free_option_type_of_bg'] == 2) {
                                         $filename_big = pathinfo(MM_And_SUC_Free_PLUGIN_URL . 'textures/' . $options['MM_And_SUC_Free_textures']);
                                         $file_big_name = $filename_big['dirname'] . '/' . $filename_big['filename'] . '-big.' . $filename_big['extension'];
-                                    ?>
-                                    style="background-image: url(<?php echo esc_attr($file_big_name); ?>);"
-                                    <?php } elseif ($timer_style === 'background_image' && $options['MM_And_SUC_Free_option_type_of_bg'] == 1) { ?>
-                                    style="background-image: url(<?php echo esc_attr(wp_get_attachment_image_src($options['MM_And_SUC_Free_image'], 'full')[0]); ?>);"
-                                    <?php } ?>>
+                                    ?> style="background-image: url(<?php echo esc_attr($file_big_name); ?>);"
+                <?php } elseif ($timer_style === 'background_image' && $options['MM_And_SUC_Free_option_type_of_bg'] == 1) { ?>
+                style="background-image: url(<?php echo esc_attr(wp_get_attachment_image_src($options['MM_And_SUC_Free_image'], 'full')[0]); ?>);"
+                <?php } ?>>
 
-                                    <div class="countdown-container">
-                                        <?php if ($timer_style === 'colored_background') { ?>
-                                            <!-- Simple Timer -->
-                                            <h1><?php echo esc_html($countdown_title); ?></h1>
-                                            <ul id="countdown">
-                                                <li><span id="days">--</span>Days</li>
-                                                <li><span id="hours">--</span>Hours</li>
-                                                <li><span id="minutes">--</span>Minutes</li>
-                                                <li><span id="seconds">--</span>Seconds</li>
-                                            </ul>
-                                            <div class="cta-buttons">
-                                                <?php
+                <div class="countdown-container">
+                    <?php if ($timer_style === 'colored_background') { ?>
+                    <!-- Simple Timer -->
+                    <h1><?php echo esc_html($countdown_title); ?></h1>
+                    <ul id="countdown">
+                        <li><span id="days">--</span>Days</li>
+                        <li><span id="hours">--</span>Hours</li>
+                        <li><span id="minutes">--</span>Minutes</li>
+                        <li><span id="seconds">--</span>Seconds</li>
+                    </ul>
+                    <div class="cta-buttons">
+                        <?php
                                                 $cta_options = get_option('MM_And_SUC_Free_options');
                                                 if (!empty($cta_options['MM_And_SUC_Free_enable_cta'])) {
                                                     $bg_color = $cta_options['MM_And_SUC_Free_cta_bg_color'] ?? '#007BFF';
@@ -285,49 +288,51 @@ if (! class_exists('MM_And_SUC_Free_page_template')) {
                                                     }
                                                 }
                                                 ?>
-                                            </div>
+                    </div>
 
-                                            <style>
-                                                .cta-buttons {
-                                                    display: flex;
-                                                    justify-content: center;
-                                                    gap: 20px;
-                                                    margin-top: 30px;
-                                                }
+                    <style>
+                    .cta-buttons {
+                        display: flex;
+                        justify-content: center;
+                        gap: 20px;
+                        margin-top: 30px;
+                    }
 
-                                                .cta-button {
-                                                    display: inline-block;
-                                                    padding: 8px 30px;
-                                                    background-color: #007BFF;
-                                                    color: #FFFFFF;
-                                                    text-decoration: none;
-                                                    border-radius: 4px;
-                                                    font-size: 14px;
-                                                    transition: background-color 0.3s ease, transform 0.2s ease;
-                                                    text-align: center;
-                                                    min-width: 100px;
-                                                }
+                    .cta-button {
+                        display: inline-block;
+                        padding: 8px 30px;
+                        background-color: #007BFF;
+                        color: #FFFFFF;
+                        text-decoration: none;
+                        border-radius: 4px;
+                        font-size: 14px;
+                        transition: background-color 0.3s ease, transform 0.2s ease;
+                        text-align: center;
+                        min-width: 100px;
+                    }
 
-                                                .cta-button:hover {
-                                                    background-color: #0056b3;
-                                                    transform: scale(1.05);
-                                                }
-                                            </style>
-                                        <?php } elseif ($timer_style === 'background_image') { ?>
-                                            <!-- Rounded Timer -->
-                                            <div id="rounded-countdown">
-                                                <h3 class="title responsive_title"><b><?php echo esc_html($options['MM_And_SUC_Free_title']); ?></b></h3>
-                                                <?php
+                    .cta-button:hover {
+                        background-color: #0056b3;
+                        transform: scale(1.05);
+                    }
+                    </style>
+                    <?php } elseif ($timer_style === 'background_image') { ?>
+                    <!-- Rounded Timer -->
+                    <div id="rounded-countdown">
+                        <h3 class="title responsive_title">
+                            <b><?php echo esc_html($options['MM_And_SUC_Free_title']); ?></b></h3>
+                        <?php
                                                 $date_time_wp = (array)current_datetime();
                                                 $date = new DateTime($date_time_wp['date']);
                                                 $date2 = new DateTime($options['MM_And_SUC_Free_date']);
                                                 $diff = $date2->getTimestamp() - $date->getTimestamp();
                                                 ?>
-                                                <div class="countdown" data-remaining-sec="<?php echo esc_attr($diff); ?>"></div>
-                                                <p class="des responsive_des" style="font-size: 18px;"><?php echo esc_html($options['MM_And_SUC_Free_description']); ?></p>
-                                            </div>
-                                            <div class="cta-buttons">
-                                                <?php
+                        <div class="countdown" data-remaining-sec="<?php echo esc_attr($diff); ?>"></div>
+                        <p class="des responsive_des" style="font-size: 18px;">
+                            <?php echo esc_html($options['MM_And_SUC_Free_description']); ?></p>
+                    </div>
+                    <div class="cta-buttons">
+                        <?php
                                                 $cta_options = get_option('MM_And_SUC_Free_options');
                                                 if (!empty($cta_options['MM_And_SUC_Free_enable_cta'])) {
                                                     $bg_color = $cta_options['MM_And_SUC_Free_cta_bg_color'] ?? '#007BFF';
@@ -341,32 +346,31 @@ if (! class_exists('MM_And_SUC_Free_page_template')) {
                                                     }
                                                 }
                                                 ?>
-                                            </div>
+                    </div>
 
 
-                                        <?php } ?>
-                                    </div>
-                                </section><!-- right-section -->
-                            <?php } else { ?>
-                                <!-- Full Width Section -->
-                                <sec class="right-section full_screen_mode"
-                                    <?php if ($timer_style === 'colored_background') { ?>
-                                    style="background-color: <?php echo esc_attr($background_color); ?>; display : flex; justify-content : center; align-items : center;"
-                                    <?php } elseif ($timer_style === 'background_image') { ?>
-                                    style="background-image: url(<?php echo esc_attr(wp_get_attachment_image_src($options['MM_And_SUC_Free_image'], 'full')[0]); ?>);"
-                                    <?php } ?>>
-                                    <div class="countdown-container">
-                                        <?php if ($timer_style === 'colored_background') { ?>
-                                            <!-- Simple Timer -->
-                                            <h1><?php echo esc_html($countdown_title); ?></h1>
-                                            <ul id="countdown">
-                                                <li><span id="days">--</span>Days</li>
-                                                <li><span id="hours">--</span>Hours</li>
-                                                <li><span id="minutes">--</span>Minutes</li>
-                                                <li><span id="seconds">--</span>Seconds</li>
-                                            </ul>
-                                            <div class="cta-buttons">
-                                                <?php
+                    <?php } ?>
+                </div>
+            </section><!-- right-section -->
+            <?php } else { ?>
+            <!-- Full Width Section -->
+            <sec class="right-section full_screen_mode" <?php if ($timer_style === 'colored_background') { ?>
+                style="background-color: <?php echo esc_attr($background_color); ?>; display : flex; justify-content : center; align-items : center;"
+                <?php } elseif ($timer_style === 'background_image') { ?>
+                style="background-image: url(<?php echo esc_attr(wp_get_attachment_image_src($options['MM_And_SUC_Free_image'], 'full')[0]); ?>);"
+                <?php } ?>>
+                <div class="countdown-container">
+                    <?php if ($timer_style === 'colored_background') { ?>
+                    <!-- Simple Timer -->
+                    <h1><?php echo esc_html($countdown_title); ?></h1>
+                    <ul id="countdown">
+                        <li><span id="days">--</span>Days</li>
+                        <li><span id="hours">--</span>Hours</li>
+                        <li><span id="minutes">--</span>Minutes</li>
+                        <li><span id="seconds">--</span>Seconds</li>
+                    </ul>
+                    <div class="cta-buttons">
+                        <?php
                                                 $cta_options = get_option('MM_And_SUC_Free_options');
                                                 if (!empty($cta_options['MM_And_SUC_Free_enable_cta'])) {
                                                     $bg_color = $cta_options['MM_And_SUC_Free_cta_bg_color'] ?? '#007BFF';
@@ -380,204 +384,214 @@ if (! class_exists('MM_And_SUC_Free_page_template')) {
                                                     }
                                                 }
                                                 ?>
-                                            </div>
+                    </div>
 
-                                            <style>
-                                                .body {
-                                                    overflow: hidden;
-                                                }
+                    <style>
+                    .body {
+                        overflow: hidden;
+                    }
 
-                                                .cta-buttons {
-                                                    display: flex;
-                                                    justify-content: center;
-                                                    gap: 20px;
-                                                    margin-top: 30px;
-                                                }
+                    .cta-buttons {
+                        display: flex;
+                        justify-content: center;
+                        gap: 20px;
+                        margin-top: 30px;
+                    }
 
-                                                .cta-button {
-                                                    display: inline-block;
-                                                    padding: 8px 30px;
-                                                    background-color: #007BFF;
-                                                    color: #FFFFFF;
-                                                    text-decoration: none;
-                                                    border-radius: 4px;
-                                                    font-size: 14px;
-                                                    transition: background-color 0.3s ease, transform 0.2s ease;
-                                                    text-align: center;
-                                                    min-width: 100px;
-                                                }
+                    .cta-button {
+                        display: inline-block;
+                        padding: 8px 30px;
+                        background-color: #007BFF;
+                        color: #FFFFFF;
+                        text-decoration: none;
+                        border-radius: 4px;
+                        font-size: 14px;
+                        transition: background-color 0.3s ease, transform 0.2s ease;
+                        text-align: center;
+                        min-width: 100px;
+                    }
 
-                                                .cta-button:hover {
-                                                    background-color: #0056b3;
-                                                    transform: scale(1.05);
-                                                }
-                                            </style>
-                                        <?php } elseif ($timer_style === 'background_image') { ?>
-                                            <!-- Rounded Timer -->
-                                            <div id="rounded-countdown">
-                                                <h3 class="title responsive_title"><b><?php echo esc_html($options['MM_And_SUC_Free_title']); ?></b></h3>
-                                                <?php
+                    .cta-button:hover {
+                        background-color: #0056b3;
+                        transform: scale(1.05);
+                    }
+                    </style>
+                    <?php } elseif ($timer_style === 'background_image') { ?>
+                    <!-- Rounded Timer -->
+                    <div id="rounded-countdown">
+                        <h3 class="title responsive_title">
+                            <b><?php echo esc_html($options['MM_And_SUC_Free_title']); ?></b></h3>
+                        <?php
                                                 $date_time_wp = (array)current_datetime();
                                                 $date = new DateTime($date_time_wp['date']);
                                                 $date2 = new DateTime($options['MM_And_SUC_Free_date']);
                                                 $diff = $date2->getTimestamp() - $date->getTimestamp();
                                                 ?>
-                                                <div class="countdown" data-remaining-sec="<?php echo esc_attr($diff); ?>"></div>
-                                                <p class="des responsive_des" style="font-size: 18px;"><?php echo esc_html($options['MM_And_SUC_Free_description']); ?></p>
-                                            </div>
-                                        <?php } ?>
-                                    </div>
-                                    </section><!-- right-section -->
-                                <?php } ?>
-                        </div><!-- container-fluid -->
-                    </div><!-- main-area -->
+                        <div class="countdown" data-remaining-sec="<?php echo esc_attr($diff); ?>"></div>
+                        <p class="des responsive_des" style="font-size: 18px;">
+                            <?php echo esc_html($options['MM_And_SUC_Free_description']); ?></p>
+                    </div>
+                    <?php } ?>
+                </div>
+                </section><!-- right-section -->
+                <?php } ?>
+        </div><!-- container-fluid -->
+    </div><!-- main-area -->
 
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const countdownDate = new Date("<?php echo esc_js($countdown_date); ?>").getTime();
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const countdownDate = new Date("<?php echo esc_js($countdown_date); ?>").getTime();
 
-                            if (!isNaN(countdownDate)) {
-                                const x = setInterval(function() {
-                                    const now = new Date().getTime();
-                                    const distance = countdownDate - now;
+        if (!isNaN(countdownDate)) {
+            const x = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
 
-                                    if (distance < 0) {
-                                        clearInterval(x);
-                                        document.querySelector("#countdown").innerHTML = "The countdown has ended!";
-                                    } else {
-                                        document.getElementById("days").textContent = Math.floor(distance / (1000 * 60 * 60 * 24));
-                                        document.getElementById("hours").textContent = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                                        document.getElementById("minutes").textContent = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                                        document.getElementById("seconds").textContent = Math.floor((distance % (1000 * 60)) / 1000);
-                                    }
-                                }, 1000);
-                            }
-                        });
-                    </script>
-                </body>
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.querySelector("#countdown").innerHTML = "The countdown has ended!";
+                } else {
+                    document.getElementById("days").textContent = Math.floor(distance / (1000 * 60 *
+                        60 * 24));
+                    document.getElementById("hours").textContent = Math.floor((distance % (1000 * 60 *
+                        60 * 24)) / (1000 * 60 * 60));
+                    document.getElementById("minutes").textContent = Math.floor((distance % (1000 * 60 *
+                        60)) / (1000 * 60));
+                    document.getElementById("seconds").textContent = Math.floor((distance % (1000 *
+                        60)) / 1000);
+                }
+            }, 1000);
+        }
+    });
+    </script>
+</body>
 
 
 
-                </html>
+</html>
 
-            <?php
+<?php
                 exit;
             } elseif ($timer_mode !== 'slim_mode' && $timer_style === 'background_image') {
                 $timer_mode = $options['MM_And_SUC_Free_timer_mode'] ?? 'timer_without_contact';
             ?>
-                <!DOCTYPE HTML>
-                <html lang="en">
+<!DOCTYPE HTML>
+<html lang="en">
 
-                <head>
-                    <title><?php echo esc_html(get_option('blogname')); ?></title>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1">
-                    <?php wp_head(); ?>
-                    <style>
-                        /* General Reset */
-                        * {
-                            margin: 0;
-                            padding: 0;
-                            box-sizing: border-box;
-                        }
+<head>
+    <title><?php echo esc_html(get_option('blogname')); ?></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php wp_head(); ?>
+    <style>
+    /* General Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-                        /* Body */
-                        html,
-                        body {
-                            overflow: hidden;
-                        }
-                    </style>
-                </head>
+    /* Body */
+    html,
+    body {
+        overflow: hidden;
+    }
+    </style>
+</head>
 
 
-                <body>
-                    <div class="main-area" style="overflow : hidden ;">
-                        <div class="container-fluid full-height position-static">
-                            <?php if ($timer_mode === 'timer_with_contact') { ?>
-                                <!-- Left Section (Contact Form) -->
-                                <section class="left-section col full-height">
-                                    <div class="display-table">
-                                        <div class="main-content" style="padding: 10px;">
-                                            <h3 class="title"><b><?php _e('Contact us:', 'wp-maintenance-mode-site-under-construction'); ?></b></h3>
-                                            <p><?php _e('We will be back soon! For more information, feel free to contact us anytime', 'wp-maintenance-mode-site-under-construction'); ?></p>
-                                            <div class="email-input-area">
-                                                <form class="contact2-form validate-form" id="contactform">
-                                                    <div class="wrap-input2 validate-input" data-validate="Name is required">
-                                                        <label for="name">Your Name</label>
-                                                        <input class="input2" id="name" type="text" name="name" placeholder="Enter your full name">
-                                                        <span class="focus-input2"></span>
-                                                    </div>
-                                                    <div class="wrap-input2 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                                                        <label for="email">Your Email Address</label>
-                                                        <input class="input2" id="email" type="text" name="email" placeholder="Enter your email address (e.g., example@example.com)">
-                                                        <span class="focus-input2"></span>
-                                                    </div>
-                                                    <div class="wrap-input2 validate-input" data-validate="Message is required">
-                                                        <label for="message">Your Message</label>
-                                                        <textarea class="input2" name="message" id="message" placeholder="Type your message or query here"></textarea>
-                                                        <span class="focus-input2"></span>
-                                                    </div>
-                                                    <div id="contact-msg"></div>
-                                                    <div class="container-contact2-form-btn">
-                                                        <div class="wrap-contact2-form-btn">
-                                                            <div class="contact2-form-bgbtn"></div>
-                                                            <button class="contact2-form-btn" id="contactbutton">
-                                                                <?php esc_html_e('Send Message', 'wp-maintenance-mode-site-under-construction'); ?>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <?php echo wp_nonce_field('contactform_action', '_acf_nonce', true, false); ?>
-                                                    <input type="hidden" name="action" value="contactform_action" />
-                                                </form>
-                                            </div><!-- email-input-area -->
-                                        </div><!-- main-content -->
-                                    </div><!-- display-table -->
-                                </section><!-- left-section -->
+<body>
+    <div class="main-area" style="overflow : hidden ;">
+        <div class="container-fluid full-height position-static">
+            <?php if ($timer_mode === 'timer_with_contact') { ?>
+            <!-- Left Section (Contact Form) -->
+            <section class="left-section col full-height">
+                <div class="display-table">
+                    <div class="main-content" style="padding: 10px;">
+                        <h3 class="title">
+                            <b><?php _e('Contact us:', 'wp-maintenance-mode-site-under-construction'); ?></b></h3>
+                        <p><?php _e('We will be back soon! For more information, feel free to contact us anytime', 'wp-maintenance-mode-site-under-construction'); ?>
+                        </p>
+                        <div class="email-input-area">
+                            <form class="contact2-form validate-form" id="contactform">
+                                <div class="wrap-input2 validate-input" data-validate="Name is required">
+                                    <label for="name">Your Name</label>
+                                    <input class="input2" id="name" type="text" name="name"
+                                        placeholder="Enter your full name">
+                                    <span class="focus-input2"></span>
+                                </div>
+                                <div class="wrap-input2 validate-input"
+                                    data-validate="Valid email is required: ex@abc.xyz">
+                                    <label for="email">Your Email Address</label>
+                                    <input class="input2" id="email" type="text" name="email"
+                                        placeholder="Enter your email address (e.g., example@example.com)">
+                                    <span class="focus-input2"></span>
+                                </div>
+                                <div class="wrap-input2 validate-input" data-validate="Message is required">
+                                    <label for="message">Your Message</label>
+                                    <textarea class="input2" name="message" id="message"
+                                        placeholder="Type your message or query here"></textarea>
+                                    <span class="focus-input2"></span>
+                                </div>
+                                <div id="contact-msg"></div>
+                                <div class="container-contact2-form-btn">
+                                    <div class="wrap-contact2-form-btn">
+                                        <div class="contact2-form-bgbtn"></div>
+                                        <button class="contact2-form-btn" id="contactbutton">
+                                            <?php esc_html_e('Send Message', 'wp-maintenance-mode-site-under-construction'); ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <?php echo wp_nonce_field('contactform_action', '_acf_nonce', true, false); ?>
+                                <input type="hidden" name="action" value="contactform_action" />
+                            </form>
+                        </div><!-- email-input-area -->
+                    </div><!-- main-content -->
+                </div><!-- display-table -->
+            </section><!-- left-section -->
 
-                                <?php
+            <?php
                                 $width_class = "half_width_mode";
                                 ?>
-                                <!-- Right Section (Background Image with Countdown Timer) -->
-                                <section class="right-section <?php echo esc_attr($width_class); ?>"
-                                    <?php
+            <!-- Right Section (Background Image with Countdown Timer) -->
+            <section class="right-section <?php echo esc_attr($width_class); ?>" <?php
                                     if ($options['MM_And_SUC_Free_option_type_of_bg'] == 2) {
                                         $filename_big = pathinfo(MM_And_SUC_Free_PLUGIN_URL . 'textures/' . $options['MM_And_SUC_Free_textures']);
                                         $file_big_name = $filename_big['dirname'] . '/' . $filename_big['filename'] . '-big.' . $filename_big['extension'];
-                                    ?>
-                                    style="background-image: url(<?php
+                                    ?> style="background-image: url(<?php
                                                                     if (isset($options['MM_And_SUC_Free_textures']) && $options['MM_And_SUC_Free_textures'] != "") {
                                                                         echo esc_attr($file_big_name);
                                                                     }
-                                                                    ?>)"
-                                    <?php } else { ?>
-                                    style="background-image: url(<?php
+                                                                    ?>)" <?php } else { ?> style="background-image: url(<?php
                                                                     if (isset($options['MM_And_SUC_Free_image']) && $options['MM_And_SUC_Free_image'] != "") {
                                                                         echo esc_attr(wp_get_attachment_image_src($options['MM_And_SUC_Free_image'], 'full')[0]);
                                                                     } else {
                                                                         echo esc_attr(MM_And_SUC_Free_PLUGIN_URL . '/assets/images/countdown-1-1000x1000.jpg');
                                                                     }
                                                                     ?>)"
-                                    <?php }
+                <?php }
                                     if (isset($options['MM_And_SUC_Free_textures']) && $options['MM_And_SUC_Free_textures'] != "") { ?>>
-                                <?php
+                <?php
                                     }
 
                                 ?>
-                                <div class="display-table center-text">
-                                    <div class="display-table-cell">
-                                        <div id="rounded-countdown">
-                                            <h3 class="title responsive_title"><b><?php echo esc_html($options['MM_And_SUC_Free_title']); ?></b></h3>
-                                            <?php
+                <div class="display-table center-text">
+                    <div class="display-table-cell">
+                        <div id="rounded-countdown">
+                            <h3 class="title responsive_title">
+                                <b><?php echo esc_html($options['MM_And_SUC_Free_title']); ?></b></h3>
+                            <?php
                                             $date_time_wp = (array)current_datetime();
                                             $date = new DateTime($date_time_wp['date']);
                                             $date2 = new DateTime($options['MM_And_SUC_Free_date']);
                                             $diff = $date2->getTimestamp() - $date->getTimestamp();
                                             ?>
-                                            <div class="countdown" data-remaining-sec="<?php echo esc_attr($diff); ?>"></div>
-                                            <p class="des responsive_des" style="font-size: 18px;"><?php echo esc_html($options['MM_And_SUC_Free_description']); ?></p>
-                                        </div>
-                                        <div class="cta-buttons">
-                                            <?php
+                            <div class="countdown" data-remaining-sec="<?php echo esc_attr($diff); ?>"></div>
+                            <p class="des responsive_des" style="font-size: 18px;">
+                                <?php echo esc_html($options['MM_And_SUC_Free_description']); ?></p>
+                        </div>
+                        <div class="cta-buttons">
+                            <?php
                                             $cta_options = get_option('MM_And_SUC_Free_options');
                                             if (!empty($cta_options['MM_And_SUC_Free_enable_cta'])) {
                                                 $bg_color = $cta_options['MM_And_SUC_Free_cta_bg_color'] ?? '#007BFF';
@@ -591,75 +605,74 @@ if (! class_exists('MM_And_SUC_Free_page_template')) {
                                                 }
                                             }
                                             ?>
-                                        </div>
+                        </div>
 
-                                    </div>
-                                </div>
+                    </div>
+                </div>
 
-                                <style>
-                                    .cta-buttons {
-                                        display: flex;
-                                        justify-content: center;
-                                        gap: 20px;
-                                        margin-top: 30px;
-                                    }
+                <style>
+                .cta-buttons {
+                    display: flex;
+                    justify-content: center;
+                    gap: 20px;
+                    margin-top: 30px;
+                }
 
-                                    .cta-button {
-                                        display: inline-block;
-                                        padding: 8px 30px;
-                                        background-color: #007BFF;
-                                        color: #FFFFFF;
-                                        text-decoration: none;
-                                        border-radius: 4px;
-                                        font-size: 14px;
-                                        transition: background-color 0.3s ease, transform 0.2s ease;
-                                        text-align: center;
-                                        min-width: 100px;
-                                    }
+                .cta-button {
+                    display: inline-block;
+                    padding: 8px 30px;
+                    background-color: #007BFF;
+                    color: #FFFFFF;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    transition: background-color 0.3s ease, transform 0.2s ease;
+                    text-align: center;
+                    min-width: 100px;
+                }
 
-                                    .cta-button:hover {
-                                        background-color: #0056b3;
-                                        transform: scale(1.05);
-                                    }
-                                </style>
-                                </section><!-- right-section -->
-                            <?php } else { ?>
-                                <!-- Full Width Background Image with Countdown Timer -->
-                                <section class="right-section full_screen_mode"
-                                    <?php if ($options['MM_And_SUC_Free_option_type_of_bg'] == 2) {
+                .cta-button:hover {
+                    background-color: #0056b3;
+                    transform: scale(1.05);
+                }
+                </style>
+            </section><!-- right-section -->
+            <?php } else { ?>
+            <!-- Full Width Background Image with Countdown Timer -->
+            <section class="right-section full_screen_mode" <?php if ($options['MM_And_SUC_Free_option_type_of_bg'] == 2) {
                                         $filename_big = pathinfo(MM_And_SUC_Free_PLUGIN_URL . 'textures/' . $options['MM_And_SUC_Free_textures']);
                                         $file_big_name = $filename_big['dirname'] . '/' . $filename_big['filename'] . '-big.' . $filename_big['extension'];
-                                    ?>
-                                    style="background-image: url(<?php if (isset($options['MM_And_SUC_Free_textures']) && $options['MM_And_SUC_Free_textures'] != "") {
+                                    ?> style="background-image: url(<?php if (isset($options['MM_And_SUC_Free_textures']) && $options['MM_And_SUC_Free_textures'] != "") {
                                                                         esc_attr_e($file_big_name);
-                                                                    } ?>)"
-                                    <?php } else { ?>
-                                    style="background-image: url(<?php if (isset($options['MM_And_SUC_Free_image']) && $options['MM_And_SUC_Free_image'] != "") {
+                                                                    } ?>)" <?php } else { ?>
+                style="background-image: url(<?php if (isset($options['MM_And_SUC_Free_image']) && $options['MM_And_SUC_Free_image'] != "") {
                                                                         echo esc_attr(wp_get_attachment_image_src($options['MM_And_SUC_Free_image'], 'full')[0]);
                                                                     } else {
                                                                         echo esc_attr(MM_And_SUC_Free_PLUGIN_URL); ?>/assets/images/countdown-1-1000x1000.jpg)<?php } ?>)">
-                                    <?php }
+                <?php }
                                     if (isset($options['MM_And_SUC_Free_textures']) && $options['MM_And_SUC_Free_textures'] != "") { ?>>
-                                <?php
+                <?php
                                     }
 
                                 ?>
 
-                                <div class="display-table center-text">
-                                    <div class="display-table-cell">
-                                        <div id="rounded-countdown">
-                                            <h3 class="title responsive_title"><b><?php echo esc_html($options['MM_And_SUC_Free_title']); ?></b></h3>
-                                            <?php
+                <div class="display-table center-text">
+                    <div class="display-table-cell">
+                        <div id="rounded-countdown">
+                            <h3 class="title responsive_title">
+                                <b><?php echo esc_html($options['MM_And_SUC_Free_title']); ?></b></h3>
+                            <?php
                                             $date_time_wp = (array)current_datetime();
                                             $date = new DateTime($date_time_wp['date']);
                                             $date2 = new DateTime($options['MM_And_SUC_Free_date']);
                                             $diff = $date2->getTimestamp() - $date->getTimestamp();
                                             ?>
-                                            <div class="countdown" data-remaining-sec="<?php echo esc_attr($diff); ?>"></div>
-                                            <p class="des responsive_des" style="font-size: 18px;"><?php echo esc_html($options['MM_And_SUC_Free_description']); ?></p>
-                                        </div>
-                                        <div class="cta-buttons">
-                                            <?php
+                            <div class="countdown" data-remaining-sec="<?php echo esc_attr($diff); ?>"></div>
+                            <p class="des responsive_des" style="font-size: 18px;">
+                                <?php echo esc_html($options['MM_And_SUC_Free_description']); ?></p>
+                        </div>
+                        <div class="cta-buttons">
+                            <?php
                                             $cta_options = get_option('MM_And_SUC_Free_options');
                                             if (!empty($cta_options['MM_And_SUC_Free_enable_cta'])) {
                                                 $bg_color = $cta_options['MM_And_SUC_Free_cta_bg_color'] ?? '#007BFF';
@@ -673,82 +686,82 @@ if (! class_exists('MM_And_SUC_Free_page_template')) {
                                                 }
                                             }
                                             ?>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <style>
-                                    .cta-buttons {
-                                        display: flex;
-                                        justify-content: center;
-                                        gap: 20px;
-                                        margin-top: 30px;
-                                    }
-
-                                    .cta-button {
-                                        display: inline-block;
-                                        padding: 8px 30px;
-                                        background-color: #007BFF;
-                                        color: #FFFFFF;
-                                        text-decoration: none;
-                                        border-radius: 4px;
-                                        font-size: 14px;
-                                        transition: background-color 0.3s ease, transform 0.2s ease;
-                                        text-align: center;
-                                        min-width: 100px;
-                                    }
-
-                                    .cta-button:hover {
-                                        background-color: #0056b3;
-                                        transform: scale(1.05);
-                                    }
-                                </style>
-
                         </div>
-                        <!-- End CTA Buttons -->
-                        </section><!-- right-section -->
-                    <?php } ?>
-
                     </div>
-                    </div>
+                </div>
 
-                    </div>
-                    <?php do_action('MM_And_SUC_Free_footer'); ?>
-                    <?php wp_footer(); ?>
-                    <style>
-                        .cta-buttons {
-                            display: flex;
-                            justify-content: center;
-                            gap: 20px;
-                            margin-top: 30px;
-                        }
+                <style>
+                .cta-buttons {
+                    display: flex;
+                    justify-content: center;
+                    gap: 20px;
+                    margin-top: 30px;
+                }
 
-                        .cta-button {
-                            display: inline-block;
-                            padding: 8px 30px;
-                            /* Reduced height, increased width */
-                            background-color: #007BFF;
-                            color: #FFFFFF;
-                            text-decoration: none;
-                            border-radius: 4px;
-                            /* Less curve */
-                            font-size: 14px;
-                            /* Adjust font size if needed */
-                            transition: background-color 0.3s ease, transform 0.2s ease;
-                            text-align: center;
-                            min-width: 100px;
-                            /* Ensures buttons are consistently wider */
-                        }
+                .cta-button {
+                    display: inline-block;
+                    padding: 8px 30px;
+                    background-color: #007BFF;
+                    color: #FFFFFF;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    transition: background-color 0.3s ease, transform 0.2s ease;
+                    text-align: center;
+                    min-width: 100px;
+                }
 
-                        .cta-button:hover {
-                            background-color: #0056b3;
-                            transform: scale(1.05);
-                        }
-                    </style>
-                </body>
+                .cta-button:hover {
+                    background-color: #0056b3;
+                    transform: scale(1.05);
+                }
+                </style>
+
+        </div>
+        <!-- End CTA Buttons -->
+        </section><!-- right-section -->
+        <?php } ?>
+
+    </div>
+    </div>
+
+    </div>
+    <?php do_action('MM_And_SUC_Free_footer'); ?>
+    <?php wp_footer(); ?>
+    <style>
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .cta-button {
+        display: inline-block;
+        padding: 8px 30px;
+        /* Reduced height, increased width */
+        background-color: #007BFF;
+        color: #FFFFFF;
+        text-decoration: none;
+        border-radius: 4px;
+        /* Less curve */
+        font-size: 14px;
+        /* Adjust font size if needed */
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-align: center;
+        min-width: 100px;
+        /* Ensures buttons are consistently wider */
+    }
+
+    .cta-button:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+    </style>
+</body>
 
 
-                </html>
+</html>
 <?php
             }
             exit;
