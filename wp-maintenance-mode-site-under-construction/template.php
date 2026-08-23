@@ -410,7 +410,7 @@ function mm_suc_p_contact() {
 		$recipient = get_option( 'admin_email' );
 	}
 
-	// Store first in Zero-DB file system JSON storage.
+	// Store in dedicated database table.
 	$record = array(
 		'id'        => 'msg_' . wp_generate_uuid4(),
 		'timestamp' => time(),
@@ -437,7 +437,8 @@ function mm_suc_p_contact() {
 		$message
 	);
 
-	$headers = array( 'Reply-To: ' . $name . ' <' . $email . '>' );
+	$clean_name = str_replace( array( '"', '<', '>', "\r", "\n" ), '', $name );
+	$headers    = array( 'Reply-To: "' . $clean_name . '" <' . $email . '>' );
 
 	wp_mail( $recipient, $subject, $body, $headers );
 

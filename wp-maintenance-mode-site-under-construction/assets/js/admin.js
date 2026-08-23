@@ -61,20 +61,26 @@
 	var renderTimer = null;
 	var countdownTimer = null;
 
-	initPanels();
-	initToolbarGroups();
 	initTray();
-	initFields();
-	initInlineEditing();
-	initLibrary();
-	initPreset();
-	initMedia();
-	initViewports();
-	initPalette();
-	initSheetPreview();
-	initSave();
-	refreshDerived();
-	startPreviewCountdown();
+	initRatingBanner();
+
+	if (preview) {
+		initPanels();
+		initToolbarGroups();
+		initFields();
+		initInlineEditing();
+		initLibrary();
+		initPreset();
+		initMedia();
+		initViewports();
+		initPalette();
+		initSheetPreview();
+		initSave();
+		refreshDerived();
+		startPreviewCountdown();
+	} else {
+		initMessagesScreen();
+	}
 
 	/* ------------------------------------------------------------------ helpers */
 
@@ -519,8 +525,10 @@
 	function onFieldChange(field, node) {
 		markDirty();
 
-		if (field === 'enabled') {
+		if (field === 'enabled' || field === 'auto_disable') {
 			updatePill();
+			updateConsequence();
+			updateDuration();
 			return;
 		}
 
@@ -1207,13 +1215,14 @@
 	/* ------------------------------------------------------------------ derived readouts */
 
 	/**
-	 * Recompute the schedule prose and the contrast note.
+	 * Recompute the schedule prose, contrast note, and master consequence description.
 	 *
 	 * @return {void}
 	 */
 	function refreshDerived() {
 		updateDuration();
 		updateContrast();
+		updateConsequence();
 	}
 
 	/**
@@ -1224,6 +1233,8 @@
 	function updateDuration() {
 		var slot = root.querySelector('[data-mm-suc-p-duration]');
 		var input = controlFor('end_datetime');
+		var enabledInput = controlFor('enabled');
+		var isEnabled = enabledInput ? enabledInput.checked : savedEnabled;
 
 		if (!slot || !input) {
 			return;
@@ -1244,7 +1255,9 @@
 		var seconds = Math.floor((target - Date.now()) / 1000);
 
 		if (seconds <= 0) {
-			slot.textContent = text('durationPast', 'That time has passed - the countdown reads zero.');
+			slot.textContent = isEnabled
+				? text('durationPastWarning', 'That time has passed. Maintenance mode will not run and your site will remain live.')
+				: text('durationPast', 'That time has passed - the countdown reads zero.');
 			return;
 		}
 
@@ -1266,6 +1279,43 @@
 		}
 
 		slot.textContent = format(text('durationFrom', '%s from now'), parts.join(', '));
+	}
+
+	/**
+	 * Keep the consequence description under the master switch accurate.
+	 *
+	 * @return {void}
+	 */
+	function updateConsequence() {
+		var consequence = document.getElementById('mm-suc-p-enabled-consequence');
+		var enabledInput = controlFor('enabled');
+		var endInput = controlFor('end_datetime');
+
+		if (!consequence) {
+			return;
+		}
+
+		var isEnabled = enabledInput ? enabledInput.checked : savedEnabled;
+		var endVal = endInput ? endInput.value : '';
+		var isPast = false;
+
+		if (endVal) {
+			var target = Date.parse(endVal);
+			if (!isNaN(target) && target <= Date.now()) {
+				isPast = true;
+			}
+		}
+
+		if (isEnabled && isPast) {
+			consequence.textContent = text('consequencePastDate', 'Maintenance mode will not run and your site is still live because your chosen date is older than now.');
+			consequence.classList.add('mm-suc-p-consequence--warning');
+		} else if (isEnabled) {
+			consequence.textContent = text('consequenceMaintenance', 'Visitors see the maintenance page. You and other administrators still see the site.');
+			consequence.classList.remove('mm-suc-p-consequence--warning');
+		} else {
+			consequence.textContent = text('consequenceLive', 'Site is live. Visitors see the website normally.');
+			consequence.classList.remove('mm-suc-p-consequence--warning');
+		}
 	}
 
 	/**
@@ -2397,7 +2447,14 @@
 				savedEnabled = !!(result.data && result.data.options && result.data.options.enabled);
 				clearDirty();
 				updatePill();
-				toast('success', (result.data && result.data.message) || text('saved', 'Settings saved.'), true);
+				updateConsequence();
+				updateDuration();
+
+				var isWarning = !!(result.data && result.data.warning);
+				var toastKind = isWarning ? 'warning' : 'success';
+				var toastMsg = (result.data && result.data.message) || text('saved', 'Settings saved.');
+
+				toast(toastKind, toastMsg, !isWarning);
 				return;
 			}
 
@@ -2520,10 +2577,10 @@
 
 		var node = document.createElement('div');
 		node.className = 'mm-suc-p-toast mm-suc-p-toast--' + kind;
-		node.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+		node.setAttribute('role', (kind === 'error' || kind === 'warning') ? 'alert' : 'status');
 
 		var icons = data.icons || {};
-		var glyph = kind === 'error' ? icons.warning : icons.check;
+		var glyph = (kind === 'error' || kind === 'warning') ? icons.warning : icons.check;
 
 		if (glyph) {
 			var holder = document.createElement('span');
@@ -2572,4 +2629,339 @@
 			}, 200);
 		}
 	}
+
+	/* ------------------------------------------------------------------ messages */
+
+	/**
+	 * Wire interactions on the Messages List screen.
+	 *
+	 * @return {void}
+	 */
+	function initMessagesScreen() {
+		var modal = document.getElementById('mm-suc-p-msg-modal');
+		var modalClose = document.getElementById('mm-suc-p-modal-close');
+		var modalCancel = document.getElementById('mm-suc-p-modal-cancel-btn');
+		var modalReply = document.getElementById('mm-suc-p-modal-reply-btn');
+		var modalDelete = document.getElementById('mm-suc-p-modal-delete-btn');
+		var modalSenderName = document.getElementById('mm-suc-p-modal-sender-name');
+		var modalSenderEmail = document.getElementById('mm-suc-p-modal-sender-email');
+		var modalDate = document.getElementById('mm-suc-p-modal-date');
+		var modalText = document.getElementById('mm-suc-p-modal-message-text');
+
+		var clearAllBtn = document.getElementById('mm-suc-p-clear-all-messages');
+		var tableWrapper = document.getElementById('mm-suc-p-messages-list-wrapper');
+		var retentionCheckbox = document.getElementById('mm-suc-p-delete-messages-uninstall');
+
+		var currentMsgId = null;
+		var lastActiveElement = null;
+
+		root.addEventListener('click', function (event) {
+			var deleteBtn = event.target.closest('.mm-suc-p-delete-msg');
+			if (deleteBtn) {
+				event.preventDefault();
+				event.stopPropagation();
+				var row = deleteBtn.closest('.mm-suc-p-message-row');
+				var msgId = deleteBtn.getAttribute('data-mm-suc-p-del-id') || (row ? row.getAttribute('data-mm-suc-p-msg-id') : null);
+				if (msgId) {
+					deleteMessage(msgId, false);
+				}
+				return;
+			}
+
+			var openBtn = event.target.closest('.mm-suc-p-open-msg');
+			var msgRow = event.target.closest('.mm-suc-p-message-row');
+			if (openBtn || (msgRow && !event.target.closest('a, button, input, select, textarea'))) {
+				var targetRow = openBtn ? openBtn.closest('.mm-suc-p-message-row') : msgRow;
+				if (targetRow) {
+					lastActiveElement = openBtn || event.target;
+					openMessageModal(targetRow);
+				}
+				return;
+			}
+		});
+
+		if (modalClose) {
+			modalClose.addEventListener('click', closeModal);
+		}
+
+		if (modalCancel) {
+			modalCancel.addEventListener('click', closeModal);
+		}
+
+		if (modal) {
+			modal.addEventListener('click', function (event) {
+				if (event.target === modal) {
+					closeModal();
+				}
+			});
+
+			document.addEventListener('keydown', function (event) {
+				if (event.key === 'Escape' && !modal.hidden) {
+					closeModal();
+				}
+			});
+		}
+
+		if (modalDelete) {
+			modalDelete.addEventListener('click', function () {
+				if (currentMsgId) {
+					deleteMessage(currentMsgId, true);
+				}
+			});
+		}
+
+		if (clearAllBtn) {
+			clearAllBtn.addEventListener('click', function () {
+				if (window.confirm(text('clearAllConfirm', 'Are you sure you want to delete all messages? This cannot be undone.'))) {
+					clearAllMessages();
+				}
+			});
+		}
+
+		if (retentionCheckbox) {
+			retentionCheckbox.addEventListener('change', function () {
+				toggleRetentionSetting(retentionCheckbox.checked);
+			});
+		}
+
+		function openMessageModal(row) {
+			if (!modal) {
+				return;
+			}
+
+			currentMsgId = row.getAttribute('data-mm-suc-p-msg-id');
+			var name = row.getAttribute('data-mm-suc-p-msg-name') || '';
+			var email = row.getAttribute('data-mm-suc-p-msg-email') || '';
+			var date = row.getAttribute('data-mm-suc-p-msg-date') || '';
+			var content = row.getAttribute('data-mm-suc-p-msg-content') || '';
+			var isUnread = row.getAttribute('data-mm-suc-p-msg-read') === '0';
+
+			if (modalSenderName) modalSenderName.textContent = name;
+			if (modalSenderEmail) {
+				modalSenderEmail.textContent = email;
+				modalSenderEmail.href = 'mailto:' + encodeURIComponent(email);
+			}
+			if (modalReply) {
+				modalReply.href = 'mailto:' + encodeURIComponent(email);
+			}
+			if (modalDate) modalDate.textContent = date;
+			if (modalText) modalText.textContent = content;
+
+			modal.hidden = false;
+			if (modalClose) {
+				modalClose.focus();
+			}
+
+			if (isUnread && currentMsgId) {
+				markMessageAsRead(currentMsgId, row);
+			}
+		}
+
+		function closeModal() {
+			if (modal) {
+				modal.hidden = true;
+			}
+			currentMsgId = null;
+			if (lastActiveElement && typeof lastActiveElement.focus === 'function') {
+				lastActiveElement.focus();
+				lastActiveElement = null;
+			}
+		}
+
+		function markMessageAsRead(id, row) {
+			var body = new window.URLSearchParams();
+			body.append('action', data.markReadAction || 'mm_suc_mark_read');
+			body.append('nonce', data.nonce || '');
+			body.append('id', id);
+
+			window.fetch(data.ajaxUrl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+				body: body.toString()
+			}).then(function (response) {
+				return response.json();
+			}).then(function (result) {
+				if (result && result.success) {
+					row.classList.remove('mm-suc-p-message-row--unread');
+					row.setAttribute('data-mm-suc-p-msg-read', '1');
+
+					var badge = row.querySelector('.mm-suc-p-msg-badge');
+					if (badge) {
+						badge.className = 'mm-suc-p-msg-badge mm-suc-p-msg-badge--read';
+					}
+
+					if (result.data && result.data.counts) {
+						updateCountsPill(result.data.counts);
+					}
+				}
+			}).catch(function () {});
+		}
+
+		function deleteMessage(id, fromModal) {
+			if (!window.confirm(text('deleteMessageConfirm', 'Are you sure you want to delete this message?'))) {
+				return;
+			}
+
+			var body = new window.URLSearchParams();
+			body.append('action', data.deleteMessageAction || 'mm_suc_delete_message');
+			body.append('nonce', data.nonce || '');
+			body.append('id', id);
+
+			window.fetch(data.ajaxUrl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+				body: body.toString()
+			}).then(function (response) {
+				return response.json();
+			}).then(function (result) {
+				if (result && result.success) {
+					if (fromModal) {
+						closeModal();
+					}
+
+					var row = document.getElementById('mm-suc-p-row-' + id);
+					if (row && row.parentNode) {
+						row.parentNode.removeChild(row);
+					}
+
+					if (result.data && result.data.counts) {
+						updateCountsPill(result.data.counts);
+						if (result.data.counts.total === 0) {
+							renderEmptyState();
+						}
+					}
+
+					toast('success', text('messageDeleted', 'Message deleted.'), true);
+				} else {
+					var err = (result && result.data && result.data.message) ? result.data.message : text('deleteFailed', 'Could not delete the message. Try again.');
+					toast('error', err, false);
+				}
+			}).catch(function () {
+				toast('error', text('deleteFailed', 'Could not delete the message. Try again.'), false);
+			});
+		}
+
+		function clearAllMessages() {
+			var body = new window.URLSearchParams();
+			body.append('action', data.clearMessagesAction || 'mm_suc_clear_messages');
+			body.append('nonce', data.nonce || '');
+
+			window.fetch(data.ajaxUrl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+				body: body.toString()
+			}).then(function (response) {
+				return response.json();
+			}).then(function (result) {
+				if (result && result.success) {
+					renderEmptyState();
+					updateCountsPill({ total: 0, unread: 0 });
+					toast('success', text('messagesCleared', 'All messages cleared.'), true);
+				} else {
+					var err = (result && result.data && result.data.message) ? result.data.message : text('clearFailed', 'Could not clear messages. Try again.');
+					toast('error', err, false);
+				}
+			}).catch(function () {
+				toast('error', text('clearFailed', 'Could not clear messages. Try again.'), false);
+			});
+		}
+
+		function toggleRetentionSetting(checked) {
+			var body = new window.URLSearchParams();
+			body.append('action', data.toggleUninstallCleanupAction || 'mm_suc_toggle_uninstall_cleanup');
+			body.append('nonce', data.nonce || '');
+			body.append('delete_messages_on_uninstall', checked ? '1' : '0');
+
+			window.fetch(data.ajaxUrl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+				body: body.toString()
+			}).then(function (response) {
+				return response.json();
+			}).then(function (result) {
+				if (result && result.success) {
+					toast('success', text('saved', 'Settings saved.'), true);
+				} else {
+					toast('error', text('saveFailed', 'Could not save. Try again.'), false);
+				}
+			}).catch(function () {
+				toast('error', text('saveFailed', 'Could not save. Try again.'), false);
+			});
+		}
+
+		function updateCountsPill(counts) {
+			var pillText = root.querySelector('#mm-suc-p-pill .mm-suc-p-pill-text');
+			if (pillText && counts) {
+				pillText.textContent = counts.total + ' ' + (counts.total === 1 ? text('messageSingle', 'Message') : text('messagePlural', 'Messages')) + ' (' + counts.unread + ' ' + text('unreadCount', 'unread') + ')';
+			}
+		}
+
+		function renderEmptyState() {
+			if (clearAllBtn && clearAllBtn.parentNode) {
+				clearAllBtn.parentNode.removeChild(clearAllBtn);
+			}
+
+			if (tableWrapper) {
+				var icon = (data.icons && data.icons['contact-mail']) ? data.icons['contact-mail'] : '';
+				tableWrapper.innerHTML = '<div class="mm-suc-p-messages-empty" id="mm-suc-p-messages-empty">'
+					+ '<div class="mm-suc-p-empty-icon" aria-hidden="true">' + icon + '</div>'
+					+ '<h3>' + text('noMessagesYet', 'No messages yet') + '</h3>'
+					+ '<p>' + text('noMessagesDesc', 'When visitors send inquiries through the contact form on your maintenance page, they will appear here.') + '</p>'
+					+ '</div>';
+			}
+		}
+	}
+
+	/* ------------------------------------------------------------------ rating banner */
+
+	/**
+	 * Wire interactions and persistent dismissal on the rating banner.
+	 *
+	 * @return {void}
+	 */
+	function initRatingBanner() {
+		var banner = document.getElementById('mm-suc-p-rating-banner');
+
+		if (!banner) {
+			return;
+		}
+
+		banner.addEventListener('click', function (event) {
+			var dismissBtn = event.target.closest('[data-mm-suc-p-rating-action="dismiss"]');
+			var rateBtn = event.target.closest('[data-mm-suc-p-rating-action="rate"]');
+
+			if (dismissBtn) {
+				event.preventDefault();
+				dismiss();
+			} else if (rateBtn) {
+				dismiss();
+			}
+		});
+
+		function dismiss() {
+			banner.setAttribute('data-state', 'dismissed');
+
+			window.setTimeout(function () {
+				if (banner.parentNode) {
+					banner.parentNode.removeChild(banner);
+				}
+			}, 200);
+
+			var body = new window.URLSearchParams();
+			body.append('action', data.dismissRatingAction || 'mm_suc_dismiss_rating');
+			body.append('nonce', data.nonce || '');
+
+			window.fetch(data.ajaxUrl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+				body: body.toString()
+			}).catch(function () {});
+		}
+	}
 }());
+

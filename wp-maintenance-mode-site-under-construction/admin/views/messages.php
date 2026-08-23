@@ -57,6 +57,8 @@ $mm_suc_p_email  = ! empty( $options['contact_email'] ) ? sanitize_email( $optio
 
 	<div class="mm-suc-p-messages-layout">
 
+		<?php mm_suc_p_render_rating_banner(); ?>
+
 		<!-- 1. Contact form job & How it works (Hint) -->
 		<section class="mm-suc-p-hint-card" aria-labelledby="mm-suc-p-hint-title">
 			<div class="mm-suc-p-hint-header">
@@ -77,8 +79,8 @@ $mm_suc_p_email  = ! empty( $options['contact_email'] ) ? sanitize_email( $optio
 				<div class="mm-suc-p-hint-item">
 					<div class="mm-suc-p-hint-bullet" aria-hidden="true"><?php echo mm_suc_p_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- registry-controlled inline SVG. ?></div>
 					<div class="mm-suc-p-hint-content">
-						<strong><?php esc_html_e( 'Zero-DB File System Storage', 'wp-maintenance-mode-site-under-construction' ); ?></strong>
-						<p><?php esc_html_e( 'Messages are stored immediately in a secure local JSON file inside your uploads directory. This keeps your WordPress database completely clean and free of extra tables.', 'wp-maintenance-mode-site-under-construction' ); ?></p>
+						<strong><?php esc_html_e( 'Dedicated Database Storage', 'wp-maintenance-mode-site-under-construction' ); ?></strong>
+						<p><?php esc_html_e( 'Messages are stored securely in a dedicated WordPress database table with indexing, privacy protection, and fast lookup.', 'wp-maintenance-mode-site-under-construction' ); ?></p>
 					</div>
 				</div>
 
@@ -193,9 +195,32 @@ $mm_suc_p_email  = ! empty( $options['contact_email'] ) ? sanitize_email( $optio
 			</div>
 		</section>
 
+		<!-- 3. Data Retention & Cleanup Setting -->
+		<section class="mm-suc-p-panel mm-suc-p-retention-card" aria-labelledby="mm-suc-p-retention-title">
+			<div class="mm-suc-p-messages-header">
+				<h2 class="mm-suc-p-messages-title" id="mm-suc-p-retention-title">
+					<?php esc_html_e( 'Data Retention & Cleanup', 'wp-maintenance-mode-site-under-construction' ); ?>
+				</h2>
+			</div>
+			<div class="mm-suc-p-panel-body" style="padding: 16px 20px;">
+				<div class="mm-suc-p-fields">
+					<div class="mm-suc-p-field">
+						<label class="mm-suc-p-check">
+							<input type="checkbox" id="mm-suc-p-delete-messages-uninstall" name="delete_messages_on_uninstall" value="1" <?php checked( ! empty( $options['delete_messages_on_uninstall'] ) ); ?> />
+							<span class="mm-suc-p-check-box" aria-hidden="true"><?php echo mm_suc_p_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- registry-controlled inline SVG. ?></span>
+							<span class="mm-suc-p-check-label"><?php esc_html_e( 'Delete messages database table when plugin is uninstalled', 'wp-maintenance-mode-site-under-construction' ); ?></span>
+						</label>
+						<p class="mm-suc-p-help">
+							<?php esc_html_e( 'When checked, deleting this plugin from WordPress will permanently remove the messages database table and purge all saved inquiries.', 'wp-maintenance-mode-site-under-construction' ); ?>
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
 	</div>
 
-	<!-- 3. Accessible Message Modal Dialog -->
+	<!-- 4. Accessible Message Modal Dialog -->
 	<div class="mm-suc-p-modal-backdrop" id="mm-suc-p-msg-modal" role="dialog" aria-modal="true" aria-labelledby="mm-suc-p-modal-title" hidden>
 		<div class="mm-suc-p-modal-dialog">
 			<header class="mm-suc-p-modal-header">
@@ -241,5 +266,8 @@ $mm_suc_p_email  = ! empty( $options['contact_email'] ) ? sanitize_email( $optio
 			</footer>
 		</div>
 	</div>
+
+	<!-- 5. Toast Notifications -->
+	<div class="mm-suc-p-toasts" id="mm-suc-p-toasts"></div>
 
 </div>

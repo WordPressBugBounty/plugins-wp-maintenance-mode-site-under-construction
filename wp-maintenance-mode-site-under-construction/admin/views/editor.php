@@ -91,9 +91,21 @@ $mm_suc_p_roles  = get_editable_roles();
 		</div>
 	</header>
 
-	<p class="mm-suc-p-consequence" id="mm-suc-p-enabled-consequence">
-		<?php esc_html_e('Visitors see the maintenance page. You and other administrators still see the site.', 'wp-maintenance-mode-site-under-construction'); ?>
+	<?php
+	$mm_suc_p_end              = mm_suc_p_end_timestamp( $options );
+	$mm_suc_p_is_past          = ( $mm_suc_p_end && time() >= $mm_suc_p_end );
+	$mm_suc_p_consequence_cls  = 'mm-suc-p-consequence' . ( ( $enabled && $mm_suc_p_is_past ) ? ' mm-suc-p-consequence--warning' : '' );
+	$mm_suc_p_consequence_text = $enabled
+		? ( $mm_suc_p_is_past
+			? __( 'Maintenance mode will not run and your site is still live because your chosen date is older than now.', 'wp-maintenance-mode-site-under-construction' )
+			: __( 'Visitors see the maintenance page. You and other administrators still see the site.', 'wp-maintenance-mode-site-under-construction' ) )
+		: __( 'Site is live. Visitors see the website normally.', 'wp-maintenance-mode-site-under-construction' );
+	?>
+	<p class="<?php echo esc_attr( $mm_suc_p_consequence_cls ); ?>" id="mm-suc-p-enabled-consequence">
+		<?php echo esc_html( $mm_suc_p_consequence_text ); ?>
 	</p>
+
+	<?php mm_suc_p_render_rating_banner(); ?>
 
 	<div class="mm-suc-p-workspace">
 

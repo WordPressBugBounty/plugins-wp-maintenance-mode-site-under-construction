@@ -130,11 +130,13 @@ function mm_suc_p_admin_assets( $hook ) {
 			'nonce'               => wp_create_nonce( 'mm_suc_admin' ),
 			'saveAction'          => 'mm_suc_save_settings',
 			'viewAction'          => 'mm_suc_render_preview',
-			'presetAction'        => 'mm_suc_save_preset',
-			'deleteMessageAction' => 'mm_suc_delete_message',
-			'clearMessagesAction' => 'mm_suc_clear_messages',
-			'markReadAction'      => 'mm_suc_mark_read',
-			'contract'            => $contract,
+			'presetAction'                 => 'mm_suc_save_preset',
+			'deleteMessageAction'          => 'mm_suc_delete_message',
+			'clearMessagesAction'          => 'mm_suc_clear_messages',
+			'markReadAction'               => 'mm_suc_mark_read',
+			'toggleUninstallCleanupAction' => 'mm_suc_toggle_uninstall_cleanup',
+			'dismissRatingAction'          => 'mm_suc_dismiss_rating',
+			'contract'                     => $contract,
 			'templates'           => MM_SUC_P_Template_Registry::to_array(),
 			'options'             => mm_suc_p_client_options( $options ),
 			'parts'               => MM_SUC_P_Template_View::parts(),
@@ -143,6 +145,7 @@ function mm_suc_p_admin_assets( $hook ) {
 				'close'        => mm_suc_p_icon( 'close' ),
 				'warning'      => mm_suc_p_icon( 'warning' ),
 				'contact-mail' => mm_suc_p_icon( 'contact-mail' ),
+				'star'         => mm_suc_p_icon( 'star' ),
 				'trash'        => mm_suc_p_icon( 'trash' ),
 			),
 			'strings'             => mm_suc_p_admin_strings(),
@@ -188,14 +191,18 @@ function mm_suc_p_admin_strings() {
 		'chooseImage'   => __( 'Choose a background image', 'wp-maintenance-mode-site-under-construction' ),
 		'use'           => __( 'Use this image', 'wp-maintenance-mode-site-under-construction' ),
 		'unsaved'       => __( 'Unsaved change', 'wp-maintenance-mode-site-under-construction' ),
-		'live'          => __( 'Site is live', 'wp-maintenance-mode-site-under-construction' ),
-		'maintenance'   => __( 'Maintenance mode is on', 'wp-maintenance-mode-site-under-construction' ),
+		'live'                   => __( 'Site is live', 'wp-maintenance-mode-site-under-construction' ),
+		'maintenance'            => __( 'Maintenance mode is on', 'wp-maintenance-mode-site-under-construction' ),
+		'consequenceLive'        => __( 'Site is live. Visitors see the website normally.', 'wp-maintenance-mode-site-under-construction' ),
+		'consequenceMaintenance' => __( 'Visitors see the maintenance page. You and other administrators still see the site.', 'wp-maintenance-mode-site-under-construction' ),
+		'consequencePastDate'    => __( 'Maintenance mode will not run and your site is still live because your chosen date is older than now.', 'wp-maintenance-mode-site-under-construction' ),
 		/* translators: %s: contrast ratio number against background, for example 2.4. */
-		'contrastLow'   => __( 'Low contrast (%s:1). Some visitors will not be able to read this.', 'wp-maintenance-mode-site-under-construction' ),
+		'contrastLow'            => __( 'Low contrast (%s:1). Some visitors will not be able to read this.', 'wp-maintenance-mode-site-under-construction' ),
 		/* translators: %s: contrast ratio number against background, for example 4.8. */
-		'contrastOk'    => __( 'Contrast %s:1 against this background.', 'wp-maintenance-mode-site-under-construction' ),
-		'durationPast'  => __( 'That time has passed - the countdown reads zero.', 'wp-maintenance-mode-site-under-construction' ),
-		'durationNone'  => __( 'No end time set, so no countdown is shown.', 'wp-maintenance-mode-site-under-construction' ),
+		'contrastOk'             => __( 'Contrast %s:1 against this background.', 'wp-maintenance-mode-site-under-construction' ),
+		'durationPast'           => __( 'That time has passed - the countdown reads zero.', 'wp-maintenance-mode-site-under-construction' ),
+		'durationPastWarning'    => __( 'That time has passed. Maintenance mode will not run and your site will remain live.', 'wp-maintenance-mode-site-under-construction' ),
+		'durationNone'           => __( 'No end time set, so no countdown is shown.', 'wp-maintenance-mode-site-under-construction' ),
 		/* translators: %s: time duration until launch, for example "3 days, 4 hours". */
 		'durationFrom'  => __( '%s from now', 'wp-maintenance-mode-site-under-construction' ),
 		/* translators: %s: number of days. */
@@ -227,6 +234,9 @@ function mm_suc_p_admin_strings() {
 		'messagesCleared'      => __( 'All messages cleared.', 'wp-maintenance-mode-site-under-construction' ),
 		'deleteFailed'         => __( 'Could not delete the message. Try again.', 'wp-maintenance-mode-site-under-construction' ),
 		'clearFailed'          => __( 'Could not clear messages. Try again.', 'wp-maintenance-mode-site-under-construction' ),
+		'messageSingle'        => __( 'Message', 'wp-maintenance-mode-site-under-construction' ),
+		'messagePlural'        => __( 'Messages', 'wp-maintenance-mode-site-under-construction' ),
+		'unreadCount'          => __( 'unread', 'wp-maintenance-mode-site-under-construction' ),
 	);
 }
 
@@ -251,11 +261,15 @@ function mm_suc_p_admin_strings() {
 function mm_suc_p_sanitize_settings( $raw, $current ) {
 	$out = $current;
 
-	$out['schema_version'] = 2;
-	$out['enabled']        = empty( $raw['enabled'] ) ? 0 : 1;
-	$out['auto_disable']   = empty( $raw['auto_disable'] ) ? 0 : 1;
-	$out['countdown']      = empty( $raw['countdown'] ) ? 0 : 1;
-	$out['contact_enabled'] = empty( $raw['contact_enabled'] ) ? 0 : 1;
+	$out['schema_version']       = 2;
+	$out['enabled']              = empty( $raw['enabled'] ) ? 0 : 1;
+	$out['auto_disable']         = empty( $raw['auto_disable'] ) ? 0 : 1;
+	$out['countdown']            = empty( $raw['countdown'] ) ? 0 : 1;
+	$out['contact_enabled']      = empty( $raw['contact_enabled'] ) ? 0 : 1;
+
+	if ( isset( $raw['delete_messages_on_uninstall'] ) ) {
+		$out['delete_messages_on_uninstall'] = empty( $raw['delete_messages_on_uninstall'] ) ? 0 : 1;
+	}
 
 	// Schedule: a datetime-local value, stored as given, in site time.
 	$end = isset( $raw['end_datetime'] ) ? sanitize_text_field( $raw['end_datetime'] ) : '';
@@ -426,9 +440,21 @@ function mm_suc_p_ajax_save() {
 
 	mm_suc_p_update_options( $clean );
 
+	$end     = mm_suc_p_end_timestamp( $clean );
+	$is_past = ( $end && time() >= $end );
+
+	$message = __( 'Settings saved.', 'wp-maintenance-mode-site-under-construction' );
+	$warning = false;
+
+	if ( ! empty( $clean['enabled'] ) && $is_past ) {
+		$message = __( 'Settings saved. Maintenance mode will not run and your site is still live because your chosen date is older than now.', 'wp-maintenance-mode-site-under-construction' );
+		$warning = true;
+	}
+
 	wp_send_json_success(
 		array(
-			'message' => __( 'Settings saved.', 'wp-maintenance-mode-site-under-construction' ),
+			'message' => $message,
+			'warning' => $warning,
 			'options' => mm_suc_p_client_options( $clean ),
 		)
 	);
@@ -962,6 +988,36 @@ function mm_suc_p_ajax_mark_read() {
 add_action( 'wp_ajax_mm_suc_mark_read', 'mm_suc_p_ajax_mark_read' );
 
 /**
+ * AJAX handler to toggle the uninstall database table cleanup option.
+ *
+ * @return void
+ */
+function mm_suc_p_ajax_toggle_uninstall_cleanup() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+	if ( ! wp_verify_nonce( $nonce, 'mm_suc_admin' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Your session expired. Reload the page.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to update this setting.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	$options                                 = mm_suc_p_get_options();
+	$options['delete_messages_on_uninstall'] = ! empty( $_POST['delete_messages_on_uninstall'] ) ? 1 : 0;
+
+	mm_suc_p_update_options( $options );
+
+	wp_send_json_success(
+		array(
+			'message'                      => __( 'Settings saved.', 'wp-maintenance-mode-site-under-construction' ),
+			'delete_messages_on_uninstall' => $options['delete_messages_on_uninstall'],
+		)
+	);
+}
+add_action( 'wp_ajax_mm_suc_toggle_uninstall_cleanup', 'mm_suc_p_ajax_toggle_uninstall_cleanup' );
+
+/**
  * A line diagram standing in for a layout preset.
  *
  * Diagrams rather than screenshots: they show the arrangement, survive any
@@ -984,3 +1040,90 @@ function mm_suc_p_layout_diagram( $key ) {
 
 	return '<svg viewBox="0 0 56 48" width="56" height="48" fill="currentColor" aria-hidden="true" focusable="false">' . $shapes[ $key ] . '</svg>';
 }
+
+/**
+ * Render the rating & review invitation banner.
+ *
+ * Appears across plugin admin pages to ask site owners for a 5-star rating on
+ * WordPress.org. Hidden if previously dismissed by the current user.
+ *
+ * @return void
+ */
+function mm_suc_p_render_rating_banner() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$user_id = get_current_user_id();
+
+	if ( $user_id && get_user_meta( $user_id, 'mm_suc_p_dismiss_rating', true ) ) {
+		return;
+	}
+
+	$review_url = 'https://wordpress.org/support/plugin/wp-maintenance-mode-site-under-construction/reviews/';
+	?>
+	<section class="mm-suc-p-rating-banner" id="mm-suc-p-rating-banner" aria-label="<?php esc_attr_e( 'Rate this plugin', 'wp-maintenance-mode-site-under-construction' ); ?>">
+		<div class="mm-suc-p-rating-glow" aria-hidden="true"></div>
+		<div class="mm-suc-p-rating-main">
+			<div class="mm-suc-p-rating-badge" aria-hidden="true">
+				<div class="mm-suc-p-rating-stars">
+					<?php
+					for ( $i = 0; $i < 5; $i++ ) {
+						echo mm_suc_p_icon( 'star', 'mm-suc-p-star-icon' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- registry-controlled inline SVG.
+					}
+					?>
+				</div>
+			</div>
+			<div class="mm-suc-p-rating-body">
+				<h3 class="mm-suc-p-rating-title">
+					<?php esc_html_e( 'Enjoying WP Maintenance Mode & Site Under Construction?', 'wp-maintenance-mode-site-under-construction' ); ?>
+				</h3>
+				<p class="mm-suc-p-rating-desc">
+					<?php esc_html_e( 'If this plugin helps you build and manage maintenance pages, please consider taking a moment to rate us 5 stars on WordPress.org. Your positive review directly supports future development and free updates!', 'wp-maintenance-mode-site-under-construction' ); ?>
+				</p>
+			</div>
+		</div>
+		<div class="mm-suc-p-rating-actions">
+			<a class="mm-suc-p-btn mm-suc-p-btn--primary mm-suc-p-rating-btn-rate" href="<?php echo esc_url( $review_url ); ?>" target="_blank" rel="noopener noreferrer" data-mm-suc-p-rating-action="rate">
+				<?php echo mm_suc_p_icon( 'star' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- registry-controlled inline SVG. ?>
+				<span><?php esc_html_e( 'Rate 5 Stars', 'wp-maintenance-mode-site-under-construction' ); ?></span>
+				<?php echo mm_suc_p_icon( 'external-link' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- registry-controlled inline SVG. ?>
+				<span class="mm-suc-p-sr"><?php esc_html_e( '(opens in a new tab)', 'wp-maintenance-mode-site-under-construction' ); ?></span>
+			</a>
+			<button type="button" class="mm-suc-p-btn mm-suc-p-btn--ghost mm-suc-p-rating-btn-dismiss" data-mm-suc-p-rating-action="dismiss">
+				<span><?php esc_html_e( 'I already rated', 'wp-maintenance-mode-site-under-construction' ); ?></span>
+			</button>
+			<button type="button" class="mm-suc-p-btn mm-suc-p-btn--icon mm-suc-p-btn--ghost mm-suc-p-rating-close" data-mm-suc-p-rating-action="dismiss" aria-label="<?php esc_attr_e( 'Dismiss rating prompt', 'wp-maintenance-mode-site-under-construction' ); ?>">
+				<?php echo mm_suc_p_icon( 'close' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- registry-controlled inline SVG. ?>
+			</button>
+		</div>
+	</section>
+	<?php
+}
+
+/**
+ * AJAX handler to dismiss the rating notice permanently for the current user.
+ *
+ * @return void
+ */
+function mm_suc_p_ajax_dismiss_rating() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+	if ( ! wp_verify_nonce( $nonce, 'mm_suc_admin' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Your session expired. Reload the page.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to perform this action.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	$user_id = get_current_user_id();
+
+	if ( $user_id ) {
+		update_user_meta( $user_id, 'mm_suc_p_dismiss_rating', 1 );
+	}
+
+	wp_send_json_success( array( 'dismissed' => true ) );
+}
+add_action( 'wp_ajax_mm_suc_dismiss_rating', 'mm_suc_p_ajax_dismiss_rating' );
+

@@ -5,592 +5,595 @@ msgstr ""
 "Project-Id-Version: WP Maintenance Mode & Site Under Construction 5.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-maintenance-mode-site-under-construction\n"
 "POT-Creation-Date: 2026-08-23T22:00:00+00:00\n"
+"PO-Revision-Date: 2026-08-23T22:00:00+00:00\n"
+"Last-Translator: wp-buy <support@wp-buy.com>\n"
+"Language-Team: Dutch\n"
+"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2026-08-23T22:00:00+00:00\n"
-"Language-Team: wp-buy <support@wp-buy.com>\n"
 "X-Domain: wp-maintenance-mode-site-under-construction\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/settings.php:1091
 #: admin/views/editor.php:84
 msgid "(opens in a new tab)"
-msgstr ""
+msgstr "(opent in een nieuw tabblad)"
 
 #: template.php:428
 #. translators: %s: site name.
 msgid "[%s] Message from your maintenance page"
-msgstr ""
+msgstr "[%s] Bericht van je onderhoudspagina"
 
 #: admin/views/messages.php:33
 #. translators: 1: total messages count, 2: unread messages count
 msgid "%1$d Messages (%2$d unread)"
-msgstr ""
+msgstr "%1$d berichten (%2$d ongelezen)"
 
 #: admin/settings.php:549
 #. translators: %s: the name of the template the preset was made from.
 msgid "%s copy"
-msgstr ""
+msgstr "Kopie van %s"
 
 #: admin/settings.php:209
 #: template.php:264
 #. translators: %s: number of days.
 msgid "%s day"
-msgstr ""
+msgstr "%s dag"
 
 #: admin/settings.php:211
 #: template.php:266
 #. translators: %s: number of days.
 msgid "%s days"
-msgstr ""
+msgstr "%s dagen"
 
 #: admin/settings.php:207
 #. translators: %s: time duration until launch, for example "3 days, 4 hours".
 msgid "%s from now"
-msgstr ""
+msgstr "over %s vanaf nu"
 
 #: admin/settings.php:213
 #: template.php:268
 #. translators: %s: number of hours.
 msgid "%s hour"
-msgstr ""
+msgstr "%s uur"
 
 #: admin/settings.php:215
 #: template.php:270
 #. translators: %s: number of hours.
 msgid "%s hours"
-msgstr ""
+msgstr "%s uur"
 
 #: admin/settings.php:217
 #: template.php:272
 #. translators: %s: number of minutes.
 msgid "%s minute"
-msgstr ""
+msgstr "%s minuut"
 
 #: admin/settings.php:219
 #: template.php:274
 #. translators: %s: number of minutes.
 msgid "%s minutes"
-msgstr ""
+msgstr "%s minuten"
 
 #: template.php:262
 #. translators: %s: time duration remaining until launch, for example "3 days, 4 hours".
 msgid "%s remaining"
-msgstr ""
+msgstr "nog %s resterend"
 
 #: templates/deep-orbit/template.json:3
 #. Template description: Deep Orbit
 msgid "A deep navy field with a teal glow behind a glass panel. Dark, calm and legible."
-msgstr ""
+msgstr "Een diep marineblauwe achtergrond met groenblauwe gloed achter een glazen paneel. Donker, rustig en leesbaar."
 
 #: admin/settings.php:568
 msgid "A design saved from the editor."
-msgstr ""
+msgstr "Een ontwerp opgeslagen vanuit de editor."
 
 #: templates/crimson-ribbon/template.json:3
 #. Template description: Crimson Ribbon
 msgid "A lilac ground crossed by a red ribbon, with a bold bar marking the copy."
-msgstr ""
+msgstr "Een lila achtergrond met een rood lint en een opvallende tekstbalk."
 
 #: admin/views/editor.php:184
 msgid "A logo chosen for maintenance mode. Use site logo goes back to the one your theme uses."
-msgstr ""
+msgstr "Een logo gekozen voor onderhoudsmodus. \"Sitestandaard logo gebruiken\" herstelt het logo van je thema."
 
 #: templates/aurora-haze/template.json:3
 #. Template description: Aurora Haze
 msgid "A pale aurora gradient behind a bright frosted card. Light and airy."
-msgstr ""
+msgstr "Een zacht noorderlichtverloop achter een matglazen kaart. Licht en luchtig."
 
 #: admin/views/editor.php:338
 msgid "A preview aid only. It is not saved and visitors always start with it closed."
-msgstr ""
+msgstr "Alleen een voorbeeldhulpmiddel. Wordt niet opgeslagen en bezoekers zien dit standaard gesloten."
 
 #: templates/soft-spectrum/template.json:3
 #. Template description: Soft Spectrum
 msgid "A soft spectrum wash, split between the message and a boxed countdown."
-msgstr ""
+msgstr "Een zacht spectrumverloop, verdeeld tussen het bericht en een omlijste afteltimer."
 
 #: templates/palm-dusk/template.json:3
 #. Template description: Palm Dusk
 msgid "A sunset lagoon with the message anchored to the bottom, cinema style."
-msgstr ""
+msgstr "Een lagune bij zonsondergang met het bericht onderaan in filmische stijl."
 
 #: templates/warm-bench/template.json:3
 #. Template description: Warm Bench
 msgid "A warm, shallow-focus photograph with the message resting in the lower corner."
-msgstr ""
+msgstr "Een warme foto met zachte focus en het bericht in de benedenhoek."
 
 #: admin/views/editor.php:483
 #: admin/views/editor.php:484
 msgid "Accent & Text Colour"
-msgstr ""
+msgstr "Accent- en tekstkleur"
 
 #: admin/views/editor.php:489
 msgid "Accent colour"
-msgstr ""
+msgstr "Accentkleur"
 
 #: admin/views/editor.php:493
 msgid "Accent colour hex value"
-msgstr ""
+msgstr "Hexadecimale waarde accentkleur"
 
 #: admin/views/editor.php:347
 msgid "Access"
-msgstr ""
+msgstr "Toegang"
 
 #: admin/views/messages.php:139
 msgid "Actions"
-msgstr ""
+msgstr "Acties"
 
 #: admin/views/editor.php:369
 msgid "Administrators always see the site. This cannot be turned off, so you can never lock yourself out."
-msgstr ""
+msgstr "Beheerders zien de site altijd. Dit kan niet worden uitgeschakeld, zodat je jezelf nooit buitensluit."
 
 #: admin/settings.php:234
 #: admin/settings.php:948
 msgid "All messages cleared."
-msgstr ""
+msgstr "Alle berichten zijn gewist."
 
 #: templates/amber-glow/template.json:2
 #. Template name: Amber Glow
 msgid "Amber Glow"
-msgstr ""
+msgstr "Amberkleurige gloed"
 
 #: admin/views/editor.php:538
 msgid "An enhancement only: the card stays readable at zero, and some browsers ignore it."
-msgstr ""
+msgstr "Alleen een visuele verbetering: de kaart blijft leesbaar op nul; sommige browsers negeren dit."
 
 #: admin/settings.php:225
 msgid "and"
-msgstr ""
+msgstr "en"
 
 #: admin/settings.php:232
 msgid "Are you sure you want to delete all messages? This cannot be undone."
-msgstr ""
+msgstr "Weet je zeker dat je alle berichten wilt verwijderen? Dit kan niet ongedaan worden gemaakt."
 
 #: admin/settings.php:231
 msgid "Are you sure you want to delete this message?"
-msgstr ""
+msgstr "Weet je zeker dat je dit bericht wilt verwijderen?"
 
 #: templates/aurora-haze/template.json:2
 #. Template name: Aurora Haze
 msgid "Aurora Haze"
-msgstr ""
+msgstr "Noorderlicht-nevel"
 
 #: admin/views/messages.php:106
 msgid "Automatic Bot & Spam Protection"
-msgstr ""
+msgstr "Automatische bot- en spambescherming"
 
 #: admin/views/editor.php:121
 msgid "Back online at"
-msgstr ""
+msgstr "Weer online op"
 
 #: template.php:245
 msgid "Back to the editor"
-msgstr ""
+msgstr "Terug naar de editor"
 
 #: admin/views/editor.php:436
 msgid "Background"
-msgstr ""
+msgstr "Achtergrond"
 
 #: admin/views/editor.php:522
 msgid "Background shading"
-msgstr ""
+msgstr "Achtergrondschaduw (overlay)"
 
 #: templates/paper-blocks/template.json:3
 #. Template description: Paper Blocks
 msgid "Bright overlapping paper shapes with a flat editorial card and a hard shadow."
-msgstr ""
+msgstr "Heldere overlappende papiervormen met een redactionele kaart en harde schaduw."
 
 #: admin/views/messages.php:107
 msgid "Built-in honeypot spam traps and per-IP rate limiting (maximum 4 messages per 15 minutes) stop automated bots without disrupting legitimate visitors."
-msgstr ""
+msgstr "Ingebouwde honeypot-spamvallen en snelheidslimiet per IP (max. 4 berichten per 15 minuten) stoppen bots zonder echte bezoekers te hinderen."
 
 #: admin/views/editor.php:309
 msgid "Button label"
-msgstr ""
+msgstr "Knoptekst"
 
 #: admin/views/editor.php:18
 msgid "Centered"
-msgstr ""
+msgstr "Gecentreerd"
 
 #: template.php:399
 msgid "Check the highlighted fields and send again."
-msgstr ""
+msgstr "Controleer de gemarkeerde velden en verzend opnieuw."
 
 #: admin/settings.php:191
 msgid "Choose a background image"
-msgstr ""
+msgstr "Kies een achtergrondafbeelding"
 
 #: admin/settings.php:190
 msgid "Choose a logo"
-msgstr ""
+msgstr "Kies een logo"
 
 #: admin/views/editor.php:171
 #: admin/views/editor.php:466
 msgid "Choose image"
-msgstr ""
+msgstr "Afbeelding kiezen"
 
 #: admin/views/messages.php:52
 msgid "Clear all messages"
-msgstr ""
+msgstr "Alle berichten wissen"
 
 #: admin/views/messages.php:264
 #: includes/class-mm-suc-p-template-view.php:478
 msgid "Close"
-msgstr ""
+msgstr "Sluiten"
 
 #: admin/views/messages.php:231
 msgid "Close message dialog"
-msgstr ""
+msgstr "Berichtvenster sluiten"
 
 #: admin/settings.php:221
 msgid "Colours on this design"
-msgstr ""
+msgstr "Kleuren in dit ontwerp"
 
 #: admin/views/editor.php:295
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #: includes/class-mm-suc-p-template-view.php:110
 msgid "Contact button label"
-msgstr ""
+msgstr "Tekst van de contactknop"
 
 #: admin/views/editor.php:154
 msgid "Content"
-msgstr ""
+msgstr "Inhoud"
 
 #: admin/settings.php:202
 #. translators: %s: contrast ratio number against background, for example 4.8.
 msgid "Contrast %s:1 against this background."
-msgstr ""
+msgstr "Contrast van %s:1 tegen deze achtergrond."
 
 #: admin/settings.php:236
 msgid "Could not clear messages. Try again."
-msgstr ""
+msgstr "Kon berichten niet wissen. Probeer het opnieuw."
 
 #: admin/settings.php:235
 msgid "Could not delete the message. Try again."
-msgstr ""
+msgstr "Kon het bericht niet verwijderen. Probeer het opnieuw."
 
 #: admin/settings.php:916
 msgid "Could not find or delete that message."
-msgstr ""
+msgstr "Kon dat bericht niet vinden of verwijderen."
 
 #: admin/settings.php:435
 msgid "Could not save - the settings did not arrive intact. Try again."
-msgstr ""
+msgstr "Opslaan mislukt: de instellingen zijn niet intact aangekomen. Probeer het opnieuw."
 
 #: admin/settings.php:187
 #: admin/settings.php:425
 msgid "Could not save - your session expired. Reload the page and try again."
-msgstr ""
+msgstr "Opslaan mislukt: je sessie is verlopen. Vernieuw de pagina en probeer het opnieuw."
 
 #: admin/settings.php:230
 msgid "Could not save the preset. Check your connection and try again."
-msgstr ""
+msgstr "Kon de voorinstelling niet opslaan. Controleer je verbinding en probeer het opnieuw."
 
 #: admin/settings.php:186
 msgid "Could not save. Check your connection and try again."
-msgstr ""
+msgstr "Opslaan mislukt. Controleer je verbinding en probeer het opnieuw."
 
 #: admin/settings.php:630
 msgid "Could not write the preset file. Check the uploads folder permissions."
-msgstr ""
+msgstr "Kon het voorinstellingsbestand niet schrijven. Controleer de machtigingen van de uploads-map."
 
 #: admin/settings.php:558
 msgid "Could not write to the uploads folder. Check its permissions and try again."
-msgstr ""
+msgstr "Kon niet schrijven naar de uploads-map. Controleer de machtigingen en probeer het opnieuw."
 
 #: admin/views/editor.php:277
 msgid "Countdown"
-msgstr ""
+msgstr "Afteltimer"
 
 #: templates/crimson-ribbon/template.json:2
 #. Template name: Crimson Ribbon
 msgid "Crimson Ribbon"
-msgstr ""
+msgstr "Karmozijnrood lint"
 
 #: admin/views/messages.php:202
 msgid "Data Retention & Cleanup"
-msgstr ""
+msgstr "Gegevensbewaring & opschoning"
 
 #: admin/views/messages.php:138
 msgid "Date & Time"
-msgstr ""
+msgstr "Datum & tijd"
 
 #: includes/class-mm-suc-p-template-view.php:382
 msgid "Days"
-msgstr ""
+msgstr "Dagen"
 
 #: admin/views/messages.php:82
 msgid "Dedicated Database Storage"
-msgstr ""
+msgstr "Toegewijde database-opslag"
 
 #: templates/deep-orbit/template.json:2
 #. Template name: Deep Orbit
 msgid "Deep Orbit"
-msgstr ""
+msgstr "Diepe baan"
 
 #: admin/views/messages.php:185
 #: admin/views/messages.php:261
 msgid "Delete message"
-msgstr ""
+msgstr "Bericht verwijderen"
 
 #: admin/views/messages.php:211
 msgid "Delete messages database table when plugin is uninstalled"
-msgstr ""
+msgstr "Berichttabel uit de database verwijderen wanneer de plugin wordt verwijderd"
 
 #: admin/views/editor.php:223
 msgid "Design & Styling"
-msgstr ""
+msgstr "Ontwerp & styling"
 
 #: admin/views/editor.php:409
 msgid "Design controls"
-msgstr ""
+msgstr "Ontwerpinstellingen"
 
 #: admin/views/editor.php:384
 msgid "Desktop"
-msgstr ""
+msgstr "Desktop"
 
 #: admin/settings.php:188
 msgid "Dismiss"
-msgstr ""
+msgstr "Negeren"
 
 #: admin/settings.php:1096
 msgid "Dismiss rating prompt"
-msgstr ""
+msgstr "Beoordelingsverzoek sluiten"
 
 #: admin/views/editor.php:249
 msgid "Each template brings its own background and colours. Layout, background and colours sit on the toolbar above the preview."
-msgstr ""
+msgstr "Elk sjabloon heeft een eigen achtergrond en kleuren. De lay-out, achtergrond en kleuren zijn in te stellen via de werkbalk boven het voorbeeld."
 
 #: admin/views/messages.php:90
 msgid "Email Notification & SMTP Fallback"
-msgstr ""
+msgstr "E-mailmelding & SMTP-terugval"
 
 #: admin/settings.php:1079
 msgid "Enjoying WP Maintenance Mode & Site Under Construction?"
-msgstr ""
+msgstr "Tevreden over WP Maintenance Mode & Site Under Construction?"
 
 #: template.php:257
 #: template.php:389
 msgid "Enter an email address like name@example.com."
-msgstr ""
+msgstr "Voer een e-mailadres in zoals naam@voorbeeld.nl."
 
 #: admin/views/editor.php:214
 msgid "Explain what is happening and when you expect to be back."
-msgstr ""
+msgstr "Leg uit wat er gaande is en wanneer de site naar verwachting weer online is."
 
 #: admin/views/editor.php:195
 #: includes/class-mm-suc-p-template-view.php:107
 msgid "Eyebrow"
-msgstr ""
+msgstr "Bovenkop (ondertitel)"
 
 #: template.php:256
 #: template.php:385
 msgid "Fill this in so we can reply."
-msgstr ""
+msgstr "Vul dit in zodat we kunnen antwoorden."
 
 #: admin/views/editor.php:440
 msgid "From the template"
-msgstr ""
+msgstr "Van het sjabloon"
 
 #: admin/views/messages.php:239
 msgid "From:"
-msgstr ""
+msgstr "Van:"
 
 #: includes/class-mm-suc-p-template-view.php:264
 #: maintenance.php:169
 msgid "Get in touch"
-msgstr ""
+msgstr "Neem contact op"
 
 #: admin/views/editor.php:532
 msgid "Glass blur"
-msgstr ""
+msgstr "Matglas-effect (blur)"
 
 #: admin/views/editor.php:143
 msgid "Go live automatically when the time is reached"
-msgstr ""
+msgstr "Automatisch live gaan zodra de tijd is bereikt"
 
 #: templates/amber-glow/template.json:3
 #. Template description: Amber Glow
 msgid "Golden bokeh over a dark ground, split between copy and a stacked countdown."
-msgstr ""
+msgstr "Gouden bokeh op een donkere achtergrond, verdeeld tussen tekst en afteltimer."
 
 #: admin/views/editor.php:203
 #: includes/class-mm-suc-p-template-view.php:108
 msgid "Headline"
-msgstr ""
+msgstr "Hoofdkop"
 
 #: includes/class-mm-suc-p-template-view.php:383
 msgid "Hours"
-msgstr ""
+msgstr "Uur"
 
 #: admin/views/editor.php:528
 msgid "How strongly the template shades its background image behind your text."
-msgstr ""
+msgstr "Hoe sterk het sjabloon de achtergrondafbeelding achter de tekst verduistert."
 
 #: admin/views/messages.php:70
 msgid "How the Maintenance Contact Form Works"
-msgstr ""
+msgstr "Hoe het onderhoudscontactformulier werkt"
 
 #: admin/settings.php:1094
 msgid "I already rated"
-msgstr ""
+msgstr "Al beoordeeld"
 
 #: admin/settings.php:1082
 msgid "If this plugin helps you build and manage maintenance pages, please consider taking a moment to rate us 5 stars on WordPress.org. Your positive review directly supports future development and free updates!"
-msgstr ""
+msgstr "Als deze plugin je helpt bij het bouwen en beheren van onderhoudspagina's, neem dan even de tijd om ons te beoordelen met 5 sterren op WordPress.org. Jouw review ondersteunt toekomstige updates!"
 
 #: admin/views/messages.php:73
 msgid "Inquiries sent by visitors while your site is under construction or in maintenance mode."
-msgstr ""
+msgstr "Berichten verzonden door bezoekers terwijl je site in aanbouw of in onderhoudsmodus is."
 
 #: admin/settings.php:909
 msgid "Invalid message ID."
-msgstr ""
+msgstr "Ongeldig bericht-ID."
 
 #: admin/views/editor.php:267
 msgid "Keeps the current layout, background and colours as a new template in this list. It is written as a folder you can copy to another site, or delete to remove it."
-msgstr ""
+msgstr "Bewaart de huidige lay-out, achtergrond en kleuren als nieuw sjabloon in deze lijst. Opgeslagen als map die je kunt kopiëren of verwijderen."
 
 #: admin/views/editor.php:419
 msgid "Layout"
-msgstr ""
+msgstr "Lay-out"
 
 #: admin/views/editor.php:413
 #: admin/views/editor.php:414
 msgid "Layout & Background"
-msgstr ""
+msgstr "Lay-out & achtergrond"
 
 #: includes/class-mm-suc-p-template-view.php:504
 msgid "Leave this field empty"
-msgstr ""
+msgstr "Laat dit veld leeg"
 
 #: admin/views/editor.php:19
 msgid "Left focus"
-msgstr ""
+msgstr "Links uitgelijnd"
 
 #: admin/views/editor.php:304
 msgid "Let visitors send a message"
-msgstr ""
+msgstr "Bezoekers toestaan een bericht te sturen"
 
 #: admin/views/editor.php:546
 msgid "Live preview of the maintenance page"
-msgstr ""
+msgstr "Live voorbeeld van de onderhoudspagina"
 
 #: admin/views/editor.php:159
 msgid "Logo"
-msgstr ""
+msgstr "Logo"
 
 #: admin/settings.php:200
 #. translators: %s: contrast ratio number against background, for example 2.4.
 msgid "Low contrast (%s:1). Some visitors will not be able to read this."
-msgstr ""
+msgstr "Laag contrast (%s:1). Sommige bezoekers kunnen dit mogelijk moeilijk lezen."
 
 #: admin/settings.php:27
 msgid "Maintenance"
-msgstr ""
+msgstr "Onderhoud"
 
 #: admin/views/editor.php:75
 msgid "Maintenance mode"
-msgstr ""
+msgstr "Onderhoudsmodus"
 
 #: admin/settings.php:26
 msgid "Maintenance Mode"
-msgstr ""
+msgstr "Onderhoudsmodus"
 
 #: admin/views/editor.php:30
 msgid "Maintenance mode editor"
-msgstr ""
+msgstr "Editor onderhoudsmodus"
 
 #: admin/settings.php:195
 #: admin/views/editor.php:63
 #: maintenance.php:660
 msgid "Maintenance mode is on"
-msgstr ""
+msgstr "Onderhoudsmodus is actief"
 
 #: admin/settings.php:198
 #: admin/views/editor.php:100
 msgid "Maintenance mode will not run and your site is still live because your chosen date is older than now."
-msgstr ""
+msgstr "Onderhoudsmodus wordt niet geactiveerd en je site blijft online omdat de gekozen datum in het verleden ligt."
 
 #: admin/views/editor.php:112
 msgid "Maintenance page settings"
-msgstr ""
+msgstr "Instellingen onderhoudspagina"
 
 #: admin/views/messages.php:46
 #: maintenance.php:692
 msgid "Maintenance settings"
-msgstr ""
+msgstr "Onderhoudsinstellingen"
 
 #: admin/settings.php:37
 msgid "Maintenance Settings"
-msgstr ""
+msgstr "Onderhoudsinstellingen"
 
 #: admin/settings.php:237
 #: admin/views/editor.php:211
 #: includes/class-mm-suc-p-template-view.php:109
 #: includes/class-mm-suc-p-template-view.php:497
 msgid "Message"
-msgstr ""
+msgstr "Bericht"
 
 #: admin/settings.php:233
 #: admin/settings.php:921
 msgid "Message deleted."
-msgstr ""
+msgstr "Bericht verwijderd."
 
 #: admin/views/messages.php:229
 msgid "Message Details"
-msgstr ""
+msgstr "Berichtdetails"
 
 #: admin/views/messages.php:137
 msgid "Message snippet"
-msgstr ""
+msgstr "Berichtfragment"
 
 #: admin/settings.php:238
 msgid "Messages"
-msgstr ""
+msgstr "Berichten"
 
 #: admin/views/messages.php:83
 msgid "Messages are stored securely in a dedicated WordPress database table with indexing, privacy protection, and fast lookup."
-msgstr ""
+msgstr "Berichten worden veilig opgeslagen in een speciale WordPress-databasetabel met indexering en privacybescherming."
 
 #: admin/views/editor.php:324
 #. translators: %s: the site admin email address.
 msgid "Messages go to %s if this is empty."
-msgstr ""
+msgstr "Berichten gaan naar %s als dit veld leeg is."
 
 #: admin/settings.php:46
 #: admin/settings.php:47
 #: admin/views/messages.php:22
 #: maintenance.php:701
 msgid "Messages list"
-msgstr ""
+msgstr "Berichtenlijst"
 
 #: admin/views/editor.php:20
 msgid "Minimal"
-msgstr ""
+msgstr "Minimalistisch"
 
 #: includes/class-mm-suc-p-template-view.php:384
 msgid "Minutes"
-msgstr ""
+msgstr "Minuten"
 
 #: admin/views/editor.php:386
 msgid "Mobile"
-msgstr ""
+msgstr "Mobiel"
 
 #: admin/views/editor.php:116
 msgid "Mode & Schedule"
-msgstr ""
+msgstr "Modus & planning"
 
 #: admin/views/editor.php:441
 msgid "My own image"
-msgstr ""
+msgstr "Eigen afbeelding"
 
 #: admin/views/editor.php:258
 msgid "Name this design"
-msgstr ""
+msgstr "Geef dit ontwerp een naam"
 
 #: template.php:434
 #. translators: 1: sender name, 2: sender email, 3: message body.
@@ -598,461 +601,464 @@ msgid "Name: %1$s\n"
 "Email: %2$s\n"
 "\n"
 "%3$s"
-msgstr ""
+msgstr "Naam: %1$s\n"
+"E-mail: %2$s\n"
+"\n"
+"%3$s"
 
 #: templates/night-bokeh/template.json:3
 #. Template description: Night Bokeh
 msgid "Near-black with warm out-of-focus lights. No card chrome, just very large type."
-msgstr ""
+msgstr "Bijna zwart met warme onscherpe lichten. Zonder kaart, met zeer grote typografie."
 
 #: templates/night-bokeh/template.json:2
 #. Template name: Night Bokeh
 msgid "Night Bokeh"
-msgstr ""
+msgstr "Nacht-bokeh"
 
 #: admin/settings.php:205
 msgid "No end time set, so no countdown is shown."
-msgstr ""
+msgstr "Geen eindtijd ingesteld, er wordt geen afteltimer getoond."
 
 #: admin/views/editor.php:442
 msgid "No image"
-msgstr ""
+msgstr "Geen afbeelding"
 
 #: admin/views/editor.php:186
 msgid "No logo is set anywhere, so your site title is shown as text."
-msgstr ""
+msgstr "Er is geen logo ingesteld, dus je sitetitel wordt als tekst weergegeven."
 
 #: admin/views/messages.php:127
 msgid "No messages yet"
-msgstr ""
+msgstr "Nog geen berichten"
 
 #: admin/views/editor.php:235
 msgid "No templates are installed. Copy a template folder into the plugin's templates directory and it will appear here."
-msgstr ""
+msgstr "Geen sjablonen geïnstalleerd. Kopieer een sjabloonmap naar de map templates van de plugin."
 
 #: admin/settings.php:189
 #: admin/views/editor.php:46
 msgid "Notices from other plugins"
-msgstr ""
+msgstr "Meldingen van andere plugins"
 
 #: admin/views/editor.php:145
 msgid "Off means the site stays hidden until you turn maintenance mode off yourself."
-msgstr ""
+msgstr "Uit betekent dat de site verborgen blijft totdat je de onderhoudsmodus handmatig uitschakelt."
 
 #: admin/views/editor.php:83
 msgid "Open preview"
-msgstr ""
+msgstr "Voorbeeld openen"
 
 #: admin/views/editor.php:336
 msgid "Open the message panel in the preview"
-msgstr ""
+msgstr "Berichtenpaneel in het voorbeeld openen"
 
 #: templates/palm-dusk/template.json:2
 #. Template name: Palm Dusk
 msgid "Palm Dusk"
-msgstr ""
+msgstr "Palmenschemering"
 
 #: templates/paper-blocks/template.json:2
 #. Template name: Paper Blocks
 msgid "Paper Blocks"
-msgstr ""
+msgstr "Papierblokken"
 
 #: admin/views/editor.php:402
 msgid "Point at anything in the preview to change its colour. Press to turn that off. Every colour is also a control on this toolbar."
-msgstr ""
+msgstr "Wijs een element aan in het voorbeeld om de kleur aan te passen. Klik om uit te schakelen. Elke kleur is ook aan te passen via de werkbalk."
 
 #: admin/settings.php:771
 msgid "Preset"
-msgstr ""
+msgstr "Voorinstelling"
 
 #: admin/settings.php:648
 msgid "Preset saved. It is in your template list now - save changes to keep using it."
-msgstr ""
+msgstr "Voorinstelling opgeslagen. Deze staat nu in je sjablonenlijst – sla wijzigingen op om te gebruiken."
 
 #: admin/settings.php:532
 msgid "Presets need the uploads folder, and WordPress could not find it."
-msgstr ""
+msgstr "Voorinstellingen hebben de uploads-map nodig en WordPress kon deze niet vinden."
 
 #: template.php:231
 msgid "Preview - maintenance mode is off, so visitors are seeing your site as usual."
-msgstr ""
+msgstr "Voorbeeld: onderhoudsmodus staat uit, bezoekers zien je site zoals gewoonlijk."
 
 #: template.php:232
 msgid "Preview - this is what visitors are seeing right now."
-msgstr ""
+msgstr "Voorbeeld: dit is wat bezoekers op dit moment zien."
 
 #: admin/views/editor.php:381
 msgid "Preview width"
-msgstr ""
+msgstr "Voorbeeldbreedte"
 
 #: admin/settings.php:1089
 msgid "Rate 5 Stars"
-msgstr ""
+msgstr "Beoordeel met 5 sterren"
 
 #: admin/settings.php:1065
 msgid "Rate this plugin"
-msgstr ""
+msgstr "Beoordeel deze plugin"
 
 #: admin/views/messages.php:164
 msgid "Read"
-msgstr ""
+msgstr "Gelezen"
 
 #: admin/views/messages.php:163
 msgid "Read message"
-msgstr ""
+msgstr "Gelezen bericht"
 
 #: admin/views/messages.php:117
 msgid "Received Messages"
-msgstr ""
+msgstr "Ontvangen berichten"
 
 #: admin/views/messages.php:244
 msgid "Received:"
-msgstr ""
+msgstr "Ontvangen op:"
 
 #: admin/views/editor.php:471
 msgid "Remove"
-msgstr ""
+msgstr "Verwijderen"
 
 #: admin/views/messages.php:257
 msgid "Reply via email"
-msgstr ""
+msgstr "Beantwoorden via e-mail"
 
 #: admin/settings.php:229
 #: admin/views/editor.php:255
 #: admin/views/editor.php:263
 msgid "Save as preset"
-msgstr ""
+msgstr "Opslaan als voorinstelling"
 
 #: admin/settings.php:184
 #: admin/views/editor.php:89
 msgid "Save changes"
-msgstr ""
+msgstr "Wijzigingen opslaan"
 
 #: admin/settings.php:567
 #. translators: %s: the name of the template the preset was made from.
 msgid "Saved from %s, with your own colours."
-msgstr ""
+msgstr "Opgeslagen van %s met je eigen kleuren."
 
 #: admin/settings.php:550
 msgid "Saved preset"
-msgstr ""
+msgstr "Opgeslagen voorinstelling"
 
 #: admin/settings.php:183
 #: admin/settings.php:228
 msgid "Saving…"
-msgstr ""
+msgstr "Opslaan…"
 
 #: includes/class-mm-suc-p-template-view.php:261
 #: maintenance.php:164
 msgid "Scheduled maintenance"
-msgstr ""
+msgstr "Gepland onderhoud"
 
 #: includes/class-mm-suc-p-template-view.php:385
 msgid "Seconds"
-msgstr ""
+msgstr "Seconden"
 
 #: includes/class-mm-suc-p-template-view.php:510
 msgid "Send message"
-msgstr ""
+msgstr "Bericht verzenden"
 
 #: admin/views/editor.php:315
 msgid "Send messages to"
-msgstr ""
+msgstr "Berichten verzenden naar"
 
 #: includes/class-mm-suc-p-template-view.php:473
 msgid "Send us a message"
-msgstr ""
+msgstr "Stuur ons een bericht"
 
 #: admin/views/messages.php:136
 msgid "Sender"
-msgstr ""
+msgstr "Afzender"
 
 #: includes/class-mm-suc-p-template-view.php:466
 msgid "Sending…"
-msgstr ""
+msgstr "Verzenden…"
 
 #: admin/settings.php:224
 #. translators: %s: a list of the parts a colour reaches, for example "the headline, the message and the site address".
 msgid "Sets %s on this design - they all use this one colour."
-msgstr ""
+msgstr "Stelt %s in op dit ontwerp – ze gebruiken allemaal deze ene kleur."
 
 #: admin/settings.php:38
 msgid "Settings"
-msgstr ""
+msgstr "Instellingen"
 
 #: admin/settings.php:185
 #: admin/settings.php:446
 #: admin/settings.php:1013
 msgid "Settings saved."
-msgstr ""
+msgstr "Instellingen opgeslagen."
 
 #: admin/settings.php:450
 msgid "Settings saved. Maintenance mode will not run and your site is still live because your chosen date is older than now."
-msgstr ""
+msgstr "Instellingen opgeslagen. Onderhoudsmodus wordt niet gestart en je site blijft live omdat de datum in het verleden ligt."
 
 #: admin/views/editor.php:516
 #: admin/views/editor.php:517
 msgid "Shading & Glass Blur"
-msgstr ""
+msgstr "Schaduw & vervaging"
 
 #: admin/views/editor.php:285
 msgid "Show the countdown"
-msgstr ""
+msgstr "Afteltimer weergeven"
 
 #: admin/settings.php:194
 #: admin/views/editor.php:64
 #: maintenance.php:661
 msgid "Site is live"
-msgstr ""
+msgstr "Site is live"
 
 #: admin/settings.php:196
 #: admin/views/editor.php:102
 msgid "Site is live. Visitors see the website normally."
-msgstr ""
+msgstr "Site is live. Bezoekers zien de website zoals gebruikelijk."
 
 #: admin/views/editor.php:130
 #. translators: %s: the site timezone, for example UTC+03:00.
 msgid "Site time (%s). Leave empty to show no countdown."
-msgstr ""
+msgstr "Sitetijd (%s). Laat leeg om geen afteltimer te tonen."
 
 #: admin/views/editor.php:39
 msgid "Skip to the maintenance settings"
-msgstr ""
+msgstr "Naar onderhoudsinstellingen springen"
 
 #: templates/soft-spectrum/template.json:2
 #. Template name: Soft Spectrum
 msgid "Soft Spectrum"
-msgstr ""
+msgstr "Zacht spectrum"
 
 #: admin/views/editor.php:21
 msgid "Split"
-msgstr ""
+msgstr "Gesplitst"
 
 #: admin/views/messages.php:135
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: admin/views/editor.php:385
 msgid "Tablet"
-msgstr ""
+msgstr "Tablet"
 
 #: template.php:393
 msgid "Tell us what you need and we will get back to you."
-msgstr ""
+msgstr "Laat ons weten wat je nodig hebt en we nemen zo snel mogelijk contact met je op."
 
 #: admin/views/editor.php:229
 msgid "Template"
-msgstr ""
+msgstr "Sjabloon"
 
 #: admin/settings.php:220
 msgid "Template applied. Its colours are now yours to adjust."
-msgstr ""
+msgstr "Sjabloon toegepast. Je kunt de kleuren nu naar wens aanpassen."
 
 #: admin/views/editor.php:500
 msgid "Text colour"
-msgstr ""
+msgstr "Tekstkleur"
 
 #: admin/views/editor.php:505
 msgid "Text colour hex value"
-msgstr ""
+msgstr "Hexadecimale waarde tekstkleur"
 
 #: template.php:258
 #: template.php:363
 #: template.php:446
 msgid "Thanks - your message is on its way."
-msgstr ""
+msgstr "Bedankt – je bericht is verzonden."
 
 #: template.php:260
 msgid "That did not reach us. Check your connection and try again."
-msgstr ""
+msgstr "Het bericht heeft ons niet bereikt. Controleer je verbinding en probeer het opnieuw."
 
 #: maintenance.php:738
 msgid "That link has expired. Go back and try again."
-msgstr ""
+msgstr "Deze link is verlopen. Ga terug en probeer het opnieuw."
 
 #: admin/settings.php:203
 msgid "That time has passed - the countdown reads zero."
-msgstr ""
+msgstr "Die tijd is al verstreken – de afteltimer staat op nul."
 
 #: admin/settings.php:204
 msgid "That time has passed. Maintenance mode will not run and your site will remain live."
-msgstr ""
+msgstr "Die tijd is verstreken. De onderhoudsmodus start niet en je site blijft live."
 
 #: admin/views/editor.php:287
 msgid "The countdown needs an end time. Without one nothing is shown, even when this is on."
-msgstr ""
+msgstr "De afteltimer heeft een eindtijd nodig. Zonder eindtijd wordt er niets weergegeven."
 
 #: admin/views/editor.php:207
 msgid "The page heading. You can also edit it directly in the preview."
-msgstr ""
+msgstr "De hoofdkop van de pagina. Je kunt deze ook direct in het voorbeeld bewerken."
 
 #: admin/settings.php:641
 msgid "The preset was written but could not be read back. Check the uploads folder."
-msgstr ""
+msgstr "De voorinstelling is opgeslagen maar kon niet worden gelezen. Controleer de uploads-map."
 
 #: admin/settings.php:227
 #. translators: %s: a list of the other parts a colour reaches.
 msgid "The same colour also sets %s."
-msgstr ""
+msgstr "Dezelfde kleur geldt ook voor %s."
 
 #: admin/views/editor.php:199
 msgid "The small line above the headline. Leave empty to hide it."
-msgstr ""
+msgstr "De korte regel boven de hoofdkop. Laat leeg om te verbergen."
 
 #: template.php:275
 msgid "The wait is over."
-msgstr ""
+msgstr "Het wachten is voorbij."
 
 #: admin/settings.php:222
 msgid "This design paints its own colours, so none of these apply to it."
-msgstr ""
+msgstr "Dit ontwerp gebruikt eigen kleurinstellingen, waardoor deze opties niet van toepassing zijn."
 
 #: includes/class-mm-suc-p-template-view.php:398
 msgid "Time until we are back"
-msgstr ""
+msgstr "Tijd tot we terug zijn"
 
 #: template.php:369
 msgid "Too many messages. Try again in 15 minutes."
-msgstr ""
+msgstr "Te veel berichten verstuurd. Probeer het over 15 minuten opnieuw."
 
 #: maintenance.php:673
 msgid "Turn maintenance mode off"
-msgstr ""
+msgstr "Onderhoudsmodus uitschakelen"
 
 #: maintenance.php:674
 msgid "Turn maintenance mode on"
-msgstr ""
+msgstr "Onderhoudsmodus inschakelen"
 
 #: admin/settings.php:239
 msgid "unread"
-msgstr ""
+msgstr "ongelezen"
 
 #: admin/views/messages.php:164
 msgid "Unread"
-msgstr ""
+msgstr "Ongelezen"
 
 #: admin/views/messages.php:163
 msgid "Unread message"
-msgstr ""
+msgstr "Ongelezen bericht"
 
 #: admin/settings.php:193
 msgid "Unsaved change"
-msgstr ""
+msgstr "Niet-opgeslagen wijziging"
 
 #: admin/views/editor.php:176
 msgid "Use site logo"
-msgstr ""
+msgstr "Sitestandaard logo gebruiken"
 
 #: admin/settings.php:192
 msgid "Use this image"
-msgstr ""
+msgstr "Deze afbeelding gebruiken"
 
 #: admin/views/editor.php:496
 msgid "Used for the countdown, the contact action and links."
-msgstr ""
+msgstr "Gebruikt voor de afteltimer, de contactknop en links."
 
 #: admin/views/editor.php:188
 msgid "Using your site logo. Choosing an image here overrides it for maintenance mode only."
-msgstr ""
+msgstr "Je sitelogo wordt gebruikt. Een afbeelding hier overschrijft dit alleen tijdens onderhoudsmodus."
 
 #: admin/views/messages.php:181
 msgid "View"
-msgstr ""
+msgstr "Bekijken"
 
 #: admin/settings.php:197
 #: admin/views/editor.php:101
 msgid "Visitors see the maintenance page. You and other administrators still see the site."
-msgstr ""
+msgstr "Bezoekers zien de onderhoudspagina. Jij en andere beheerders zien de site gewoon."
 
 #: templates/warm-bench/template.json:2
 #. Template name: Warm Bench
 msgid "Warm Bench"
-msgstr ""
+msgstr "Warme bank"
 
 #: includes/class-mm-suc-p-template-view.php:263
 #: maintenance.php:166
 msgid "We are making a few improvements behind the scenes. Thanks for your patience - the site will be back shortly."
-msgstr ""
+msgstr "We voeren verbeteringen door achter de schermen. Bedankt voor je geduld – de site is binnenkort weer terug."
 
 #: template.php:259
 msgid "We could not send that. Try again shortly."
-msgstr ""
+msgstr "Kon het bericht niet verzenden. Probeer het zo meteen nog eens."
 
 #: includes/class-mm-suc-p-template-view.php:262
 #: maintenance.php:165
 msgid "We will be back soon"
-msgstr ""
+msgstr "We zijn snel weer terug"
 
 #: admin/views/messages.php:95
 #. translators: %s: recipient email address
 msgid "When a message arrives, an email is dispatched to %s. If mail/SMTP is not set up on your host, messages are never lost — they remain safely stored here."
-msgstr ""
+msgstr "Bij een nieuw bericht wordt een e-mail gestuurd naar %s. Zelfs als SMTP niet is geconfigureerd, blijven berichten hier veilig opgeslagen."
 
 #: admin/views/messages.php:214
 msgid "When checked, deleting this plugin from WordPress will permanently remove the messages database table and purge all saved inquiries."
-msgstr ""
+msgstr "Indien aangevinkt, verwijdert het deïnstalleren van deze plugin permanent de berichtentabel uit de database en wist alle opgeslagen berichten."
 
 #: admin/views/messages.php:128
 msgid "When visitors send inquiries through the contact form on your maintenance page, they will appear here."
-msgstr ""
+msgstr "Als bezoekers berichten sturen via het contactformulier op je onderhoudspagina, verschijnen ze hier."
 
 #: admin/views/editor.php:351
 msgid "Who still sees the site"
-msgstr ""
+msgstr "Wie de site nog steeds ziet"
 
 #: admin/settings.php:863
 #: admin/settings.php:880
 msgid "You do not have permission to access this screen."
-msgstr ""
+msgstr "Je hebt geen toestemming om dit scherm te bekijken."
 
 #: maintenance.php:742
 msgid "You do not have permission to change maintenance mode."
-msgstr ""
+msgstr "Je hebt geen toestemming om de onderhoudsmodus te wijzigen."
 
 #: admin/settings.php:429
 msgid "You do not have permission to change these settings."
-msgstr ""
+msgstr "Je hebt geen toestemming om deze instellingen te wijzigen."
 
 #: admin/settings.php:941
 msgid "You do not have permission to clear messages."
-msgstr ""
+msgstr "Je hebt geen toestemming om berichten te wissen."
 
 #: admin/settings.php:903
 msgid "You do not have permission to delete this message."
-msgstr ""
+msgstr "Je hebt geen toestemming om dit bericht te verwijderen."
 
 #: admin/settings.php:1117
 msgid "You do not have permission to perform this action."
-msgstr ""
+msgstr "Je hebt geen toestemming om deze actie uit te voeren."
 
 #: admin/settings.php:481
 msgid "You do not have permission to preview this."
-msgstr ""
+msgstr "Je hebt geen toestemming om dit voorbeeld te bekijken."
 
 #: admin/settings.php:526
 msgid "You do not have permission to save a preset."
-msgstr ""
+msgstr "Je hebt geen toestemming om een voorinstelling op te slaan."
 
 #: admin/settings.php:971
 msgid "You do not have permission to update this message."
-msgstr ""
+msgstr "Je hebt geen toestemming om dit bericht bij te werken."
 
 #: admin/settings.php:1003
 msgid "You do not have permission to update this setting."
-msgstr ""
+msgstr "Je hebt geen toestemming om deze instelling bij te werken."
 
 #: includes/class-mm-suc-p-template-view.php:491
 msgid "Your email"
-msgstr ""
+msgstr "Je e-mailadres"
 
 #: includes/class-mm-suc-p-template-view.php:485
 msgid "Your name"
-msgstr ""
+msgstr "Je naam"
 
 #: admin/settings.php:522
 #: template.php:353
 msgid "Your session expired. Reload the page and try again."
-msgstr ""
+msgstr "Je sessie is verlopen. Vernieuw de pagina en probeer het opnieuw."
 
 #: admin/settings.php:477
 #: admin/settings.php:899
@@ -1061,5 +1067,5 @@ msgstr ""
 #: admin/settings.php:999
 #: admin/settings.php:1113
 msgid "Your session expired. Reload the page."
-msgstr ""
+msgstr "Je sessie is verlopen. Vernieuw de pagina."
 

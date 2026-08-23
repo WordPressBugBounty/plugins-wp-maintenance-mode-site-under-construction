@@ -273,7 +273,9 @@ class MM_SUC_P_Template {
 	 * @return string
 	 */
 	public function get_name() {
-		return $this->data['name'];
+		return 'bundled' === $this->origin
+			? __( $this->data['name'], 'wp-maintenance-mode-site-under-construction' )
+			: $this->data['name'];
 	}
 
 	/**
@@ -282,7 +284,9 @@ class MM_SUC_P_Template {
 	 * @return string
 	 */
 	public function get_description() {
-		return $this->data['description'];
+		return 'bundled' === $this->origin
+			? __( $this->data['description'], 'wp-maintenance-mode-site-under-construction' )
+			: $this->data['description'];
 	}
 
 	/**

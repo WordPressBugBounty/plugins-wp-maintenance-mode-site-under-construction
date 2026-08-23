@@ -256,6 +256,42 @@ class MM_SUC_P_Template_View {
 		$spec  = $parts[ $field ];
 		$value = (string) $this->option( $field, '' );
 
+		// Translate default strings dynamically if they match default values.
+		$default_strings = array(
+			'eyebrow'        => __( 'Scheduled maintenance', 'wp-maintenance-mode-site-under-construction' ),
+			'headline'       => __( 'We will be back soon', 'wp-maintenance-mode-site-under-construction' ),
+			'message'        => __( 'We are making a few improvements behind the scenes. Thanks for your patience - the site will be back shortly.', 'wp-maintenance-mode-site-under-construction' ),
+			'contact_button' => __( 'Get in touch', 'wp-maintenance-mode-site-under-construction' ),
+		);
+
+		$raw_defaults = array(
+			'eyebrow'        => 'Scheduled maintenance',
+			'headline'       => 'We will be back soon',
+			'message'        => 'We are making a few improvements behind the scenes. Thanks for your patience - the site will be back shortly.',
+			'contact_button' => 'Get in touch',
+		);
+
+		if ( isset( $raw_defaults[ $field ] ) && $value === $raw_defaults[ $field ] ) {
+			$value = $default_strings[ $field ];
+		}
+
+		// Multilingual plugin integration (WPML / Polylang).
+		$value = apply_filters( 'wpml_translate_single_string', $value, 'wp-maintenance-mode-site-under-construction', 'mm_suc_p_' . $field );
+
+		if ( function_exists( 'pll__' ) ) {
+			$value = pll__( $value );
+		}
+
+		/**
+		 * Filter the rendered part text value.
+		 *
+		 * @param string                 $value    Text value.
+		 * @param string                 $field    Part field key.
+		 * @param array                  $options  Current options.
+		 * @param MM_SUC_P_Template|null $template Active template.
+		 */
+		$value = apply_filters( 'mm_suc_p_part_text', $value, $field, $this->options, $this->template );
+
 		// An empty part still renders in the editor: it has to stay editable.
 		if ( '' === trim( $value ) && ! $this->is_editor() ) {
 			return;

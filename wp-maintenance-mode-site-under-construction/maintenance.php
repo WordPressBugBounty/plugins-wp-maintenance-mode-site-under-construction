@@ -3,7 +3,7 @@
  * Plugin Name: WP Maintenance Mode & Site Under Construction
  * Plugin URI: https://wordpress.org/plugins/wp-maintenance-mode-site-under-construction
  * Description: A lightweight visual maintenance-mode editor with live preview, countdown, contact form, responsive layouts, and secure access rules.
- * Version: 5.1
+ * Version: 5.2
  * Author: wp-buy
  * Author URI: https://www.wp-buy.com/
  * Text Domain: wp-maintenance-mode-site-under-construction
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Constants
  * ---------------------------------------------------------------------- */
 
-define( 'MM_SUC_P_VERSION', '5.1' );
+define( 'MM_SUC_P_VERSION', '5.2' );
 define( 'MM_SUC_P_FILE', __FILE__ );
 define( 'MM_SUC_P_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MM_SUC_P_URL', plugin_dir_url( __FILE__ ) );
@@ -61,6 +61,20 @@ require_once MM_SUC_P_DIR . 'template.php';
 if ( is_admin() ) {
 	require_once MM_SUC_P_DIR . 'admin/settings.php';
 }
+
+/**
+ * Load plugin textdomain for translations.
+ *
+ * @return void
+ */
+function mm_suc_p_load_textdomain() {
+	load_plugin_textdomain(
+		'wp-maintenance-mode-site-under-construction',
+		false,
+		dirname( plugin_basename( MM_SUC_P_FILE ) ) . '/languages'
+	);
+}
+add_action( 'init', 'mm_suc_p_load_textdomain' );
 
 /* -------------------------------------------------------------------------
  * Template roots
@@ -154,11 +168,12 @@ function mm_suc_p_default_options() {
 		'contact_enabled'      => 1,
 		'contact_button'       => __( 'Get in touch', 'wp-maintenance-mode-site-under-construction' ),
 		'contact_email'        => '',
-		'accent_color'         => '#4f46e5',
-		'text_color'           => '#ffffff',
-		'overlay_opacity'      => 55,
-		'glass_strength'       => 14,
-		'bypass_roles'         => array( 'administrator' ),
+		'accent_color'                => '#4f46e5',
+		'text_color'                  => '#ffffff',
+		'overlay_opacity'             => 55,
+		'glass_strength'              => 14,
+		'bypass_roles'                => array( 'administrator' ),
+		'delete_messages_on_uninstall' => 0,
 	);
 }
 
@@ -296,6 +311,17 @@ function mm_suc_p_migrate_legacy() {
 function mm_suc_p_update_options( $options ) {
 	$saved = update_option( MM_SUC_P_OPTION, $options, false );
 	mm_suc_p_flush_options_cache();
+
+	// Multilingual string registration (WPML / Polylang).
+	$translatable_fields = array( 'eyebrow', 'headline', 'message', 'contact_button' );
+	foreach ( $translatable_fields as $field ) {
+		if ( ! empty( $options[ $field ] ) ) {
+			do_action( 'wpml_register_single_string', 'wp-maintenance-mode-site-under-construction', 'mm_suc_p_' . $field, $options[ $field ] );
+			if ( function_exists( 'pll_register_string' ) ) {
+				pll_register_string( 'mm_suc_p_' . $field, $options[ $field ], 'wp-maintenance-mode-site-under-construction', 'message' === $field );
+			}
+		}
+	}
 
 	return $saved;
 }
@@ -527,6 +553,7 @@ function mm_suc_p_icons() {
 		'save',
 		'shield',
 		'site-live',
+		'star',
 		'trash',
 		'warning',
 	);
@@ -740,6 +767,8 @@ add_action( 'admin_post_mm_suc_toggle_mode', 'mm_suc_p_handle_toggle' );
  */
 function mm_suc_p_activate() {
 	MM_SUC_P_Template_Registry::flush();
+	MM_SUC_P_Messages::create_table();
+	MM_SUC_P_Messages::migrate_from_json();
 
 	if ( ! is_array( get_option( MM_SUC_P_OPTION, null ) ) ) {
 		add_option( MM_SUC_P_OPTION, array_merge( mm_suc_p_seed_options(), mm_suc_p_migrate_legacy() ), '', false );

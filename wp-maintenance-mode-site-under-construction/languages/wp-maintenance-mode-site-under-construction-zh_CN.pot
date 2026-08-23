@@ -5,592 +5,595 @@ msgstr ""
 "Project-Id-Version: WP Maintenance Mode & Site Under Construction 5.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-maintenance-mode-site-under-construction\n"
 "POT-Creation-Date: 2026-08-23T22:00:00+00:00\n"
+"PO-Revision-Date: 2026-08-23T22:00:00+00:00\n"
+"Last-Translator: wp-buy <support@wp-buy.com>\n"
+"Language-Team: Chinese (China)\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2026-08-23T22:00:00+00:00\n"
-"Language-Team: wp-buy <support@wp-buy.com>\n"
 "X-Domain: wp-maintenance-mode-site-under-construction\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: admin/settings.php:1091
 #: admin/views/editor.php:84
 msgid "(opens in a new tab)"
-msgstr ""
+msgstr "(在新标签页中打开)"
 
 #: template.php:428
 #. translators: %s: site name.
 msgid "[%s] Message from your maintenance page"
-msgstr ""
+msgstr "[%s] 来自维护页面的消息"
 
 #: admin/views/messages.php:33
 #. translators: 1: total messages count, 2: unread messages count
 msgid "%1$d Messages (%2$d unread)"
-msgstr ""
+msgstr "%1$d 条消息（%2$d 条未读）"
 
 #: admin/settings.php:549
 #. translators: %s: the name of the template the preset was made from.
 msgid "%s copy"
-msgstr ""
+msgstr "%s 副本"
 
 #: admin/settings.php:209
 #: template.php:264
 #. translators: %s: number of days.
 msgid "%s day"
-msgstr ""
+msgstr "%s 天"
 
 #: admin/settings.php:211
 #: template.php:266
 #. translators: %s: number of days.
 msgid "%s days"
-msgstr ""
+msgstr "%s 天"
 
 #: admin/settings.php:207
 #. translators: %s: time duration until launch, for example "3 days, 4 hours".
 msgid "%s from now"
-msgstr ""
+msgstr "距现在还有 %s"
 
 #: admin/settings.php:213
 #: template.php:268
 #. translators: %s: number of hours.
 msgid "%s hour"
-msgstr ""
+msgstr "%s 小时"
 
 #: admin/settings.php:215
 #: template.php:270
 #. translators: %s: number of hours.
 msgid "%s hours"
-msgstr ""
+msgstr "%s 小时"
 
 #: admin/settings.php:217
 #: template.php:272
 #. translators: %s: number of minutes.
 msgid "%s minute"
-msgstr ""
+msgstr "%s 分钟"
 
 #: admin/settings.php:219
 #: template.php:274
 #. translators: %s: number of minutes.
 msgid "%s minutes"
-msgstr ""
+msgstr "%s 分钟"
 
 #: template.php:262
 #. translators: %s: time duration remaining until launch, for example "3 days, 4 hours".
 msgid "%s remaining"
-msgstr ""
+msgstr "剩余 %s"
 
 #: templates/deep-orbit/template.json:3
 #. Template description: Deep Orbit
 msgid "A deep navy field with a teal glow behind a glass panel. Dark, calm and legible."
-msgstr ""
+msgstr "深蓝夜空与玻璃面板后的青蓝微光，静谧优雅且清晰易读。"
 
 #: admin/settings.php:568
 msgid "A design saved from the editor."
-msgstr ""
+msgstr "从编辑器保存的设计。"
 
 #: templates/crimson-ribbon/template.json:3
 #. Template description: Crimson Ribbon
 msgid "A lilac ground crossed by a red ribbon, with a bold bar marking the copy."
-msgstr ""
+msgstr "丁香紫背景搭配红色缎带，醒目的色条凸显文案。"
 
 #: admin/views/editor.php:184
 msgid "A logo chosen for maintenance mode. Use site logo goes back to the one your theme uses."
-msgstr ""
+msgstr "为维护模式选择的徽标。选择“使用网站徽标”将恢复为主题使用的徽标。"
 
 #: templates/aurora-haze/template.json:3
 #. Template description: Aurora Haze
 msgid "A pale aurora gradient behind a bright frosted card. Light and airy."
-msgstr ""
+msgstr "明亮磨砂卡片背后的柔和极光渐变，通透轻盈。"
 
 #: admin/views/editor.php:338
 msgid "A preview aid only. It is not saved and visitors always start with it closed."
-msgstr ""
+msgstr "仅作为预览辅助。不会被保存，访客默认处于关闭状态。"
 
 #: templates/soft-spectrum/template.json:3
 #. Template description: Soft Spectrum
 msgid "A soft spectrum wash, split between the message and a boxed countdown."
-msgstr ""
+msgstr "柔和的多色光谱渐变，并排展示消息与框式倒计时。"
 
 #: templates/palm-dusk/template.json:3
 #. Template description: Palm Dusk
 msgid "A sunset lagoon with the message anchored to the bottom, cinema style."
-msgstr ""
+msgstr "夕阳下的海岛湖泊，消息置于页面底部，呈现电影级质感。"
 
 #: templates/warm-bench/template.json:3
 #. Template description: Warm Bench
 msgid "A warm, shallow-focus photograph with the message resting in the lower corner."
-msgstr ""
+msgstr "温暖浅景深实景摄影，消息置于左下角。"
 
 #: admin/views/editor.php:483
 #: admin/views/editor.php:484
 msgid "Accent & Text Colour"
-msgstr ""
+msgstr "强调色与文本颜色"
 
 #: admin/views/editor.php:489
 msgid "Accent colour"
-msgstr ""
+msgstr "强调色"
 
 #: admin/views/editor.php:493
 msgid "Accent colour hex value"
-msgstr ""
+msgstr "强调色十六进制值"
 
 #: admin/views/editor.php:347
 msgid "Access"
-msgstr ""
+msgstr "访问权限"
 
 #: admin/views/messages.php:139
 msgid "Actions"
-msgstr ""
+msgstr "操作"
 
 #: admin/views/editor.php:369
 msgid "Administrators always see the site. This cannot be turned off, so you can never lock yourself out."
-msgstr ""
+msgstr "管理员始终可以查看网站。此选项无法关闭，以确保您永远不会被锁定在网站外。"
 
 #: admin/settings.php:234
 #: admin/settings.php:948
 msgid "All messages cleared."
-msgstr ""
+msgstr "已清除所有消息。"
 
 #: templates/amber-glow/template.json:2
 #. Template name: Amber Glow
 msgid "Amber Glow"
-msgstr ""
+msgstr "琥珀流光"
 
 #: admin/views/editor.php:538
 msgid "An enhancement only: the card stays readable at zero, and some browsers ignore it."
-msgstr ""
+msgstr "仅为视觉增强：数值为0时卡片仍保持可读，部分浏览器可能会忽略此项。"
 
 #: admin/settings.php:225
 msgid "and"
-msgstr ""
+msgstr "与"
 
 #: admin/settings.php:232
 msgid "Are you sure you want to delete all messages? This cannot be undone."
-msgstr ""
+msgstr "确定要删除所有消息吗？此操作无法撤销。"
 
 #: admin/settings.php:231
 msgid "Are you sure you want to delete this message?"
-msgstr ""
+msgstr "确定要删除此消息吗？"
 
 #: templates/aurora-haze/template.json:2
 #. Template name: Aurora Haze
 msgid "Aurora Haze"
-msgstr ""
+msgstr "极光薄雾"
 
 #: admin/views/messages.php:106
 msgid "Automatic Bot & Spam Protection"
-msgstr ""
+msgstr "自动机器人与垃圾邮件防护"
 
 #: admin/views/editor.php:121
 msgid "Back online at"
-msgstr ""
+msgstr "预计恢复上线时间："
 
 #: template.php:245
 msgid "Back to the editor"
-msgstr ""
+msgstr "返回编辑器"
 
 #: admin/views/editor.php:436
 msgid "Background"
-msgstr ""
+msgstr "背景"
 
 #: admin/views/editor.php:522
 msgid "Background shading"
-msgstr ""
+msgstr "背景遮罩透明度"
 
 #: templates/paper-blocks/template.json:3
 #. Template description: Paper Blocks
 msgid "Bright overlapping paper shapes with a flat editorial card and a hard shadow."
-msgstr ""
+msgstr "鲜艳的层叠剪纸造型搭配扁平卡片与硬朗阴影。"
 
 #: admin/views/messages.php:107
 msgid "Built-in honeypot spam traps and per-IP rate limiting (maximum 4 messages per 15 minutes) stop automated bots without disrupting legitimate visitors."
-msgstr ""
+msgstr "内置蜜罐防垃圾邮件陷阱与基于 IP 的速率限制（每15分钟最多4条消息），在不影响正常访客的情况下拦截自动机器人。"
 
 #: admin/views/editor.php:309
 msgid "Button label"
-msgstr ""
+msgstr "按钮文本"
 
 #: admin/views/editor.php:18
 msgid "Centered"
-msgstr ""
+msgstr "居中"
 
 #: template.php:399
 msgid "Check the highlighted fields and send again."
-msgstr ""
+msgstr "请检查高亮显示的字段并重新发送。"
 
 #: admin/settings.php:191
 msgid "Choose a background image"
-msgstr ""
+msgstr "选择背景图片"
 
 #: admin/settings.php:190
 msgid "Choose a logo"
-msgstr ""
+msgstr "选择徽标"
 
 #: admin/views/editor.php:171
 #: admin/views/editor.php:466
 msgid "Choose image"
-msgstr ""
+msgstr "选择图片"
 
 #: admin/views/messages.php:52
 msgid "Clear all messages"
-msgstr ""
+msgstr "清除所有消息"
 
 #: admin/views/messages.php:264
 #: includes/class-mm-suc-p-template-view.php:478
 msgid "Close"
-msgstr ""
+msgstr "关闭"
 
 #: admin/views/messages.php:231
 msgid "Close message dialog"
-msgstr ""
+msgstr "关闭消息对话框"
 
 #: admin/settings.php:221
 msgid "Colours on this design"
-msgstr ""
+msgstr "此设计的配色"
 
 #: admin/views/editor.php:295
 msgid "Contact"
-msgstr ""
+msgstr "联系表单"
 
 #: includes/class-mm-suc-p-template-view.php:110
 msgid "Contact button label"
-msgstr ""
+msgstr "联系按钮文本"
 
 #: admin/views/editor.php:154
 msgid "Content"
-msgstr ""
+msgstr "内容"
 
 #: admin/settings.php:202
 #. translators: %s: contrast ratio number against background, for example 4.8.
 msgid "Contrast %s:1 against this background."
-msgstr ""
+msgstr "在此背景下的对比度为 %s:1。"
 
 #: admin/settings.php:236
 msgid "Could not clear messages. Try again."
-msgstr ""
+msgstr "无法清除消息。请重试。"
 
 #: admin/settings.php:235
 msgid "Could not delete the message. Try again."
-msgstr ""
+msgstr "无法删除消息。请重试。"
 
 #: admin/settings.php:916
 msgid "Could not find or delete that message."
-msgstr ""
+msgstr "找不到或无法删除该消息。"
 
 #: admin/settings.php:435
 msgid "Could not save - the settings did not arrive intact. Try again."
-msgstr ""
+msgstr "无法保存：设置数据未完整接收。请重试。"
 
 #: admin/settings.php:187
 #: admin/settings.php:425
 msgid "Could not save - your session expired. Reload the page and try again."
-msgstr ""
+msgstr "无法保存：您的会话已过期。请刷新页面后重试。"
 
 #: admin/settings.php:230
 msgid "Could not save the preset. Check your connection and try again."
-msgstr ""
+msgstr "无法保存预设。请检查您的网络连接并重试。"
 
 #: admin/settings.php:186
 msgid "Could not save. Check your connection and try again."
-msgstr ""
+msgstr "无法保存。请检查您的网络连接并重试。"
 
 #: admin/settings.php:630
 msgid "Could not write the preset file. Check the uploads folder permissions."
-msgstr ""
+msgstr "无法写入预设文件。请检查 uploads 目录的文件权限。"
 
 #: admin/settings.php:558
 msgid "Could not write to the uploads folder. Check its permissions and try again."
-msgstr ""
+msgstr "无法写入 uploads 目录。请检查权限后重试。"
 
 #: admin/views/editor.php:277
 msgid "Countdown"
-msgstr ""
+msgstr "倒计时"
 
 #: templates/crimson-ribbon/template.json:2
 #. Template name: Crimson Ribbon
 msgid "Crimson Ribbon"
-msgstr ""
+msgstr "绯红缎带"
 
 #: admin/views/messages.php:202
 msgid "Data Retention & Cleanup"
-msgstr ""
+msgstr "数据保留与清理"
 
 #: admin/views/messages.php:138
 msgid "Date & Time"
-msgstr ""
+msgstr "日期与时间"
 
 #: includes/class-mm-suc-p-template-view.php:382
 msgid "Days"
-msgstr ""
+msgstr "天"
 
 #: admin/views/messages.php:82
 msgid "Dedicated Database Storage"
-msgstr ""
+msgstr "独立数据库存储"
 
 #: templates/deep-orbit/template.json:2
 #. Template name: Deep Orbit
 msgid "Deep Orbit"
-msgstr ""
+msgstr "深空轨道"
 
 #: admin/views/messages.php:185
 #: admin/views/messages.php:261
 msgid "Delete message"
-msgstr ""
+msgstr "删除消息"
 
 #: admin/views/messages.php:211
 msgid "Delete messages database table when plugin is uninstalled"
-msgstr ""
+msgstr "卸载插件时删除消息数据库表"
 
 #: admin/views/editor.php:223
 msgid "Design & Styling"
-msgstr ""
+msgstr "设计与样式"
 
 #: admin/views/editor.php:409
 msgid "Design controls"
-msgstr ""
+msgstr "设计控件"
 
 #: admin/views/editor.php:384
 msgid "Desktop"
-msgstr ""
+msgstr "桌面端"
 
 #: admin/settings.php:188
 msgid "Dismiss"
-msgstr ""
+msgstr "忽略"
 
 #: admin/settings.php:1096
 msgid "Dismiss rating prompt"
-msgstr ""
+msgstr "关闭评价提示"
 
 #: admin/views/editor.php:249
 msgid "Each template brings its own background and colours. Layout, background and colours sit on the toolbar above the preview."
-msgstr ""
+msgstr "每个模板都自带背景和配色。布局、背景和颜色可在预览上方的工具栏中调整。"
 
 #: admin/views/messages.php:90
 msgid "Email Notification & SMTP Fallback"
-msgstr ""
+msgstr "邮件通知与 SMTP 支持"
 
 #: admin/settings.php:1079
 msgid "Enjoying WP Maintenance Mode & Site Under Construction?"
-msgstr ""
+msgstr "觉得 WP Maintenance Mode & Site Under Construction 好用吗？"
 
 #: template.php:257
 #: template.php:389
 msgid "Enter an email address like name@example.com."
-msgstr ""
+msgstr "请输入有效的电子邮箱地址，例如 name@example.com。"
 
 #: admin/views/editor.php:214
 msgid "Explain what is happening and when you expect to be back."
-msgstr ""
+msgstr "说明维护原因及预计恢复访问的时间。"
 
 #: admin/views/editor.php:195
 #: includes/class-mm-suc-p-template-view.php:107
 msgid "Eyebrow"
-msgstr ""
+msgstr "顶部小标题"
 
 #: template.php:256
 #: template.php:385
 msgid "Fill this in so we can reply."
-msgstr ""
+msgstr "请填写此项以便我们回复您。"
 
 #: admin/views/editor.php:440
 msgid "From the template"
-msgstr ""
+msgstr "来自模板"
 
 #: admin/views/messages.php:239
 msgid "From:"
-msgstr ""
+msgstr "发件人："
 
 #: includes/class-mm-suc-p-template-view.php:264
 #: maintenance.php:169
 msgid "Get in touch"
-msgstr ""
+msgstr "联系我们"
 
 #: admin/views/editor.php:532
 msgid "Glass blur"
-msgstr ""
+msgstr "毛玻璃模糊效果"
 
 #: admin/views/editor.php:143
 msgid "Go live automatically when the time is reached"
-msgstr ""
+msgstr "到达设定时间后自动恢复网站上线"
 
 #: templates/amber-glow/template.json:3
 #. Template description: Amber Glow
 msgid "Golden bokeh over a dark ground, split between copy and a stacked countdown."
-msgstr ""
+msgstr "深色背景上的金色光斑虚化，左侧显示文案，右侧显示倒计时。"
 
 #: admin/views/editor.php:203
 #: includes/class-mm-suc-p-template-view.php:108
 msgid "Headline"
-msgstr ""
+msgstr "主标题"
 
 #: includes/class-mm-suc-p-template-view.php:383
 msgid "Hours"
-msgstr ""
+msgstr "小时"
 
 #: admin/views/editor.php:528
 msgid "How strongly the template shades its background image behind your text."
-msgstr ""
+msgstr "调整模板在文字背后遮罩背景图片的深浅程度。"
 
 #: admin/views/messages.php:70
 msgid "How the Maintenance Contact Form Works"
-msgstr ""
+msgstr "维护联系表单的工作机制"
 
 #: admin/settings.php:1094
 msgid "I already rated"
-msgstr ""
+msgstr "已评价"
 
 #: admin/settings.php:1082
 msgid "If this plugin helps you build and manage maintenance pages, please consider taking a moment to rate us 5 stars on WordPress.org. Your positive review directly supports future development and free updates!"
-msgstr ""
+msgstr "如果本插件对您构建和管理维护页面有所帮助，请考虑在 WordPress.org 上为我们给予 5 星好评。您的正面评价是对我们后续开发与免费更新的最大支持！"
 
 #: admin/views/messages.php:73
 msgid "Inquiries sent by visitors while your site is under construction or in maintenance mode."
-msgstr ""
+msgstr "网站在建设或维护期间由访客发送的咨询消息。"
 
 #: admin/settings.php:909
 msgid "Invalid message ID."
-msgstr ""
+msgstr "无效的消息 ID。"
 
 #: admin/views/editor.php:267
 msgid "Keeps the current layout, background and colours as a new template in this list. It is written as a folder you can copy to another site, or delete to remove it."
-msgstr ""
+msgstr "将当前的布局、背景和颜色保存为列表中的新模板。保存为独立文件夹，可复制到其他站点或直接删除。"
 
 #: admin/views/editor.php:419
 msgid "Layout"
-msgstr ""
+msgstr "布局"
 
 #: admin/views/editor.php:413
 #: admin/views/editor.php:414
 msgid "Layout & Background"
-msgstr ""
+msgstr "布局与背景"
 
 #: includes/class-mm-suc-p-template-view.php:504
 msgid "Leave this field empty"
-msgstr ""
+msgstr "请将此字段留空"
 
 #: admin/views/editor.php:19
 msgid "Left focus"
-msgstr ""
+msgstr "居左对齐"
 
 #: admin/views/editor.php:304
 msgid "Let visitors send a message"
-msgstr ""
+msgstr "允许访客发送消息"
 
 #: admin/views/editor.php:546
 msgid "Live preview of the maintenance page"
-msgstr ""
+msgstr "维护页面实时预览"
 
 #: admin/views/editor.php:159
 msgid "Logo"
-msgstr ""
+msgstr "徽标"
 
 #: admin/settings.php:200
 #. translators: %s: contrast ratio number against background, for example 2.4.
 msgid "Low contrast (%s:1). Some visitors will not be able to read this."
-msgstr ""
+msgstr "对比度偏低 (%s:1)。部分访客可能难以阅读。"
 
 #: admin/settings.php:27
 msgid "Maintenance"
-msgstr ""
+msgstr "维护"
 
 #: admin/views/editor.php:75
 msgid "Maintenance mode"
-msgstr ""
+msgstr "维护模式"
 
 #: admin/settings.php:26
 msgid "Maintenance Mode"
-msgstr ""
+msgstr "维护模式"
 
 #: admin/views/editor.php:30
 msgid "Maintenance mode editor"
-msgstr ""
+msgstr "维护模式编辑器"
 
 #: admin/settings.php:195
 #: admin/views/editor.php:63
 #: maintenance.php:660
 msgid "Maintenance mode is on"
-msgstr ""
+msgstr "维护模式已开启"
 
 #: admin/settings.php:198
 #: admin/views/editor.php:100
 msgid "Maintenance mode will not run and your site is still live because your chosen date is older than now."
-msgstr ""
+msgstr "由于选择的日期早于当前时间，维护模式将不会启动，网站仍保持上线状态。"
 
 #: admin/views/editor.php:112
 msgid "Maintenance page settings"
-msgstr ""
+msgstr "维护页面设置"
 
 #: admin/views/messages.php:46
 #: maintenance.php:692
 msgid "Maintenance settings"
-msgstr ""
+msgstr "维护设置"
 
 #: admin/settings.php:37
 msgid "Maintenance Settings"
-msgstr ""
+msgstr "维护设置"
 
 #: admin/settings.php:237
 #: admin/views/editor.php:211
 #: includes/class-mm-suc-p-template-view.php:109
 #: includes/class-mm-suc-p-template-view.php:497
 msgid "Message"
-msgstr ""
+msgstr "留言内容"
 
 #: admin/settings.php:233
 #: admin/settings.php:921
 msgid "Message deleted."
-msgstr ""
+msgstr "消息已删除。"
 
 #: admin/views/messages.php:229
 msgid "Message Details"
-msgstr ""
+msgstr "消息详情"
 
 #: admin/views/messages.php:137
 msgid "Message snippet"
-msgstr ""
+msgstr "消息摘要"
 
 #: admin/settings.php:238
 msgid "Messages"
-msgstr ""
+msgstr "消息列表"
 
 #: admin/views/messages.php:83
 msgid "Messages are stored securely in a dedicated WordPress database table with indexing, privacy protection, and fast lookup."
-msgstr ""
+msgstr "消息安全地存储在独立的 WordPress 数据库表中，具备索引、隐私保护及快速检索功能。"
 
 #: admin/views/editor.php:324
 #. translators: %s: the site admin email address.
 msgid "Messages go to %s if this is empty."
-msgstr ""
+msgstr "若此处留空，消息将发送至 %s。"
 
 #: admin/settings.php:46
 #: admin/settings.php:47
 #: admin/views/messages.php:22
 #: maintenance.php:701
 msgid "Messages list"
-msgstr ""
+msgstr "留言列表"
 
 #: admin/views/editor.php:20
 msgid "Minimal"
-msgstr ""
+msgstr "极简"
 
 #: includes/class-mm-suc-p-template-view.php:384
 msgid "Minutes"
-msgstr ""
+msgstr "分钟"
 
 #: admin/views/editor.php:386
 msgid "Mobile"
-msgstr ""
+msgstr "移动端"
 
 #: admin/views/editor.php:116
 msgid "Mode & Schedule"
-msgstr ""
+msgstr "模式与定时调度"
 
 #: admin/views/editor.php:441
 msgid "My own image"
-msgstr ""
+msgstr "自定义图片"
 
 #: admin/views/editor.php:258
 msgid "Name this design"
-msgstr ""
+msgstr "命名此设计"
 
 #: template.php:434
 #. translators: 1: sender name, 2: sender email, 3: message body.
@@ -598,461 +601,464 @@ msgid "Name: %1$s\n"
 "Email: %2$s\n"
 "\n"
 "%3$s"
-msgstr ""
+msgstr "姓名：%1$s\n"
+"邮箱：%2$s\n"
+"\n"
+"%3$s"
 
 #: templates/night-bokeh/template.json:3
 #. Template description: Night Bokeh
 msgid "Near-black with warm out-of-focus lights. No card chrome, just very large type."
-msgstr ""
+msgstr "近乎纯黑的背景点缀温暖的虚化光影，无边框设计，大号字体排版。"
 
 #: templates/night-bokeh/template.json:2
 #. Template name: Night Bokeh
 msgid "Night Bokeh"
-msgstr ""
+msgstr "夜色光斑"
 
 #: admin/settings.php:205
 msgid "No end time set, so no countdown is shown."
-msgstr ""
+msgstr "未设置结束时间，因此不显示倒计时。"
 
 #: admin/views/editor.php:442
 msgid "No image"
-msgstr ""
+msgstr "无图片"
 
 #: admin/views/editor.php:186
 msgid "No logo is set anywhere, so your site title is shown as text."
-msgstr ""
+msgstr "未设置徽标，网站标题将以文字形式显示。"
 
 #: admin/views/messages.php:127
 msgid "No messages yet"
-msgstr ""
+msgstr "暂无留言"
 
 #: admin/views/editor.php:235
 msgid "No templates are installed. Copy a template folder into the plugin's templates directory and it will appear here."
-msgstr ""
+msgstr "未安装任何模板。将模板文件夹复制到插件的 templates 目录中即可显示在此处。"
 
 #: admin/settings.php:189
 #: admin/views/editor.php:46
 msgid "Notices from other plugins"
-msgstr ""
+msgstr "其他插件的通知"
 
 #: admin/views/editor.php:145
 msgid "Off means the site stays hidden until you turn maintenance mode off yourself."
-msgstr ""
+msgstr "关闭定时意味着网站将持续保持隐藏，直到您手动关闭维护模式。"
 
 #: admin/views/editor.php:83
 msgid "Open preview"
-msgstr ""
+msgstr "打开预览"
 
 #: admin/views/editor.php:336
 msgid "Open the message panel in the preview"
-msgstr ""
+msgstr "在预览中展开留言面板"
 
 #: templates/palm-dusk/template.json:2
 #. Template name: Palm Dusk
 msgid "Palm Dusk"
-msgstr ""
+msgstr "椰影黄昏"
 
 #: templates/paper-blocks/template.json:2
 #. Template name: Paper Blocks
 msgid "Paper Blocks"
-msgstr ""
+msgstr "纸艺几何"
 
 #: admin/views/editor.php:402
 msgid "Point at anything in the preview to change its colour. Press to turn that off. Every colour is also a control on this toolbar."
-msgstr ""
+msgstr "将鼠标悬停在预览中的任意元素上即可更改其颜色。点击即可退出。工具栏上也提供所有颜色控件。"
 
 #: admin/settings.php:771
 msgid "Preset"
-msgstr ""
+msgstr "预设"
 
 #: admin/settings.php:648
 msgid "Preset saved. It is in your template list now - save changes to keep using it."
-msgstr ""
+msgstr "预设已保存。现已添加至您的模板列表中 — 保存更改以继续使用。"
 
 #: admin/settings.php:532
 msgid "Presets need the uploads folder, and WordPress could not find it."
-msgstr ""
+msgstr "预设需要 uploads 目录，但 WordPress 无法找到该目录。"
 
 #: template.php:231
 msgid "Preview - maintenance mode is off, so visitors are seeing your site as usual."
-msgstr ""
+msgstr "预览：维护模式已关闭，访客可以正常浏览您的网站。"
 
 #: template.php:232
 msgid "Preview - this is what visitors are seeing right now."
-msgstr ""
+msgstr "预览：这是访客当前看到的页面效果。"
 
 #: admin/views/editor.php:381
 msgid "Preview width"
-msgstr ""
+msgstr "预览宽度"
 
 #: admin/settings.php:1089
 msgid "Rate 5 Stars"
-msgstr ""
+msgstr "给予 5 星好评"
 
 #: admin/settings.php:1065
 msgid "Rate this plugin"
-msgstr ""
+msgstr "评价此插件"
 
 #: admin/views/messages.php:164
 msgid "Read"
-msgstr ""
+msgstr "已读"
 
 #: admin/views/messages.php:163
 msgid "Read message"
-msgstr ""
+msgstr "已读消息"
 
 #: admin/views/messages.php:117
 msgid "Received Messages"
-msgstr ""
+msgstr "收到的留言"
 
 #: admin/views/messages.php:244
 msgid "Received:"
-msgstr ""
+msgstr "接收时间："
 
 #: admin/views/editor.php:471
 msgid "Remove"
-msgstr ""
+msgstr "移除"
 
 #: admin/views/messages.php:257
 msgid "Reply via email"
-msgstr ""
+msgstr "通过邮件回复"
 
 #: admin/settings.php:229
 #: admin/views/editor.php:255
 #: admin/views/editor.php:263
 msgid "Save as preset"
-msgstr ""
+msgstr "另存为预设"
 
 #: admin/settings.php:184
 #: admin/views/editor.php:89
 msgid "Save changes"
-msgstr ""
+msgstr "保存更改"
 
 #: admin/settings.php:567
 #. translators: %s: the name of the template the preset was made from.
 msgid "Saved from %s, with your own colours."
-msgstr ""
+msgstr "基于 %s 保存，包含您的自定义配色。"
 
 #: admin/settings.php:550
 msgid "Saved preset"
-msgstr ""
+msgstr "已保存的预设"
 
 #: admin/settings.php:183
 #: admin/settings.php:228
 msgid "Saving…"
-msgstr ""
+msgstr "正在保存…"
 
 #: includes/class-mm-suc-p-template-view.php:261
 #: maintenance.php:164
 msgid "Scheduled maintenance"
-msgstr ""
+msgstr "系统计划维护中"
 
 #: includes/class-mm-suc-p-template-view.php:385
 msgid "Seconds"
-msgstr ""
+msgstr "秒"
 
 #: includes/class-mm-suc-p-template-view.php:510
 msgid "Send message"
-msgstr ""
+msgstr "发送留言"
 
 #: admin/views/editor.php:315
 msgid "Send messages to"
-msgstr ""
+msgstr "接收留言邮箱"
 
 #: includes/class-mm-suc-p-template-view.php:473
 msgid "Send us a message"
-msgstr ""
+msgstr "给我们留言"
 
 #: admin/views/messages.php:136
 msgid "Sender"
-msgstr ""
+msgstr "发件人"
 
 #: includes/class-mm-suc-p-template-view.php:466
 msgid "Sending…"
-msgstr ""
+msgstr "正在发送…"
 
 #: admin/settings.php:224
 #. translators: %s: a list of the parts a colour reaches, for example "the headline, the message and the site address".
 msgid "Sets %s on this design - they all use this one colour."
-msgstr ""
+msgstr "设置此设计中的 %s — 它们均使用此统一颜色。"
 
 #: admin/settings.php:38
 msgid "Settings"
-msgstr ""
+msgstr "设置"
 
 #: admin/settings.php:185
 #: admin/settings.php:446
 #: admin/settings.php:1013
 msgid "Settings saved."
-msgstr ""
+msgstr "设置已保存。"
 
 #: admin/settings.php:450
 msgid "Settings saved. Maintenance mode will not run and your site is still live because your chosen date is older than now."
-msgstr ""
+msgstr "设置已保存。维护模式将不会启动，您的网站仍保持正常访问，因为所选日期已早于当前时间。"
 
 #: admin/views/editor.php:516
 #: admin/views/editor.php:517
 msgid "Shading & Glass Blur"
-msgstr ""
+msgstr "遮罩与毛玻璃"
 
 #: admin/views/editor.php:285
 msgid "Show the countdown"
-msgstr ""
+msgstr "显示倒计时"
 
 #: admin/settings.php:194
 #: admin/views/editor.php:64
 #: maintenance.php:661
 msgid "Site is live"
-msgstr ""
+msgstr "网站正常运行中"
 
 #: admin/settings.php:196
 #: admin/views/editor.php:102
 msgid "Site is live. Visitors see the website normally."
-msgstr ""
+msgstr "网站正常运行中。访客可正常访问网站。"
 
 #: admin/views/editor.php:130
 #. translators: %s: the site timezone, for example UTC+03:00.
 msgid "Site time (%s). Leave empty to show no countdown."
-msgstr ""
+msgstr "网站时间 (%s)。留空则不显示倒计时。"
 
 #: admin/views/editor.php:39
 msgid "Skip to the maintenance settings"
-msgstr ""
+msgstr "跳转至维护设置"
 
 #: templates/soft-spectrum/template.json:2
 #. Template name: Soft Spectrum
 msgid "Soft Spectrum"
-msgstr ""
+msgstr "柔彩光谱"
 
 #: admin/views/editor.php:21
 msgid "Split"
-msgstr ""
+msgstr "左右分割"
 
 #: admin/views/messages.php:135
 msgid "Status"
-msgstr ""
+msgstr "状态"
 
 #: admin/views/editor.php:385
 msgid "Tablet"
-msgstr ""
+msgstr "平板端"
 
 #: template.php:393
 msgid "Tell us what you need and we will get back to you."
-msgstr ""
+msgstr "请告诉我们您的需求，我们会尽快与您取得联系。"
 
 #: admin/views/editor.php:229
 msgid "Template"
-msgstr ""
+msgstr "模板"
 
 #: admin/settings.php:220
 msgid "Template applied. Its colours are now yours to adjust."
-msgstr ""
+msgstr "模板已应用。您现在可以自由调整其配色。"
 
 #: admin/views/editor.php:500
 msgid "Text colour"
-msgstr ""
+msgstr "文本颜色"
 
 #: admin/views/editor.php:505
 msgid "Text colour hex value"
-msgstr ""
+msgstr "文本颜色十六进制值"
 
 #: template.php:258
 #: template.php:363
 #: template.php:446
 msgid "Thanks - your message is on its way."
-msgstr ""
+msgstr "感谢您的留言，消息已成功发送。"
 
 #: template.php:260
 msgid "That did not reach us. Check your connection and try again."
-msgstr ""
+msgstr "消息未成功送达。请检查网络连接后重试。"
 
 #: maintenance.php:738
 msgid "That link has expired. Go back and try again."
-msgstr ""
+msgstr "该链接已失效。请返回后重试。"
 
 #: admin/settings.php:203
 msgid "That time has passed - the countdown reads zero."
-msgstr ""
+msgstr "该时间已过 — 倒计时显示为零。"
 
 #: admin/settings.php:204
 msgid "That time has passed. Maintenance mode will not run and your site will remain live."
-msgstr ""
+msgstr "该时间已过。维护模式不会执行，网站将保持在线状态。"
 
 #: admin/views/editor.php:287
 msgid "The countdown needs an end time. Without one nothing is shown, even when this is on."
-msgstr ""
+msgstr "倒计时需要设置结束时间。若未设置，即使开启此项也不会显示。"
 
 #: admin/views/editor.php:207
 msgid "The page heading. You can also edit it directly in the preview."
-msgstr ""
+msgstr "页面主标题。您也可以直接在预览区中进行编辑。"
 
 #: admin/settings.php:641
 msgid "The preset was written but could not be read back. Check the uploads folder."
-msgstr ""
+msgstr "预设已写入但无法读取。请检查 uploads 目录。"
 
 #: admin/settings.php:227
 #. translators: %s: a list of the other parts a colour reaches.
 msgid "The same colour also sets %s."
-msgstr ""
+msgstr "相同颜色也会应用至 %s。"
 
 #: admin/views/editor.php:199
 msgid "The small line above the headline. Leave empty to hide it."
-msgstr ""
+msgstr "主标题上方的小字。留空即可隐藏。"
 
 #: template.php:275
 msgid "The wait is over."
-msgstr ""
+msgstr "即将恢复访问。"
 
 #: admin/settings.php:222
 msgid "This design paints its own colours, so none of these apply to it."
-msgstr ""
+msgstr "此设计使用专属颜色方案，因此这些设置不适用。"
 
 #: includes/class-mm-suc-p-template-view.php:398
 msgid "Time until we are back"
-msgstr ""
+msgstr "距离网站恢复上线还有"
 
 #: template.php:369
 msgid "Too many messages. Try again in 15 minutes."
-msgstr ""
+msgstr "发送消息过于频繁。请在15分钟后重试。"
 
 #: maintenance.php:673
 msgid "Turn maintenance mode off"
-msgstr ""
+msgstr "关闭维护模式"
 
 #: maintenance.php:674
 msgid "Turn maintenance mode on"
-msgstr ""
+msgstr "开启维护模式"
 
 #: admin/settings.php:239
 msgid "unread"
-msgstr ""
+msgstr "未读"
 
 #: admin/views/messages.php:164
 msgid "Unread"
-msgstr ""
+msgstr "未读"
 
 #: admin/views/messages.php:163
 msgid "Unread message"
-msgstr ""
+msgstr "未读消息"
 
 #: admin/settings.php:193
 msgid "Unsaved change"
-msgstr ""
+msgstr "未保存的更改"
 
 #: admin/views/editor.php:176
 msgid "Use site logo"
-msgstr ""
+msgstr "使用网站徽标"
 
 #: admin/settings.php:192
 msgid "Use this image"
-msgstr ""
+msgstr "使用此图片"
 
 #: admin/views/editor.php:496
 msgid "Used for the countdown, the contact action and links."
-msgstr ""
+msgstr "用于倒计时、联系操作及链接。"
 
 #: admin/views/editor.php:188
 msgid "Using your site logo. Choosing an image here overrides it for maintenance mode only."
-msgstr ""
+msgstr "当前正在使用网站徽标。在此处选择图片将仅在维护模式下进行覆盖。"
 
 #: admin/views/messages.php:181
 msgid "View"
-msgstr ""
+msgstr "查看"
 
 #: admin/settings.php:197
 #: admin/views/editor.php:101
 msgid "Visitors see the maintenance page. You and other administrators still see the site."
-msgstr ""
+msgstr "访客将看到维护页面。您和其他管理员仍可正常查看网站。"
 
 #: templates/warm-bench/template.json:2
 #. Template name: Warm Bench
 msgid "Warm Bench"
-msgstr ""
+msgstr "温煦长椅"
 
 #: includes/class-mm-suc-p-template-view.php:263
 #: maintenance.php:166
 msgid "We are making a few improvements behind the scenes. Thanks for your patience - the site will be back shortly."
-msgstr ""
+msgstr "我们正在对网站进行优化和维护。感谢您的耐心等待 — 网站即将恢复上线。"
 
 #: template.php:259
 msgid "We could not send that. Try again shortly."
-msgstr ""
+msgstr "发送失败。请稍后重试。"
 
 #: includes/class-mm-suc-p-template-view.php:262
 #: maintenance.php:165
 msgid "We will be back soon"
-msgstr ""
+msgstr "我们即将恢复上线"
 
 #: admin/views/messages.php:95
 #. translators: %s: recipient email address
 msgid "When a message arrives, an email is dispatched to %s. If mail/SMTP is not set up on your host, messages are never lost — they remain safely stored here."
-msgstr ""
+msgstr "收到留言时将自动发送邮件至 %s。即使主机未配置 SMTP，留言也不会丢失 — 将始终安全保存在此处。"
 
 #: admin/views/messages.php:214
 msgid "When checked, deleting this plugin from WordPress will permanently remove the messages database table and purge all saved inquiries."
-msgstr ""
+msgstr "勾选此项后，从 WordPress 中删除本插件将永久删除消息数据库表并清空所有已保存的留言。"
 
 #: admin/views/messages.php:128
 msgid "When visitors send inquiries through the contact form on your maintenance page, they will appear here."
-msgstr ""
+msgstr "当访客通过维护页面的联系表单发送咨询时，留言将显示在此处。"
 
 #: admin/views/editor.php:351
 msgid "Who still sees the site"
-msgstr ""
+msgstr "允许正常访问网站的角色"
 
 #: admin/settings.php:863
 #: admin/settings.php:880
 msgid "You do not have permission to access this screen."
-msgstr ""
+msgstr "您没有权限访问此界面。"
 
 #: maintenance.php:742
 msgid "You do not have permission to change maintenance mode."
-msgstr ""
+msgstr "您没有权限更改维护模式。"
 
 #: admin/settings.php:429
 msgid "You do not have permission to change these settings."
-msgstr ""
+msgstr "您没有权限修改这些设置。"
 
 #: admin/settings.php:941
 msgid "You do not have permission to clear messages."
-msgstr ""
+msgstr "您没有权限清除消息。"
 
 #: admin/settings.php:903
 msgid "You do not have permission to delete this message."
-msgstr ""
+msgstr "您没有权限删除此消息。"
 
 #: admin/settings.php:1117
 msgid "You do not have permission to perform this action."
-msgstr ""
+msgstr "您没有权限执行此操作。"
 
 #: admin/settings.php:481
 msgid "You do not have permission to preview this."
-msgstr ""
+msgstr "您没有权限预览此内容。"
 
 #: admin/settings.php:526
 msgid "You do not have permission to save a preset."
-msgstr ""
+msgstr "您没有权限保存预设。"
 
 #: admin/settings.php:971
 msgid "You do not have permission to update this message."
-msgstr ""
+msgstr "您没有权限更新此消息。"
 
 #: admin/settings.php:1003
 msgid "You do not have permission to update this setting."
-msgstr ""
+msgstr "您没有权限更新此设置。"
 
 #: includes/class-mm-suc-p-template-view.php:491
 msgid "Your email"
-msgstr ""
+msgstr "您的电子邮箱"
 
 #: includes/class-mm-suc-p-template-view.php:485
 msgid "Your name"
-msgstr ""
+msgstr "您的姓名"
 
 #: admin/settings.php:522
 #: template.php:353
 msgid "Your session expired. Reload the page and try again."
-msgstr ""
+msgstr "会话已过期。请刷新页面后重试。"
 
 #: admin/settings.php:477
 #: admin/settings.php:899
@@ -1061,5 +1067,5 @@ msgstr ""
 #: admin/settings.php:999
 #: admin/settings.php:1113
 msgid "Your session expired. Reload the page."
-msgstr ""
+msgstr "会话已过期。请刷新页面。"
 

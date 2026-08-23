@@ -4,11 +4,11 @@ Tags: maintenance mode, under construction, coming soon, countdown timer, site u
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 5.1
+Stable tag: 5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-The fastest, most elegant visual maintenance mode and coming soon plugin for WordPress. Live inline editing, real-time color mapping, drop-in templates, countdown timer, and SEO protection.
+A lightweight WordPress maintenance & coming soon plugin with live visual editing, modern templates, SEO protection, and zero bloat.
 
 == Description ==
 
@@ -103,6 +103,13 @@ If you enable **Auto-Disable**, the plugin will automatically turn off maintenan
 Customize your layout, background, and colors in the visual editor. Then scroll to the bottom of the **Design & Styling** panel and click **Save as preset**. Your design is saved into your `wp-content/uploads/mm-suc-p-templates/` directory as an independent, update-safe template folder.
 
 == Changelog ==
+
+= 5.2 =
+* Fix: Resolved message management actions where View modal and Delete buttons were unresponsive.
+* Improvement: Added row-level click support to inspect inquiries in the detail modal directly.
+* Improvement: Added toast notifications container and error message extraction for admin message actions.
+* Improvement: Design system token normalization for typography and spacing scales.
+* Improvement: Added missing message counter localization strings.
 
 = 5.1 =
 * Improvement: Full WordPress Plugin Check compliance and i18n standards alignment.
