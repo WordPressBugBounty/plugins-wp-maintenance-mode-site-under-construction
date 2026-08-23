@@ -1,0 +1,75 @@
+/*
+ * Template: Amber Glow
+ *
+ * Scoped to .mm-suc-p-page--tpl-amber-glow so it can only ever restyle its own
+ * template. Delete this folder and the template disappears from the library
+ * with no other change anywhere in the plugin.
+ *
+ * Page layer: this file may use raw colour values, and may only declare or read
+ * --mm-suc-p-page-* custom properties.
+ */
+
+.mm-suc-p-page--tpl-amber-glow .mm-suc-p-page-card {
+	display: grid;
+	grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+	gap: 48px;
+	align-items: center;
+	max-width: 1000px;
+	border-radius: 14px;
+}
+
+.mm-suc-p-page--tpl-amber-glow .mm-suc-p-tpl-copy {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	min-width: 0;
+}
+
+.mm-suc-p-page--tpl-amber-glow .mm-suc-p-tpl-aside {
+	min-width: 0;
+	padding-inline-start: 48px;
+	border-inline-start: 1px solid var(--mm-suc-p-page-line);
+}
+
+.mm-suc-p-page--tpl-amber-glow .mm-suc-p-page-countdown {
+	grid-template-columns: minmax(0, 1fr);
+	gap: 12px;
+	margin: 0;
+}
+
+.mm-suc-p-page--tpl-amber-glow .mm-suc-p-page-unit {
+	flex-direction: row;
+	align-items: baseline;
+	justify-content: space-between;
+	padding: 12px 16px;
+	border: 0;
+	border-block-end: 1px solid var(--mm-suc-p-page-line);
+	border-radius: 0;
+	text-align: start;
+}
+
+.mm-suc-p-page--tpl-amber-glow .mm-suc-p-page-unit-value {
+	font-size: clamp(28px, 3.2vw, 40px);
+}
+
+.mm-suc-p-page--tpl-amber-glow .mm-suc-p-page-rule {
+	width: 40px;
+	height: 3px;
+}
+
+.mm-suc-p-page--tpl-amber-glow .mm-suc-p-page-contact {
+	align-self: start;
+	border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+	.mm-suc-p-page--tpl-amber-glow .mm-suc-p-page-card {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 24px;
+	}
+
+	.mm-suc-p-page--tpl-amber-glow .mm-suc-p-tpl-aside {
+		padding-inline-start: 0;
+		border-inline-start: 0;
+	}
+}

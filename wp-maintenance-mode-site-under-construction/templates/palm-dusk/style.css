@@ -1,0 +1,66 @@
+/*
+ * Template: Palm Dusk
+ *
+ * Scoped to .mm-suc-p-page--tpl-palm-dusk so it can only ever restyle its own
+ * template. Delete this folder and the template disappears from the library
+ * with no other change anywhere in the plugin.
+ *
+ * Page layer: this file may use raw colour values, and may only declare or read
+ * --mm-suc-p-page-* custom properties.
+ */
+
+.mm-suc-p-page--tpl-palm-dusk .mm-suc-p-page-shell {
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: space-between;
+	padding: 32px;
+}
+
+.mm-suc-p-page--tpl-palm-dusk .mm-suc-p-tpl-top {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.mm-suc-p-page--tpl-palm-dusk .mm-suc-p-tpl-top .mm-suc-p-page-host {
+	margin: 0;
+}
+
+.mm-suc-p-page--tpl-palm-dusk .mm-suc-p-page-card {
+	max-width: 640px;
+	padding: 32px;
+	border-radius: 14px;
+}
+
+.mm-suc-p-page--tpl-palm-dusk .mm-suc-p-page-headline {
+	font-size: clamp(28px, 4.2vw, 52px);
+}
+
+.mm-suc-p-page--tpl-palm-dusk .mm-suc-p-page-rule {
+	width: 100%;
+	height: 1px;
+	background-color: var(--mm-suc-p-page-line);
+}
+
+.mm-suc-p-page--tpl-palm-dusk .mm-suc-p-page-countdown {
+	gap: 8px;
+}
+
+.mm-suc-p-page--tpl-palm-dusk .mm-suc-p-page-unit {
+	padding: 8px;
+	border: 0;
+	background-color: rgba(255, 255, 255, 0.06);
+	border-radius: 8px;
+}
+
+.mm-suc-p-page--tpl-palm-dusk .mm-suc-p-page-contact {
+	align-self: start;
+}
+
+@media (max-width: 768px) {
+	.mm-suc-p-page--tpl-palm-dusk .mm-suc-p-page-shell {
+		padding: 24px 16px;
+	}
+}

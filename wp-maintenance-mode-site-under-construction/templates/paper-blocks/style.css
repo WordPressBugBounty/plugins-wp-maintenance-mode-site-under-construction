@@ -1,0 +1,75 @@
+/*
+ * Template: Paper Blocks
+ *
+ * Scoped to .mm-suc-p-page--tpl-paper-blocks so it can only ever restyle its own
+ * template. Delete this folder and the template disappears from the library
+ * with no other change anywhere in the plugin.
+ *
+ * Page layer: this file may use raw colour values, and may only declare or read
+ * --mm-suc-p-page-* custom properties.
+ */
+
+.mm-suc-p-page--tpl-paper-blocks .mm-suc-p-page-card {
+	max-width: 660px;
+	border: 2px solid #142033;
+	border-radius: 8px;
+	background-color: rgba(255, 255, 255, 0.94);
+	box-shadow: 12px 12px 0 var(--mm-suc-p-page-accent);
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+}
+
+.mm-suc-p-page--tpl-paper-blocks .mm-suc-p-tpl-head {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	align-items: center;
+	justify-content: space-between;
+	padding-block-end: 16px;
+	border-block-end: 2px solid #142033;
+}
+
+.mm-suc-p-page--tpl-paper-blocks .mm-suc-p-page-eyebrow {
+	margin: 0;
+	letter-spacing: 0.16em;
+}
+
+.mm-suc-p-page--tpl-paper-blocks .mm-suc-p-page-headline {
+	letter-spacing: -0.03em;
+}
+
+.mm-suc-p-page--tpl-paper-blocks .mm-suc-p-page-rule {
+	display: none;
+}
+
+.mm-suc-p-page--tpl-paper-blocks .mm-suc-p-tpl-foot {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.mm-suc-p-page--tpl-paper-blocks .mm-suc-p-page-unit {
+	border: 2px solid #142033;
+	border-radius: 8px;
+	background-color: rgba(255, 255, 255, 0.6);
+}
+
+.mm-suc-p-page--tpl-paper-blocks .mm-suc-p-page-contact {
+	align-self: start;
+	border-radius: 8px;
+}
+
+.mm-suc-p-page--tpl-paper-blocks .mm-suc-p-page-sheet-inner {
+	background-color: #f3f4f2;
+}
+
+.mm-suc-p-page--tpl-paper-blocks .mm-suc-p-page-row input,
+.mm-suc-p-page--tpl-paper-blocks .mm-suc-p-page-row textarea {
+	background-color: rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 560px) {
+	.mm-suc-p-page--tpl-paper-blocks .mm-suc-p-page-card {
+		box-shadow: 6px 6px 0 var(--mm-suc-p-page-accent);
+	}
+}

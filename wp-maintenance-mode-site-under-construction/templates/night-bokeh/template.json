@@ -1,0 +1,27 @@
+{
+	"name": "Night Bokeh",
+	"description": "Near-black with warm out-of-focus lights. No card chrome, just very large type.",
+	"version": "1.0.0",
+	"author": "wp-buy",
+	"order": 20,
+	"view": "view.php",
+	"style": "style.css",
+	"background": "background.jpg",
+	"thumbnail": "thumbnail.jpg",
+	"palette": {
+		"accent": "#ff7a45",
+		"ink": "#ffffff",
+		"on_accent": "#1a0a03",
+		"veil": "#000000",
+		"card": "#0b0b0f",
+		"card_alpha": 52,
+		"line_alpha": 20,
+		"overlay": 35,
+		"blur": 16
+	},
+	"supports": {
+		"countdown": true,
+		"contact": true,
+		"logo": true
+	}
+}

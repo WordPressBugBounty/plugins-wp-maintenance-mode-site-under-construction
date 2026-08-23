@@ -1,0 +1,27 @@
+{
+	"name": "Warm Bench",
+	"description": "A warm, shallow-focus photograph with the message resting in the lower corner.",
+	"version": "1.0.0",
+	"author": "wp-buy",
+	"order": 50,
+	"view": "view.php",
+	"style": "style.css",
+	"background": "background.jpg",
+	"thumbnail": "thumbnail.jpg",
+	"palette": {
+		"accent": "#e79448",
+		"ink": "#ffffff",
+		"on_accent": "#1c1003",
+		"veil": "#150d06",
+		"card": "#130c06",
+		"card_alpha": 55,
+		"line_alpha": 22,
+		"overlay": 48,
+		"blur": 16
+	},
+	"supports": {
+		"countdown": true,
+		"contact": true,
+		"logo": true
+	}
+}

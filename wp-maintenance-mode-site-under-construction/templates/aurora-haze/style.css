@@ -1,0 +1,51 @@
+/*
+ * Template: Aurora Haze
+ *
+ * Scoped to .mm-suc-p-page--tpl-aurora-haze so it can only ever restyle its own
+ * template. Delete this folder and the template disappears from the library
+ * with no other change anywhere in the plugin.
+ *
+ * Page layer: this file may use raw colour values, and may only declare or read
+ * --mm-suc-p-page-* custom properties.
+ */
+
+.mm-suc-p-page--tpl-aurora-haze .mm-suc-p-page-card {
+	max-width: 700px;
+	padding: 48px;
+	border-radius: 24px;
+	box-shadow: 0 24px 64px rgba(70, 40, 120, 0.18);
+}
+
+.mm-suc-p-page--tpl-aurora-haze .mm-suc-p-page-logo {
+	margin-block-end: 16px;
+}
+
+.mm-suc-p-page--tpl-aurora-haze .mm-suc-p-page-eyebrow {
+	align-self: start;
+	padding: 8px 16px;
+	border-radius: 999px;
+	background-color: rgba(255, 255, 255, 0.72);
+}
+
+.mm-suc-p-page--tpl-aurora-haze .mm-suc-p-page-rule {
+	width: 48px;
+	height: 4px;
+}
+
+.mm-suc-p-page--tpl-aurora-haze .mm-suc-p-page-unit {
+	border-radius: 14px;
+	background-color: rgba(255, 255, 255, 0.62);
+}
+
+.mm-suc-p-page--tpl-aurora-haze .mm-suc-p-page-host {
+	opacity: 0.6;
+}
+
+.mm-suc-p-page--tpl-aurora-haze .mm-suc-p-page-sheet-inner {
+	background-color: #f6f5fb;
+}
+
+.mm-suc-p-page--tpl-aurora-haze .mm-suc-p-page-row input,
+.mm-suc-p-page--tpl-aurora-haze .mm-suc-p-page-row textarea {
+	background-color: rgba(255, 255, 255, 0.85);
+}

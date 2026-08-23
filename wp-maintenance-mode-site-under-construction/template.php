@@ -1,924 +1,492 @@
 <?php
-if (! defined('ABSPATH')) exit; // Exit if accessed directly
-
-
-if (! class_exists('MM_And_SUC_Free_page_template')) {
-    class MM_And_SUC_Free_page_template
-    {
-
-
-        public function __construct()
-        {
-            add_action('init', array($this, 'template'));
-            add_action('wp_ajax_contactform_action', array($this, 'ajax_contactform_action_callback'));
-            add_action('wp_ajax_nopriv_contactform_action', array($this, 'ajax_contactform_action_callback'));
-        }
-        public function template()
-        {
-            $options = get_option('MM_And_SUC_Free_options', array());
-
-            if ($this->UserConditional($options)) {
-                return;
-            }
-
-            $this->remove_header_tage_run_hook();
-            add_action('wp_enqueue_scripts', array($this, 'inc_js_file'));
-            add_action('wp_enqueue_scripts', array($this, 'inc_css_file'));
-
-            // Handle Slim Mode
-            if (isset($options['MM_And_SUC_Free_timer_mode']) && $options['MM_And_SUC_Free_timer_mode'] === 'slim_mode') {
-                $slim_title = $options['MM_And_SUC_Free_slim_title'] ?? __('Under Maintenance', 'wp-maintenance-mode-site-under-construction');
-                $slim_text = $options['MM_And_SUC_Free_slim_text'] ?? __('This site is under maintenance, We’re working hard to improve your experience. Stay tuned as we count down to launch day!', 'wp-maintenance-mode-site-under-construction');
-?>
-
-<!DOCTYPE HTML>
-<html lang="en">
-
-<head>
-    <title><?php echo esc_html(get_option('blogname')); ?></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php wp_head(); ?>
-    <style>
-    /* General Reset */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    /* Body */
-    html,
-    body {
-        background-color: #f4f4f4;
-        /* Light gray background */
-        font-family: Arial, sans-serif;
-    }
-
-    /* Container */
-    .maintenance-box {
-        background-color: #ffffff;
-        /* White background */
-        border: 1px solid #ddd;
-        /* Light border */
-        /* Subtle shadow */
-        max-width: 780px;
-        /* Increase width */
-        margin: 50px auto;
-        /* Top margin and horizontal centering */
-        padding: 30px;
-        text-align: left;
-    }
-
-    /* Header */
-    .maintenance-box h1 {
-        font-size: 1.3em;
-        /* Smaller font size */
-        font-weight: normal;
-        /* Regular weight */
-        color: #666666;
-        /* Grey color */
-        margin-bottom: 10px;
-        border-bottom: 1px solid #ddd;
-        /* Horizontal line */
-        padding-bottom: 10px;
-        padding-top: 20px;
-        font-weight: bold;
-    }
-
-    /* Description */
-    .maintenance-box p {
-        font-size: 0.9em;
-        /* Slightly larger text */
-        color: #333;
-        /* Lighter gray text */
-        margin-top: 10px;
-        line-height: 1.5;
-        /* Improved readability */
-        padding-top: 20px;
-
-    }
-    </style>
-</head>
-
-<body>
-    <div class="maintenance-box">
-        <h1><?php echo esc_html($slim_title ?: 'Under Maintenance'); ?></h1>
-        <p><?php echo esc_html($slim_text ?: "This site is under maintenance. We're working hard to improve your experience. Stay tuned as we count down to launch day!"); ?>
-        </p>
-    </div>
-    <?php wp_footer(); ?>
-</body>
-
-</html>
-<?php
-                exit;
-            }
-
-
-
-
-            // Non-Slim Modes
-            $timer_mode = $options['MM_And_SUC_Free_timer_mode'] ?? 'timer_with_contact';
-            $timer_style = $options['MM_And_SUC_Free_timer_style'] ?? 'colored_background';
-
-            if ($timer_mode !== 'slim_mode' && $timer_style === 'colored_background') {
-                $background_color = $options['MM_And_SUC_Free_colored_background_color'] ?? '#ffd54f';
-                $countdown_title = $options['MM_And_SUC_Free_title'] ?? 'Countdown Timer';
-                $countdown_date = isset($options['MM_And_SUC_Free_date'])
-                    ? (new DateTime($options['MM_And_SUC_Free_date']))->format('Y-m-d\TH:i:s')
-                    : '2024-12-31T23:59:59';
-            ?>
-<!DOCTYPE HTML>
-<html lang="en">
-
-<head>
-    <title><?php echo esc_html(get_option('blogname')); ?></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php wp_head(); ?>
-    <style>
-    /* General Reset */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    /* Body */
-    html,
-    body {
-
-        overflow: hidden;
-    }
-    </style>
-</head>
-
-<body>
-    <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    /* Full Page Layout */
-    html,
-    body {
-        height: 100%;
-        /* Full height */
-        overflow: hidden;
-        /* Prevent scrolling */
-        font-family: Arial, sans-serif;
-    }
-
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-    }
-
-    .countdown-container {
-        text-align: center;
-        color: #333;
-        margin-bottom: 20px;
-    }
-
-    .countdown-container h1 {
-        font-size: 2em;
-        text-transform: uppercase;
-        margin-bottom: 20px;
-    }
-
-    .countdown-container ul {
-        list-style: none;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-    }
-
-    .countdown-container li {
-        text-align: center;
-    }
-
-    .countdown-container li span {
-        display: block;
-        font-size: 2em;
-        font-weight: bold;
-    }
-    </style>
-    <div class="main-area" style="overflow:hidden;">
-        <div class="container-fluid full-height position-static">
-            <?php if ($timer_mode === 'timer_with_contact') { ?>
-            <!-- Left Section (Contact Form) -->
-            <section class="left-section col full-height">
-                <div class="display-table">
-                    <div class="main-content" style="padding: 10px;">
-                        <h3 class="title">
-                            <b><?php _e('Contact us:', 'wp-maintenance-mode-site-under-construction'); ?></b></h3>
-                        <p><?php _e('We will be back soon! For more information, feel free to contact us anytime', 'wp-maintenance-mode-site-under-construction'); ?>
-                        </p>
-                        <div class="email-input-area">
-                            <form class="contact2-form validate-form" id="contactform">
-                                <div class="wrap-input2 validate-input" data-validate="Name is required">
-                                    <label for="name">Your Name</label>
-                                    <input class="input2" id="name" type="text" name="name"
-                                        placeholder="Enter your full name">
-                                </div>
-                                <div class="wrap-input2 validate-input"
-                                    data-validate="Valid email is required: ex@abc.xyz">
-                                    <label for="email">Your Email Address</label>
-                                    <input class="input2" id="email" type="text" name="email"
-                                        placeholder="Enter your email address (e.g., example@example.com)">
-                                </div>
-                                <div class="wrap-input2 validate-input" data-validate="Message is required">
-                                    <label for="message">Your Message</label>
-                                    <textarea class="input2" name="message" id="message"
-                                        placeholder="Type your message or query here"></textarea>
-                                </div>
-                                <div id="contact-msg"></div>
-                                <div class="container-contact2-form-btn">
-                                    <div class="wrap-contact2-form-btn">
-                                        <div class="contact2-form-bgbtn"></div>
-                                        <button class="contact2-form-btn" id="contactbutton">
-                                            <?php esc_html_e('Send Message', 'wp-maintenance-mode-site-under-construction'); ?>
-                                        </button>
-                                    </div>
-                                </div>
-                                <?php echo wp_nonce_field('contactform_action', '_acf_nonce', true, false); ?>
-                                <input type="hidden" name="action" value="contactform_action" />
-                            </form>
-                        </div><!-- email-input-area -->
-                    </div><!-- main-content -->
-                </div><!-- display-table -->
-            </section><!-- left-section -->
-
-            <!-- Right Section -->
-            <section class="right-section half_width_mode" <?php if ($timer_style === 'colored_background') { ?>
-                style="background-color: <?php echo esc_attr($background_color); ?>; display : flex; justify-content : center; align-items : center; " <?php } elseif ($timer_style === 'background_image' && $options['MM_And_SUC_Free_option_type_of_bg'] == 2) {
-                                        $filename_big = pathinfo(MM_And_SUC_Free_PLUGIN_URL . 'textures/' . $options['MM_And_SUC_Free_textures']);
-                                        $file_big_name = $filename_big['dirname'] . '/' . $filename_big['filename'] . '-big.' . $filename_big['extension'];
-                                    ?> style="background-image: url(<?php echo esc_attr($file_big_name); ?>);"
-                <?php } elseif ($timer_style === 'background_image' && $options['MM_And_SUC_Free_option_type_of_bg'] == 1) { ?>
-                style="background-image: url(<?php echo esc_attr(wp_get_attachment_image_src($options['MM_And_SUC_Free_image'], 'full')[0]); ?>);"
-                <?php } ?>>
-
-                <div class="countdown-container">
-                    <?php if ($timer_style === 'colored_background') { ?>
-                    <!-- Simple Timer -->
-                    <h1><?php echo esc_html($countdown_title); ?></h1>
-                    <ul id="countdown">
-                        <li><span id="days">--</span>Days</li>
-                        <li><span id="hours">--</span>Hours</li>
-                        <li><span id="minutes">--</span>Minutes</li>
-                        <li><span id="seconds">--</span>Seconds</li>
-                    </ul>
-                    <div class="cta-buttons">
-                        <?php
-                                                $cta_options = get_option('MM_And_SUC_Free_options');
-                                                if (!empty($cta_options['MM_And_SUC_Free_enable_cta'])) {
-                                                    $bg_color = $cta_options['MM_And_SUC_Free_cta_bg_color'] ?? '#007BFF';
-                                                    $text_color = $cta_options['MM_And_SUC_Free_cta_text_color'] ?? '#FFFFFF';
-                                                    for ($i = 1; $i <= 4; $i++) {
-                                                        $label = $cta_options["MM_And_SUC_Free_cta_label_$i"] ?? '';
-                                                        $url = $cta_options["MM_And_SUC_Free_cta_url_$i"] ?? '';
-                                                        if (!empty($label) && !empty($url)) {
-                                                            echo '<a href="' . esc_url($url) . '" class="cta-button" style="background-color: ' . esc_attr($bg_color) . '; color: ' . esc_attr($text_color) . ';" target="_blank" rel="noopener noreferrer">' . esc_html($label) . '</a>';
-                                                        }
-                                                    }
-                                                }
-                                                ?>
-                    </div>
-
-                    <style>
-                    .cta-buttons {
-                        display: flex;
-                        justify-content: center;
-                        gap: 20px;
-                        margin-top: 30px;
-                    }
-
-                    .cta-button {
-                        display: inline-block;
-                        padding: 8px 30px;
-                        background-color: #007BFF;
-                        color: #FFFFFF;
-                        text-decoration: none;
-                        border-radius: 4px;
-                        font-size: 14px;
-                        transition: background-color 0.3s ease, transform 0.2s ease;
-                        text-align: center;
-                        min-width: 100px;
-                    }
-
-                    .cta-button:hover {
-                        background-color: #0056b3;
-                        transform: scale(1.05);
-                    }
-                    </style>
-                    <?php } elseif ($timer_style === 'background_image') { ?>
-                    <!-- Rounded Timer -->
-                    <div id="rounded-countdown">
-                        <h3 class="title responsive_title">
-                            <b><?php echo esc_html($options['MM_And_SUC_Free_title']); ?></b></h3>
-                        <?php
-                                                $date_time_wp = (array)current_datetime();
-                                                $date = new DateTime($date_time_wp['date']);
-                                                $date2 = new DateTime($options['MM_And_SUC_Free_date']);
-                                                $diff = $date2->getTimestamp() - $date->getTimestamp();
-                                                ?>
-                        <div class="countdown" data-remaining-sec="<?php echo esc_attr($diff); ?>"></div>
-                        <p class="des responsive_des" style="font-size: 18px;">
-                            <?php echo esc_html($options['MM_And_SUC_Free_description']); ?></p>
-                    </div>
-                    <div class="cta-buttons">
-                        <?php
-                                                $cta_options = get_option('MM_And_SUC_Free_options');
-                                                if (!empty($cta_options['MM_And_SUC_Free_enable_cta'])) {
-                                                    $bg_color = $cta_options['MM_And_SUC_Free_cta_bg_color'] ?? '#007BFF';
-                                                    $text_color = $cta_options['MM_And_SUC_Free_cta_text_color'] ?? '#FFFFFF';
-                                                    for ($i = 1; $i <= 4; $i++) {
-                                                        $label = $cta_options["MM_And_SUC_Free_cta_label_$i"] ?? '';
-                                                        $url = $cta_options["MM_And_SUC_Free_cta_url_$i"] ?? '';
-                                                        if (!empty($label) && !empty($url)) {
-                                                            echo '<a href="' . esc_url($url) . '" class="cta-button" style="background-color: ' . esc_attr($bg_color) . '; color: ' . esc_attr($text_color) . ';" target="_blank" rel="noopener noreferrer">' . esc_html($label) . '</a>';
-                                                        }
-                                                    }
-                                                }
-                                                ?>
-                    </div>
-
-
-                    <?php } ?>
-                </div>
-            </section><!-- right-section -->
-            <?php } else { ?>
-            <!-- Full Width Section -->
-            <sec class="right-section full_screen_mode" <?php if ($timer_style === 'colored_background') { ?>
-                style="background-color: <?php echo esc_attr($background_color); ?>; display : flex; justify-content : center; align-items : center;"
-                <?php } elseif ($timer_style === 'background_image') { ?>
-                style="background-image: url(<?php echo esc_attr(wp_get_attachment_image_src($options['MM_And_SUC_Free_image'], 'full')[0]); ?>);"
-                <?php } ?>>
-                <div class="countdown-container">
-                    <?php if ($timer_style === 'colored_background') { ?>
-                    <!-- Simple Timer -->
-                    <h1><?php echo esc_html($countdown_title); ?></h1>
-                    <ul id="countdown">
-                        <li><span id="days">--</span>Days</li>
-                        <li><span id="hours">--</span>Hours</li>
-                        <li><span id="minutes">--</span>Minutes</li>
-                        <li><span id="seconds">--</span>Seconds</li>
-                    </ul>
-                    <div class="cta-buttons">
-                        <?php
-                                                $cta_options = get_option('MM_And_SUC_Free_options');
-                                                if (!empty($cta_options['MM_And_SUC_Free_enable_cta'])) {
-                                                    $bg_color = $cta_options['MM_And_SUC_Free_cta_bg_color'] ?? '#007BFF';
-                                                    $text_color = $cta_options['MM_And_SUC_Free_cta_text_color'] ?? '#FFFFFF';
-                                                    for ($i = 1; $i <= 4; $i++) {
-                                                        $label = $cta_options["MM_And_SUC_Free_cta_label_$i"] ?? '';
-                                                        $url = $cta_options["MM_And_SUC_Free_cta_url_$i"] ?? '';
-                                                        if (!empty($label) && !empty($url)) {
-                                                            echo '<a href="' . esc_url($url) . '" class="cta-button" style="background-color: ' . esc_attr($bg_color) . '; color: ' . esc_attr($text_color) . ';" target="_blank" rel="noopener noreferrer">' . esc_html($label) . '</a>';
-                                                        }
-                                                    }
-                                                }
-                                                ?>
-                    </div>
-
-                    <style>
-                    .body {
-                        overflow: hidden;
-                    }
-
-                    .cta-buttons {
-                        display: flex;
-                        justify-content: center;
-                        gap: 20px;
-                        margin-top: 30px;
-                    }
-
-                    .cta-button {
-                        display: inline-block;
-                        padding: 8px 30px;
-                        background-color: #007BFF;
-                        color: #FFFFFF;
-                        text-decoration: none;
-                        border-radius: 4px;
-                        font-size: 14px;
-                        transition: background-color 0.3s ease, transform 0.2s ease;
-                        text-align: center;
-                        min-width: 100px;
-                    }
-
-                    .cta-button:hover {
-                        background-color: #0056b3;
-                        transform: scale(1.05);
-                    }
-                    </style>
-                    <?php } elseif ($timer_style === 'background_image') { ?>
-                    <!-- Rounded Timer -->
-                    <div id="rounded-countdown">
-                        <h3 class="title responsive_title">
-                            <b><?php echo esc_html($options['MM_And_SUC_Free_title']); ?></b></h3>
-                        <?php
-                                                $date_time_wp = (array)current_datetime();
-                                                $date = new DateTime($date_time_wp['date']);
-                                                $date2 = new DateTime($options['MM_And_SUC_Free_date']);
-                                                $diff = $date2->getTimestamp() - $date->getTimestamp();
-                                                ?>
-                        <div class="countdown" data-remaining-sec="<?php echo esc_attr($diff); ?>"></div>
-                        <p class="des responsive_des" style="font-size: 18px;">
-                            <?php echo esc_html($options['MM_And_SUC_Free_description']); ?></p>
-                    </div>
-                    <?php } ?>
-                </div>
-                </section><!-- right-section -->
-                <?php } ?>
-        </div><!-- container-fluid -->
-    </div><!-- main-area -->
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const countdownDate = new Date("<?php echo esc_js($countdown_date); ?>").getTime();
-
-        if (!isNaN(countdownDate)) {
-            const x = setInterval(function() {
-                const now = new Date().getTime();
-                const distance = countdownDate - now;
-
-                if (distance < 0) {
-                    clearInterval(x);
-                    document.querySelector("#countdown").innerHTML = "The countdown has ended!";
-                } else {
-                    document.getElementById("days").textContent = Math.floor(distance / (1000 * 60 *
-                        60 * 24));
-                    document.getElementById("hours").textContent = Math.floor((distance % (1000 * 60 *
-                        60 * 24)) / (1000 * 60 * 60));
-                    document.getElementById("minutes").textContent = Math.floor((distance % (1000 * 60 *
-                        60)) / (1000 * 60));
-                    document.getElementById("seconds").textContent = Math.floor((distance % (1000 *
-                        60)) / 1000);
-                }
-            }, 1000);
-        }
-    });
-    </script>
-</body>
-
-
-
-</html>
-
-<?php
-                exit;
-            } elseif ($timer_mode !== 'slim_mode' && $timer_style === 'background_image') {
-                $timer_mode = $options['MM_And_SUC_Free_timer_mode'] ?? 'timer_without_contact';
-            ?>
-<!DOCTYPE HTML>
-<html lang="en">
-
-<head>
-    <title><?php echo esc_html(get_option('blogname')); ?></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php wp_head(); ?>
-    <style>
-    /* General Reset */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    /* Body */
-    html,
-    body {
-        overflow: hidden;
-    }
-    </style>
-</head>
-
-
-<body>
-    <div class="main-area" style="overflow : hidden ;">
-        <div class="container-fluid full-height position-static">
-            <?php if ($timer_mode === 'timer_with_contact') { ?>
-            <!-- Left Section (Contact Form) -->
-            <section class="left-section col full-height">
-                <div class="display-table">
-                    <div class="main-content" style="padding: 10px;">
-                        <h3 class="title">
-                            <b><?php _e('Contact us:', 'wp-maintenance-mode-site-under-construction'); ?></b></h3>
-                        <p><?php _e('We will be back soon! For more information, feel free to contact us anytime', 'wp-maintenance-mode-site-under-construction'); ?>
-                        </p>
-                        <div class="email-input-area">
-                            <form class="contact2-form validate-form" id="contactform">
-                                <div class="wrap-input2 validate-input" data-validate="Name is required">
-                                    <label for="name">Your Name</label>
-                                    <input class="input2" id="name" type="text" name="name"
-                                        placeholder="Enter your full name">
-                                    <span class="focus-input2"></span>
-                                </div>
-                                <div class="wrap-input2 validate-input"
-                                    data-validate="Valid email is required: ex@abc.xyz">
-                                    <label for="email">Your Email Address</label>
-                                    <input class="input2" id="email" type="text" name="email"
-                                        placeholder="Enter your email address (e.g., example@example.com)">
-                                    <span class="focus-input2"></span>
-                                </div>
-                                <div class="wrap-input2 validate-input" data-validate="Message is required">
-                                    <label for="message">Your Message</label>
-                                    <textarea class="input2" name="message" id="message"
-                                        placeholder="Type your message or query here"></textarea>
-                                    <span class="focus-input2"></span>
-                                </div>
-                                <div id="contact-msg"></div>
-                                <div class="container-contact2-form-btn">
-                                    <div class="wrap-contact2-form-btn">
-                                        <div class="contact2-form-bgbtn"></div>
-                                        <button class="contact2-form-btn" id="contactbutton">
-                                            <?php esc_html_e('Send Message', 'wp-maintenance-mode-site-under-construction'); ?>
-                                        </button>
-                                    </div>
-                                </div>
-                                <?php echo wp_nonce_field('contactform_action', '_acf_nonce', true, false); ?>
-                                <input type="hidden" name="action" value="contactform_action" />
-                            </form>
-                        </div><!-- email-input-area -->
-                    </div><!-- main-content -->
-                </div><!-- display-table -->
-            </section><!-- left-section -->
-
-            <?php
-                                $width_class = "half_width_mode";
-                                ?>
-            <!-- Right Section (Background Image with Countdown Timer) -->
-            <section class="right-section <?php echo esc_attr($width_class); ?>" <?php
-                                    if ($options['MM_And_SUC_Free_option_type_of_bg'] == 2) {
-                                        $filename_big = pathinfo(MM_And_SUC_Free_PLUGIN_URL . 'textures/' . $options['MM_And_SUC_Free_textures']);
-                                        $file_big_name = $filename_big['dirname'] . '/' . $filename_big['filename'] . '-big.' . $filename_big['extension'];
-                                    ?> style="background-image: url(<?php
-                                                                    if (isset($options['MM_And_SUC_Free_textures']) && $options['MM_And_SUC_Free_textures'] != "") {
-                                                                        echo esc_attr($file_big_name);
-                                                                    }
-                                                                    ?>)" <?php } else { ?> style="background-image: url(<?php
-                                                                    if (isset($options['MM_And_SUC_Free_image']) && $options['MM_And_SUC_Free_image'] != "") {
-                                                                        echo esc_attr(wp_get_attachment_image_src($options['MM_And_SUC_Free_image'], 'full')[0]);
-                                                                    } else {
-                                                                        echo esc_attr(MM_And_SUC_Free_PLUGIN_URL . '/assets/images/countdown-1-1000x1000.jpg');
-                                                                    }
-                                                                    ?>)"
-                <?php }
-                                    if (isset($options['MM_And_SUC_Free_textures']) && $options['MM_And_SUC_Free_textures'] != "") { ?>>
-                <?php
-                                    }
-
-                                ?>
-                <div class="display-table center-text">
-                    <div class="display-table-cell">
-                        <div id="rounded-countdown">
-                            <h3 class="title responsive_title">
-                                <b><?php echo esc_html($options['MM_And_SUC_Free_title']); ?></b></h3>
-                            <?php
-                                            $date_time_wp = (array)current_datetime();
-                                            $date = new DateTime($date_time_wp['date']);
-                                            $date2 = new DateTime($options['MM_And_SUC_Free_date']);
-                                            $diff = $date2->getTimestamp() - $date->getTimestamp();
-                                            ?>
-                            <div class="countdown" data-remaining-sec="<?php echo esc_attr($diff); ?>"></div>
-                            <p class="des responsive_des" style="font-size: 18px;">
-                                <?php echo esc_html($options['MM_And_SUC_Free_description']); ?></p>
-                        </div>
-                        <div class="cta-buttons">
-                            <?php
-                                            $cta_options = get_option('MM_And_SUC_Free_options');
-                                            if (!empty($cta_options['MM_And_SUC_Free_enable_cta'])) {
-                                                $bg_color = $cta_options['MM_And_SUC_Free_cta_bg_color'] ?? '#007BFF';
-                                                $text_color = $cta_options['MM_And_SUC_Free_cta_text_color'] ?? '#FFFFFF';
-                                                for ($i = 1; $i <= 4; $i++) {
-                                                    $label = $cta_options["MM_And_SUC_Free_cta_label_$i"] ?? '';
-                                                    $url = $cta_options["MM_And_SUC_Free_cta_url_$i"] ?? '';
-                                                    if (!empty($label) && !empty($url)) {
-                                                        echo '<a href="' . esc_url($url) . '" class="cta-button" style="background-color: ' . esc_attr($bg_color) . '; color: ' . esc_attr($text_color) . ';" target="_blank" rel="noopener noreferrer">' . esc_html($label) . '</a>';
-                                                    }
-                                                }
-                                            }
-                                            ?>
-                        </div>
-
-                    </div>
-                </div>
-
-                <style>
-                .cta-buttons {
-                    display: flex;
-                    justify-content: center;
-                    gap: 20px;
-                    margin-top: 30px;
-                }
-
-                .cta-button {
-                    display: inline-block;
-                    padding: 8px 30px;
-                    background-color: #007BFF;
-                    color: #FFFFFF;
-                    text-decoration: none;
-                    border-radius: 4px;
-                    font-size: 14px;
-                    transition: background-color 0.3s ease, transform 0.2s ease;
-                    text-align: center;
-                    min-width: 100px;
-                }
-
-                .cta-button:hover {
-                    background-color: #0056b3;
-                    transform: scale(1.05);
-                }
-                </style>
-            </section><!-- right-section -->
-            <?php } else { ?>
-            <!-- Full Width Background Image with Countdown Timer -->
-            <section class="right-section full_screen_mode" <?php if ($options['MM_And_SUC_Free_option_type_of_bg'] == 2) {
-                                        $filename_big = pathinfo(MM_And_SUC_Free_PLUGIN_URL . 'textures/' . $options['MM_And_SUC_Free_textures']);
-                                        $file_big_name = $filename_big['dirname'] . '/' . $filename_big['filename'] . '-big.' . $filename_big['extension'];
-                                    ?> style="background-image: url(<?php if (isset($options['MM_And_SUC_Free_textures']) && $options['MM_And_SUC_Free_textures'] != "") {
-                                                                        esc_attr_e($file_big_name);
-                                                                    } ?>)" <?php } else { ?>
-                style="background-image: url(<?php if (isset($options['MM_And_SUC_Free_image']) && $options['MM_And_SUC_Free_image'] != "") {
-                                                                        echo esc_attr(wp_get_attachment_image_src($options['MM_And_SUC_Free_image'], 'full')[0]);
-                                                                    } else {
-                                                                        echo esc_attr(MM_And_SUC_Free_PLUGIN_URL); ?>/assets/images/countdown-1-1000x1000.jpg)<?php } ?>)">
-                <?php }
-                                    if (isset($options['MM_And_SUC_Free_textures']) && $options['MM_And_SUC_Free_textures'] != "") { ?>>
-                <?php
-                                    }
-
-                                ?>
-
-                <div class="display-table center-text">
-                    <div class="display-table-cell">
-                        <div id="rounded-countdown">
-                            <h3 class="title responsive_title">
-                                <b><?php echo esc_html($options['MM_And_SUC_Free_title']); ?></b></h3>
-                            <?php
-                                            $date_time_wp = (array)current_datetime();
-                                            $date = new DateTime($date_time_wp['date']);
-                                            $date2 = new DateTime($options['MM_And_SUC_Free_date']);
-                                            $diff = $date2->getTimestamp() - $date->getTimestamp();
-                                            ?>
-                            <div class="countdown" data-remaining-sec="<?php echo esc_attr($diff); ?>"></div>
-                            <p class="des responsive_des" style="font-size: 18px;">
-                                <?php echo esc_html($options['MM_And_SUC_Free_description']); ?></p>
-                        </div>
-                        <div class="cta-buttons">
-                            <?php
-                                            $cta_options = get_option('MM_And_SUC_Free_options');
-                                            if (!empty($cta_options['MM_And_SUC_Free_enable_cta'])) {
-                                                $bg_color = $cta_options['MM_And_SUC_Free_cta_bg_color'] ?? '#007BFF';
-                                                $text_color = $cta_options['MM_And_SUC_Free_cta_text_color'] ?? '#FFFFFF';
-                                                for ($i = 1; $i <= 4; $i++) {
-                                                    $label = $cta_options["MM_And_SUC_Free_cta_label_$i"] ?? '';
-                                                    $url = $cta_options["MM_And_SUC_Free_cta_url_$i"] ?? '';
-                                                    if (!empty($label) && !empty($url)) {
-                                                        echo '<a href="' . esc_url($url) . '" class="cta-button" style="background-color: ' . esc_attr($bg_color) . '; color: ' . esc_attr($text_color) . ';" target="_blank" rel="noopener noreferrer">' . esc_html($label) . '</a>';
-                                                    }
-                                                }
-                                            }
-                                            ?>
-                        </div>
-                    </div>
-                </div>
-
-                <style>
-                .cta-buttons {
-                    display: flex;
-                    justify-content: center;
-                    gap: 20px;
-                    margin-top: 30px;
-                }
-
-                .cta-button {
-                    display: inline-block;
-                    padding: 8px 30px;
-                    background-color: #007BFF;
-                    color: #FFFFFF;
-                    text-decoration: none;
-                    border-radius: 4px;
-                    font-size: 14px;
-                    transition: background-color 0.3s ease, transform 0.2s ease;
-                    text-align: center;
-                    min-width: 100px;
-                }
-
-                .cta-button:hover {
-                    background-color: #0056b3;
-                    transform: scale(1.05);
-                }
-                </style>
-
-        </div>
-        <!-- End CTA Buttons -->
-        </section><!-- right-section -->
-        <?php } ?>
-
-    </div>
-    </div>
-
-    </div>
-    <?php do_action('MM_And_SUC_Free_footer'); ?>
-    <?php wp_footer(); ?>
-    <style>
-    .cta-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin-top: 30px;
-    }
-
-    .cta-button {
-        display: inline-block;
-        padding: 8px 30px;
-        /* Reduced height, increased width */
-        background-color: #007BFF;
-        color: #FFFFFF;
-        text-decoration: none;
-        border-radius: 4px;
-        /* Less curve */
-        font-size: 14px;
-        /* Adjust font size if needed */
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        text-align: center;
-        min-width: 100px;
-        /* Ensures buttons are consistently wider */
-    }
-
-    .cta-button:hover {
-        background-color: #0056b3;
-        transform: scale(1.05);
-    }
-    </style>
-</body>
-
-
-</html>
-<?php
-            }
-            exit;
-        }
-
-        public function ajax_contactform_action_callback()
-        {
-            $error = '';
-            $status = 'error';
-
-            if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['message'])) {
-                $error = 'All fields are required.';
-            } else {
-                if (!wp_verify_nonce($_POST['_acf_nonce'], $_POST['action'])) {
-                    $error = esc_html__('Verification error, try again.', 'wp-maintenance-mode-site-under-construction');
-                } else {
-                    $name = sanitize_text_field($_POST['name']);
-                    $email = sanitize_email($_POST['email']);
-                    $subject = 'New Contact Form Submission';
-                    $message = "Name: $name\nEmail: $email\nMessage:\n" . sanitize_textarea_field($_POST['message']);
-                    $message .= "\nIP Address: " . sanitize_text_field($_SERVER['REMOTE_ADDR']);
-
-                    // admin email address
-                    $to = get_option('admin_email');
-                    $headers = [
-                        'From: ' . get_option('blogname') . " <$to>",
-                        'Reply-To: ' . $email,
-                        'Content-Type: text/plain; charset=UTF-8',
-                    ];
-
-                    if (wp_mail($to, $subject, $message, $headers)) {
-                        $status = 'success';
-                        $error = __('Thank you for reaching out! We will get back to you within 24-48 hours.', 'wp-maintenance-mode-site-under-construction');
-                    } else {
-                        $error = esc_html__('An error occurred while sending your message. Please try again.', 'wp-maintenance-mode-site-under-construction');
-                    }
-                }
-            }
-
-            $response = ['status' => $status, 'errmessage' => $error];
-            header("Content-Type: application/json");
-            echo json_encode($response);
-            wp_die(); // Proper WordPress AJAX termination
-        }
-
-        public function remove_header_tage_run_hook()
-        {
-            remove_action('wp_head', 'rsd_link');
-            remove_action('wp_head', 'wp_generator');
-            remove_action('wp_head', 'feed_links', 2);
-            remove_action('wp_head', 'feed_links_extra', 3);
-            remove_action('wp_head', 'index_rel_link');
-            remove_action('wp_head', 'wlwmanifest_link');
-            remove_action('wp_head', 'start_post_rel_link', 10, 0);
-            remove_action('wp_head', 'parent_post_rel_link', 10, 0);
-            remove_action('wp_head', 'adjacent_posts_rel_link', 10, 0);
-            remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
-            remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
-            remove_action('wp_head', 'print_emoji_detection_script', 7);
-            remove_action('wp_head', 'rel_canonical');
-            remove_action('wp_head', 'rel_alternate');
-            remove_action('wp_head', 'wp_oembed_add_discovery_links');
-            remove_action('wp_head', 'wp_oembed_add_host_js');
-            remove_action('wp_head', 'rest_output_link_wp_head');
-            remove_action('rest_api_init', 'wp_oembed_register_route');
-            remove_action('wp_print_styles', 'print_emoji_styles');
-            remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
-            remove_filter('pre_oembed_result', 'wp_filter_pre_oembed_result', 10);
-            add_filter('embed_oembed_discover', '__return_false');
-            remove_action('wp_head', 'wp_generator');
-        }
-        public function inc_js_file()
-        {
-            wp_register_script('tether-min', plugins_url('assets/js/tether.min.js', __FILE__), array('jquery'), NULL, true);
-            wp_enqueue_script('tether-min');
-            wp_register_script('jquery-classycountdown', plugins_url('assets/js/jquery.classycountdown.js', __FILE__), array('jquery'), NULL, true);
-            wp_enqueue_script('jquery-classycountdown');
-            wp_register_script('jquery-knob', plugins_url('assets/js/jquery.knob.js', __FILE__), array('jquery'), NULL, true);
-            wp_enqueue_script('jquery-knob');
-            wp_register_script('jquery-throttle', plugins_url('assets/js/jquery.throttle.js', __FILE__), array('jquery'), NULL, true);
-            wp_enqueue_script('jquery-throttle');
-            wp_register_script('scripts', plugins_url('assets/js/scripts.js', __FILE__), array('jquery'), NULL, true);
-            wp_enqueue_script('scripts');
-
-            wp_enqueue_script('contactform-script', plugins_url('assets/js/contactform.js', __FILE__), array('jquery'));
-            wp_localize_script('contactform-script', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
-        }
-        public static function inc_css_file()
-        {
-
-            global $wp_styles;
-            $wp_styles->registered = array();
-            wp_enqueue_style('fonts-googleapis-Open-Sans', '//fonts.googleapis.com/css?family=Open+Sans:400,700%7CPoppins:400,500', false, NULL, 'all');
-            wp_enqueue_style('font-awesome', plugins_url('assets/css/font-awesome-4.7.0/css/font-awesome.min.css', __FILE__), false, NULL, 'all');
-
-            wp_enqueue_style('bootstrap-min', plugins_url('assets/css/bootstrap.min.css?r=1', __FILE__), false, NULL, 'all');
-
-            wp_enqueue_style('jquery-classycountdown', plugins_url('assets/css/jquery.classycountdown.css', __FILE__), false, NULL, 'all');
-            wp_enqueue_style('styles', plugins_url('assets/css/styles.css?x=4', __FILE__), false, NULL, 'all');
-            wp_enqueue_style('responsive', plugins_url('assets/css/responsive.css?x=5', __FILE__), false, NULL, 'all');
-            $options = get_option('MM_And_SUC_Free_options');
-            if (isset($options['MM_And_SUC_Free_option_type_of_bg']) && $options['MM_And_SUC_Free_option_type_of_bg'] == 2) {
-
-                $text_path = pathinfo($options['MM_And_SUC_Free_textures']);
-
-                wp_enqueue_style('MM_And_SUC_Free_textures', plugins_url('textures/' . $text_path['dirname'] . '/' . $text_path['filename'] . '.css', __FILE__), false, NULL, 'all');
-            }
-        }
-
-        public function UserConditional($options = array())
-        {
-
-            if (empty($options)) {
-                return true; //Site opened
-            }
-            if (!isset($options['MM_And_SUC_Free_status']) || $options['MM_And_SUC_Free_status'] == 0) {
-                return true; //Site opened
-            }
-            if (is_admin()) {
-                return true; //Site opened
-            }
-            if ($GLOBALS['pagenow'] === 'wp-login.php') {
-                return true; //Site opened
-            }
-            // Block guest users if the plugin is active
-            if (!is_user_logged_in()) {
-                return false; // Site closed for guest users
-            }
-            if (is_user_logged_in()) {
-
-                $user = wp_get_current_user();
-                if (in_array('administrator', (array) $user->roles)) {
-                    return true; // Allow administrators
-                }
-
-                //No user rule selected, but the user is logged in
-                if (!isset($options['MM_And_SUC_Free_role']) || (isset($options['MM_And_SUC_Free_role']) && empty($options['MM_And_SUC_Free_role']))) {
-                    return true; //Site opened
-                }
-
-                //Some rules selected
-                if (isset($options['MM_And_SUC_Free_role']) && !empty($options['MM_And_SUC_Free_role'])) {
-                    $user = wp_get_current_user();
-                    $in_role = false;
-                    foreach ($options['MM_And_SUC_Free_role'] as $name) {
-                        if (in_array(strtolower($name), (array) $user->roles)) {
-                            $in_role = true; //Site opened
-                        }
-                    }
-                    if (!$in_role) {
-                        return true; //Site opened
-                    }
-                }
-            }
-
-            return false; //Site closed
-        }
-    }
-    new MM_And_SUC_Free_page_template();
+/**
+ * Frontend engine.
+ *
+ * Request interception, the standalone maintenance document, and the public
+ * contact endpoint.
+ *
+ * @package wp-maintenance-mode-site-under-construction
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/* -------------------------------------------------------------------------
+ * Interception
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Decide whether this request sees the site or the maintenance page.
+ *
+ * Runs at priority 0 on template_redirect so no theme template is loaded when
+ * maintenance is served.
+ *
+ * @return void
+ */
+function mm_suc_p_template_redirect() {
+	if ( mm_suc_p_is_infrastructure_request() ) {
+		return;
+	}
+
+	$options = mm_suc_p_get_options();
+
+	// A signed preview renders the page for an administrator, whatever the switch says.
+	if ( mm_suc_p_is_preview_request() ) {
+		nocache_headers();
+		mm_suc_p_render_document( $options, true );
+
+		return;
+	}
+
+	if ( empty( $options['enabled'] ) ) {
+		return;
+	}
+
+	// Expired, with auto-disable on: turn it off and let the request through.
+	$end = mm_suc_p_end_timestamp( $options );
+
+	if ( $end && ! empty( $options['auto_disable'] ) && time() >= $end ) {
+		$options['enabled'] = 0;
+		mm_suc_p_update_options( $options );
+
+		return;
+	}
+
+	if ( mm_suc_p_user_can_bypass( $options ) ) {
+		return;
+	}
+
+	mm_suc_p_render_document( $options, false );
+}
+add_action( 'template_redirect', 'mm_suc_p_template_redirect', 0 );
+
+/**
+ * Requests that must never be intercepted.
+ *
+ * @return bool
+ */
+function mm_suc_p_is_infrastructure_request() {
+	if ( is_admin() || wp_doing_ajax() || wp_doing_cron() ) {
+		return true;
+	}
+
+	if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		return true;
+	}
+
+	if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) {
+		return true;
+	}
+
+	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		return true;
+	}
+
+	$self = isset( $_SERVER['PHP_SELF'] ) ? sanitize_text_field( wp_unslash( $_SERVER['PHP_SELF'] ) ) : '';
+
+	if ( '' !== $self && false !== strpos( $self, 'wp-login.php' ) ) {
+		return true;
+	}
+
+	$script = isset( $_SERVER['SCRIPT_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SCRIPT_NAME'] ) ) : '';
+
+	if ( '' !== $script && false !== strpos( $script, 'wp-login.php' ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Is this a signed preview request from someone who may manage the site.
+ *
+ * @return bool
+ */
+function mm_suc_p_is_preview_request() {
+	if ( empty( $_GET['mm_suc_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- the nonce is verified immediately below.
+		return false;
+	}
+
+	$nonce = isset( $_GET['mm_suc_preview_nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['mm_suc_preview_nonce'] ) ) : '';
+
+	if ( ! wp_verify_nonce( $nonce, 'mm_suc_preview' ) ) {
+		return false;
+	}
+
+	return current_user_can( 'manage_options' );
+}
+
+/* -------------------------------------------------------------------------
+ * The standalone document
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Print the maintenance document and end the request.
+ *
+ * @param array $options    Configuration.
+ * @param bool  $is_preview Whether this is an administrator preview.
+ * @return void
+ */
+function mm_suc_p_render_document( $options, $is_preview ) {
+	$template = MM_SUC_P_Template_Registry::resolve( isset( $options['template'] ) ? $options['template'] : '' );
+
+	if ( ! $is_preview ) {
+		status_header( 503 );
+		header( 'Retry-After: 3600' );
+		nocache_headers();
+	}
+
+	$title = wp_strip_all_tags( (string) mm_suc_p_option_value( $options, 'headline' ) );
+
+	if ( '' === $title ) {
+		$title = get_bloginfo( 'name' );
+	}
+
+	$style_url    = MM_SUC_P_URL . 'assets/css/frontend.css';
+	$template_css = $template ? $template->get_style_url() : '';
+	$script_url   = MM_SUC_P_URL . 'assets/js/frontend.js';
+
+	$config = array(
+		'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
+		'action'   => 'mm_suc_contact',
+		'nonce'    => wp_create_nonce( 'mm_suc_contact' ),
+		'caps'     => array(
+			'name'    => (int) MM_SUC_P_CAP_NAME,
+			'email'   => (int) MM_SUC_P_CAP_EMAIL,
+			'message' => (int) MM_SUC_P_CAP_MESSAGE,
+		),
+		'preview'  => (bool) $is_preview,
+		'strings'  => mm_suc_p_frontend_strings(),
+	);
+
+	header( 'Content-Type: text/html; charset=' . get_bloginfo( 'charset' ) );
+
+	echo '<!DOCTYPE html>';
+	echo '<html ' . get_language_attributes() . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core-generated attributes.
+	echo '<head>';
+	echo '<meta charset="' . esc_attr( get_bloginfo( 'charset' ) ) . '" />';
+	echo '<meta name="viewport" content="width=device-width, initial-scale=1" />';
+	echo '<meta name="robots" content="noindex, nofollow" />';
+	echo '<title>' . esc_html( $title ) . '</title>';
+	echo '<link rel="stylesheet" href="' . esc_url( $style_url . '?ver=' . MM_SUC_P_VERSION ) . '" />'; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Standalone maintenance document, wp_head() is intentionally bypassed.
+
+	if ( '' !== $template_css ) {
+		echo '<link rel="stylesheet" href="' . esc_url( $template_css . '?ver=' . $template->get_style_version() ) . '" />'; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Standalone maintenance document, wp_head() is intentionally bypassed.
+	}
+
+	echo '<style>' . mm_suc_p_document_style() . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static stylesheet text.
+	echo '</head>';
+	echo '<body class="mm-suc-p-page-doc">';
+
+	if ( $is_preview ) {
+		mm_suc_p_preview_banner();
+	}
+
+	echo MM_SUC_P_Template_Controller::render( $options, 'page' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the controller escapes every value it emits.
+
+	echo '<script id="mm-suc-p-config" type="application/json">' . wp_json_encode( $config ) . '</script>';
+	echo '<script src="' . esc_url( $script_url . '?ver=' . MM_SUC_P_VERSION ) . '" defer></script>'; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- Standalone maintenance document, wp_footer() is intentionally bypassed.
+	echo '</body></html>';
+
+	exit;
+}
+
+/**
+ * Read an option value with the default as a fallback.
+ *
+ * @param array  $options Configuration.
+ * @param string $key     Field name.
+ * @return mixed
+ */
+function mm_suc_p_option_value( $options, $key ) {
+	return isset( $options[ $key ] ) ? $options[ $key ] : '';
+}
+
+/**
+ * The document-level rules the shared stylesheet may not contain.
+ *
+ * assets/css/frontend.css is loaded inside wp-admin for the live preview, so it
+ * never styles a bare element. The standalone document needs those rules, and
+ * this is where they live - printed only when the page owns <body>.
+ *
+ * @return string
+ */
+function mm_suc_p_document_style() {
+	return 'html{box-sizing:border-box}'
+		. 'body.mm-suc-p-page-doc{margin:0;padding:0;min-height:100vh;background:#0b1220;'
+		. '-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}'
+		. 'body.mm-suc-p-page-doc .mm-suc-p-page{min-height:100vh}';
+}
+
+/**
+ * The floating banner shown to an administrator previewing the page.
+ *
+ * @return void
+ */
+function mm_suc_p_preview_banner() {
+	$live = ! mm_suc_p_is_enabled();
+
+	$message = $live
+		? __( 'Preview - maintenance mode is off, so visitors are seeing your site as usual.', 'wp-maintenance-mode-site-under-construction' )
+		: __( 'Preview - this is what visitors are seeing right now.', 'wp-maintenance-mode-site-under-construction' );
+
+	echo '<style>'
+		. '.mm-suc-p-preview-banner{position:fixed;inset-block-start:0;inset-inline:0;z-index:1000;display:flex;gap:8px;'
+		. 'align-items:center;justify-content:center;padding:10px 16px;background:#fef3c7;color:#7c4a06;'
+		. 'font:600 13px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;text-align:center}'
+		. '.mm-suc-p-preview-banner a{color:inherit}'
+		. '</style>';
+
+	printf(
+		'<div class="mm-suc-p-preview-banner" role="status">%1$s <a href="%2$s">%3$s</a></div>',
+		esc_html( $message ),
+		esc_url( mm_suc_p_settings_url() ),
+		esc_html__( 'Back to the editor', 'wp-maintenance-mode-site-under-construction' )
+	);
+}
+
+/**
+ * Translatable strings the public script needs.
+ *
+ * @return array
+ */
+function mm_suc_p_frontend_strings() {
+	return array(
+		'required'   => __( 'Fill this in so we can reply.', 'wp-maintenance-mode-site-under-construction' ),
+		'email'      => __( 'Enter an email address like name@example.com.', 'wp-maintenance-mode-site-under-construction' ),
+		'sent'       => __( 'Thanks - your message is on its way.', 'wp-maintenance-mode-site-under-construction' ),
+		'failed'     => __( 'We could not send that. Try again shortly.', 'wp-maintenance-mode-site-under-construction' ),
+		'network'    => __( 'That did not reach us. Check your connection and try again.', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: time duration remaining until launch, for example "3 days, 4 hours". */
+		'remaining'  => __( '%s remaining', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: number of days. */
+		'day'        => __( '%s day', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: number of days. */
+		'days'       => __( '%s days', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: number of hours. */
+		'hour'       => __( '%s hour', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: number of hours. */
+		'hours'      => __( '%s hours', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: number of minutes. */
+		'minute'     => __( '%s minute', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: number of minutes. */
+		'minutes'    => __( '%s minutes', 'wp-maintenance-mode-site-under-construction' ),
+		'finished'   => __( 'The wait is over.', 'wp-maintenance-mode-site-under-construction' ),
+	);
+}
+
+/**
+ * Build the inline style attribute for the page root.
+ *
+ * Five properties come from the site owner's saved settings; the rest come
+ * from the active template's palette. Every value is validated before it
+ * reaches CSS - no option value is ever interpolated raw, and the background
+ * is the only one that becomes a url(), so it is escaped as one.
+ *
+ * @param array                  $options  Configuration.
+ * @param MM_SUC_P_Template|null $template Active template.
+ * @return string
+ */
+function mm_suc_p_inline_style( $options, $template ) {
+	$palette = $template ? $template->get_palette() : MM_SUC_P_Template::default_palette();
+
+	$accent = sanitize_hex_color( isset( $options['accent_color'] ) ? $options['accent_color'] : '' );
+	$ink    = sanitize_hex_color( isset( $options['text_color'] ) ? $options['text_color'] : '' );
+
+	if ( ! $accent ) {
+		$accent = $palette['accent'];
+	}
+
+	if ( ! $ink ) {
+		$ink = $palette['ink'];
+	}
+
+	$overlay = isset( $options['overlay_opacity'] ) ? min( 100, absint( $options['overlay_opacity'] ) ) : (int) $palette['overlay'];
+	$blur    = isset( $options['glass_strength'] ) ? min( 40, absint( $options['glass_strength'] ) ) : (int) $palette['blur'];
+	$image   = MM_SUC_P_Template_Controller::background_url( $options, $template );
+
+	$values = array(
+		'--mm-suc-p-page-accent'    => $accent,
+		'--mm-suc-p-page-ink'       => $ink,
+		'--mm-suc-p-page-overlay'   => number_format( $overlay / 100, 2, '.', '' ),
+		'--mm-suc-p-page-blur'      => $blur . 'px',
+		'--mm-suc-p-page-bg-image'  => '' === $image ? 'none' : 'url(' . esc_url( $image ) . ')',
+		'--mm-suc-p-page-veil'      => $palette['veil'],
+		'--mm-suc-p-page-card'      => MM_SUC_P_Template_Controller::rgba( $palette['card'], $palette['card_alpha'] ),
+		'--mm-suc-p-page-line'      => MM_SUC_P_Template_Controller::rgba( $palette['ink'], $palette['line_alpha'] ),
+		'--mm-suc-p-page-on-accent' => $palette['on_accent'],
+	);
+
+	$out = '';
+
+	foreach ( mm_suc_p_style_contract() as $property => $spec ) {
+		if ( isset( $values[ $property ] ) ) {
+			$out .= $property . ':' . $values[ $property ] . ';';
+			unset( $values[ $property ] );
+		}
+	}
+
+	foreach ( $values as $property => $value ) {
+		$out .= $property . ':' . $value . ';';
+	}
+
+	return $out;
+}
+
+/* -------------------------------------------------------------------------
+ * Contact endpoint
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Handle a public contact submission.
+ *
+ * Nonce, honeypot, rate limit, validation, mail - in that order.
+ *
+ * @return void
+ */
+function mm_suc_p_contact() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+	if ( ! wp_verify_nonce( $nonce, 'mm_suc_contact' ) ) {
+		wp_send_json_error(
+			array( 'message' => __( 'Your session expired. Reload the page and try again.', 'wp-maintenance-mode-site-under-construction' ) ),
+			403
+		);
+	}
+
+	// Honeypot: answer exactly as a successful send would, and send nothing.
+	$trap = isset( $_POST['website'] ) ? trim( (string) wp_unslash( $_POST['website'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only its emptiness is used.
+
+	if ( '' !== $trap ) {
+		wp_send_json_success(
+			array( 'message' => __( 'Thanks - your message is on its way.', 'wp-maintenance-mode-site-under-construction' ) )
+		);
+	}
+
+	if ( ! mm_suc_p_rate_limit_ok() ) {
+		wp_send_json_error(
+			array( 'message' => __( 'Too many messages. Try again in 15 minutes.', 'wp-maintenance-mode-site-under-construction' ) ),
+			429
+		);
+	}
+
+	$name    = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+	$email   = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+	$message = isset( $_POST['message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['message'] ) ) : '';
+
+	$name    = mm_suc_p_truncate( $name, MM_SUC_P_CAP_NAME );
+	$email   = mm_suc_p_truncate( $email, MM_SUC_P_CAP_EMAIL );
+	$message = mm_suc_p_truncate( $message, MM_SUC_P_CAP_MESSAGE );
+
+	$errors = array();
+
+	if ( '' === $name ) {
+		$errors['name'] = __( 'Fill this in so we can reply.', 'wp-maintenance-mode-site-under-construction' );
+	}
+
+	if ( '' === $email || ! is_email( $email ) ) {
+		$errors['email'] = __( 'Enter an email address like name@example.com.', 'wp-maintenance-mode-site-under-construction' );
+	}
+
+	if ( '' === $message ) {
+		$errors['message'] = __( 'Tell us what you need and we will get back to you.', 'wp-maintenance-mode-site-under-construction' );
+	}
+
+	if ( $errors ) {
+		wp_send_json_error(
+			array(
+				'message' => __( 'Check the highlighted fields and send again.', 'wp-maintenance-mode-site-under-construction' ),
+				'fields'  => $errors,
+			),
+			400
+		);
+	}
+
+	$options   = mm_suc_p_get_options();
+	$recipient = isset( $options['contact_email'] ) ? sanitize_email( $options['contact_email'] ) : '';
+
+	if ( ! $recipient || ! is_email( $recipient ) ) {
+		$recipient = get_option( 'admin_email' );
+	}
+
+	// Store first in Zero-DB file system JSON storage.
+	$record = array(
+		'id'        => 'msg_' . wp_generate_uuid4(),
+		'timestamp' => time(),
+		'date'      => current_time( 'mysql' ),
+		'name'      => $name,
+		'email'     => $email,
+		'message'   => $message,
+		'read'      => false,
+	);
+	mm_suc_p_save_message( $record );
+
+	// Attempt email dispatch if mail/SMTP is configured.
+	$subject = sprintf(
+		/* translators: %s: site name. */
+		__( '[%s] Message from your maintenance page', 'wp-maintenance-mode-site-under-construction' ),
+		wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES )
+	);
+
+	$body = sprintf(
+		/* translators: 1: sender name, 2: sender email, 3: message body. */
+		__( "Name: %1\$s\nEmail: %2\$s\n\n%3\$s", 'wp-maintenance-mode-site-under-construction' ),
+		$name,
+		$email,
+		$message
+	);
+
+	$headers = array( 'Reply-To: ' . $name . ' <' . $email . '>' );
+
+	wp_mail( $recipient, $subject, $body, $headers );
+
+	wp_send_json_success(
+		array( 'message' => __( 'Thanks - your message is on its way.', 'wp-maintenance-mode-site-under-construction' ) )
+	);
+}
+add_action( 'wp_ajax_mm_suc_contact', 'mm_suc_p_contact' );
+add_action( 'wp_ajax_nopriv_mm_suc_contact', 'mm_suc_p_contact' );
+
+/**
+ * Truncate to a cap, multibyte-safe.
+ *
+ * @param string $value Input.
+ * @param int    $cap   Maximum characters.
+ * @return string
+ */
+function mm_suc_p_truncate( $value, $cap ) {
+	$value = trim( (string) $value );
+
+	if ( function_exists( 'mb_substr' ) ) {
+		return mb_substr( $value, 0, (int) $cap );
+	}
+
+	return substr( $value, 0, (int) $cap );
+}
+
+/**
+ * Four submissions per fifteen minutes, per hashed IP.
+ *
+ * The address is never stored: the transient key is an HMAC of it.
+ *
+ * @return bool True while the caller is inside the limit.
+ */
+function mm_suc_p_rate_limit_ok() {
+	$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+
+	if ( '' === $ip ) {
+		return true;
+	}
+
+	$key   = 'mm_suc_p_rl_' . substr( hash_hmac( 'sha256', $ip, wp_salt( 'nonce' ) ), 0, 32 );
+	$count = (int) get_transient( $key );
+
+	if ( $count >= 4 ) {
+		return false;
+	}
+
+	set_transient( $key, $count + 1, 15 * MINUTE_IN_SECONDS );
+
+	return true;
 }

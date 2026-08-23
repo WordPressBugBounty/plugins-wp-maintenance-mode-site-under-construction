@@ -1,0 +1,41 @@
+/*
+ * Template: Deep Orbit
+ *
+ * Scoped to .mm-suc-p-page--tpl-deep-orbit so it can only ever restyle its own
+ * template. Delete this folder and the template disappears from the library
+ * with no other change anywhere in the plugin.
+ *
+ * Page layer: this file may use raw colour values, and may only declare or read
+ * --mm-suc-p-page-* custom properties.
+ */
+
+.mm-suc-p-page--tpl-deep-orbit .mm-suc-p-page-bg-image {
+	background-position: 50% 40%;
+}
+
+.mm-suc-p-page--tpl-deep-orbit .mm-suc-p-page-card {
+	max-width: 680px;
+	box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+}
+
+.mm-suc-p-page--tpl-deep-orbit .mm-suc-p-page-eyebrow {
+	align-self: start;
+	padding: 8px 12px;
+	border: 1px solid var(--mm-suc-p-page-line);
+	border-radius: 999px;
+}
+
+.mm-suc-p-page--tpl-deep-orbit .mm-suc-p-page-rule {
+	width: 48px;
+	height: 2px;
+	opacity: 0.9;
+}
+
+.mm-suc-p-page--tpl-deep-orbit .mm-suc-p-page-unit {
+	border-radius: 24px;
+	background-color: rgba(255, 255, 255, 0.05);
+}
+
+.mm-suc-p-page--tpl-deep-orbit .mm-suc-p-page-contact {
+	align-self: start;
+}

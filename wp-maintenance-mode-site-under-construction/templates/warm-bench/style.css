@@ -1,0 +1,71 @@
+/*
+ * Template: Warm Bench
+ *
+ * Scoped to .mm-suc-p-page--tpl-warm-bench so it can only ever restyle its own
+ * template. Delete this folder and the template disappears from the library
+ * with no other change anywhere in the plugin.
+ *
+ * Page layer: this file may use raw colour values, and may only declare or read
+ * --mm-suc-p-page-* custom properties.
+ */
+
+.mm-suc-p-page--tpl-warm-bench .mm-suc-p-page-shell {
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: space-between;
+	padding: 32px;
+}
+
+.mm-suc-p-page--tpl-warm-bench .mm-suc-p-tpl-top {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.mm-suc-p-page--tpl-warm-bench .mm-suc-p-tpl-top .mm-suc-p-page-host {
+	margin: 0;
+}
+
+.mm-suc-p-page--tpl-warm-bench .mm-suc-p-page-card {
+	max-width: 560px;
+	padding: 32px;
+	border-radius: 14px;
+	box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+.mm-suc-p-page--tpl-warm-bench .mm-suc-p-page-eyebrow {
+	letter-spacing: 0.14em;
+}
+
+.mm-suc-p-page--tpl-warm-bench .mm-suc-p-page-headline {
+	font-size: clamp(28px, 4vw, 48px);
+}
+
+.mm-suc-p-page--tpl-warm-bench .mm-suc-p-page-rule {
+	width: 32px;
+	height: 3px;
+}
+
+.mm-suc-p-page--tpl-warm-bench .mm-suc-p-page-countdown {
+	gap: 8px;
+}
+
+.mm-suc-p-page--tpl-warm-bench .mm-suc-p-page-unit {
+	padding: 12px 8px;
+	border-radius: 8px;
+	background-color: rgba(0, 0, 0, 0.25);
+}
+
+.mm-suc-p-page--tpl-warm-bench .mm-suc-p-page-contact {
+	align-self: start;
+	border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+	.mm-suc-p-page--tpl-warm-bench .mm-suc-p-page-shell {
+		padding: 24px 16px;
+	}
+}

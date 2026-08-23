@@ -1,0 +1,27 @@
+{
+	"name": "Palm Dusk",
+	"description": "A sunset lagoon with the message anchored to the bottom, cinema style.",
+	"version": "1.0.0",
+	"author": "wp-buy",
+	"order": 40,
+	"view": "view.php",
+	"style": "style.css",
+	"background": "background.jpg",
+	"thumbnail": "thumbnail.jpg",
+	"palette": {
+		"accent": "#f2a94e",
+		"ink": "#ffffff",
+		"on_accent": "#1b1104",
+		"veil": "#07152a",
+		"card": "#08182c",
+		"card_alpha": 55,
+		"line_alpha": 20,
+		"overlay": 48,
+		"blur": 16
+	},
+	"supports": {
+		"countdown": true,
+		"contact": true,
+		"logo": true
+	}
+}

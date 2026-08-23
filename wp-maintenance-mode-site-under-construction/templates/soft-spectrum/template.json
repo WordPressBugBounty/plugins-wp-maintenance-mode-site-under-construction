@@ -1,0 +1,27 @@
+{
+	"name": "Soft Spectrum",
+	"description": "A soft spectrum wash, split between the message and a boxed countdown.",
+	"version": "1.0.0",
+	"author": "wp-buy",
+	"order": 80,
+	"view": "view.php",
+	"style": "style.css",
+	"background": "background.jpg",
+	"thumbnail": "thumbnail.jpg",
+	"palette": {
+		"accent": "#5b21b6",
+		"ink": "#1b1233",
+		"on_accent": "#ffffff",
+		"veil": "#ffffff",
+		"card": "#ffffff",
+		"card_alpha": 60,
+		"line_alpha": 14,
+		"overlay": 44,
+		"blur": 16
+	},
+	"supports": {
+		"countdown": true,
+		"contact": true,
+		"logo": true
+	}
+}

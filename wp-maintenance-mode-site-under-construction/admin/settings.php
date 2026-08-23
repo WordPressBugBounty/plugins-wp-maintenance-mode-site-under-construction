@@ -1,1449 +1,986 @@
 <?php
-if (! defined('ABSPATH')) exit; // Exit if accessed directly
-// Add default values on initialization
-add_action('admin_init', function () {
-	if (!isset($_GET['page']) || $_GET['page'] !== 'MM_And_SUC_Free_Settings') {
-		return; // Exit if not on the settings page
-	}
+/**
+ * Admin controller.
+ *
+ * Menu registration, asset enqueueing, the editor screen, sanitization, and the
+ * asynchronous save and preview endpoints.
+ *
+ * @package wp-maintenance-mode-site-under-construction
+ */
 
-	$options = get_option('MM_And_SUC_Free_options', array());
-	global $wp_roles;
-	$wp_roles = new WP_Roles();
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
-	// Set default roles if not set
-	if (!isset($options['MM_And_SUC_Free_role']) || empty($options['MM_And_SUC_Free_role'])) {
-		$options['MM_And_SUC_Free_role'] = array();
-		foreach ($wp_roles->get_names() as $role_name) {
-			$options['MM_And_SUC_Free_role']["'" . $role_name . "'"] = $role_name; // Initialize all roles as checked
-		}
-	}
-	if (!isset($options['MM_And_SUC_Free_cta_bg_color']) || empty($options['MM_And_SUC_Free_cta_bg_color'])) {
-		$options['MM_And_SUC_Free_cta_bg_color'] = '#007BFF'; // Default blue
-	}
+/* -------------------------------------------------------------------------
+ * Menu
+ * ---------------------------------------------------------------------- */
 
-	// Set default text color for CTA buttons
-	if (!isset($options['MM_And_SUC_Free_cta_text_color']) || empty($options['MM_And_SUC_Free_cta_text_color'])) {
-		$options['MM_And_SUC_Free_cta_text_color'] = '#FFFFFF'; // Default white
-	}
+/**
+ * Register the editor screen and messages list screen.
+ *
+ * @return void
+ */
+function mm_suc_p_admin_menu() {
+	add_menu_page(
+		__( 'Maintenance Mode', 'wp-maintenance-mode-site-under-construction' ),
+		__( 'Maintenance', 'wp-maintenance-mode-site-under-construction' ),
+		'manage_options',
+		MM_SUC_P_PAGE,
+		'mm_suc_p_render_editor',
+		'dashicons-hammer',
+		81
+	);
 
-	if (!isset($options['MM_And_SUC_Free_colored_background_color']) || empty($options['MM_And_SUC_Free_colored_background_color'])) {
-		$options['MM_And_SUC_Free_colored_background_color'] = '#ffffff'; // Default to white
-	}
+	add_submenu_page(
+		MM_SUC_P_PAGE,
+		__( 'Maintenance Settings', 'wp-maintenance-mode-site-under-construction' ),
+		__( 'Settings', 'wp-maintenance-mode-site-under-construction' ),
+		'manage_options',
+		MM_SUC_P_PAGE,
+		'mm_suc_p_render_editor'
+	);
 
-	// Set default value for Countdown Title if not set
-	if (!isset($options['MM_And_SUC_Free_title']) || empty($options['MM_And_SUC_Free_title'])) {
-		$options['MM_And_SUC_Free_title'] = __('We’ll Be Back Soon!', 'wp-maintenance-mode-site-under-construction');
-	}
-	// Set default value for Timer Mode if not set
-	if (!isset($options['MM_And_SUC_Free_timer_mode']) || empty($options['MM_And_SUC_Free_timer_mode'])) {
-		$options['MM_And_SUC_Free_timer_mode'] = 'timer_with_contact'; // Default to "Timer with Contact Form"
-	}
-	if (!isset($options['MM_And_SUC_Free_timer_style']) || empty($options['MM_And_SUC_Free_timer_style'])) {
-		$options['MM_And_SUC_Free_timer_style'] = 'colored_background'; // Default to Colored Background
-	}
-	// Set default value for Countdown Description if not set
-	if (!isset($options['MM_And_SUC_Free_description']) || empty($options['MM_And_SUC_Free_description'])) {
-		$options['MM_And_SUC_Free_description'] = __('We’re working hard to improve your experience. Stay tuned as we count down to launch day!', 'wp-maintenance-mode-site-under-construction');
-	}
+	add_submenu_page(
+		MM_SUC_P_PAGE,
+		__( 'Messages list', 'wp-maintenance-mode-site-under-construction' ),
+		__( 'Messages list', 'wp-maintenance-mode-site-under-construction' ),
+		'manage_options',
+		MM_SUC_P_PAGE_MESSAGES,
+		'mm_suc_p_render_messages'
+	);
+}
+add_action( 'admin_menu', 'mm_suc_p_admin_menu' );
 
-	// Set default value for Email if not set
-	if (!isset($options['MM_And_SUC_Free_email']) || empty($options['MM_And_SUC_Free_email'])) {
-		$options['MM_And_SUC_Free_email'] = get_option('admin_email'); // Get the administrator email
-	}
+/**
+ * Keep bookmarks and third-party links to the v3 slug working.
+ *
+ * @return void
+ */
+function mm_suc_p_legacy_slug_redirect() {
+	$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only navigation.
 
-	// Set default value for Date if not set
-	if (!isset($options['MM_And_SUC_Free_date']) || empty($options['MM_And_SUC_Free_date'])) {
-		$tomorrow = date('d-m-Y 00:00:00', strtotime('+1 day')); // Get tomorrow's date in the required format
-		$options['MM_And_SUC_Free_date'] = $tomorrow;
-	}
-	if (!isset($options['MM_And_SUC_Free_slim_title']) || empty($options['MM_And_SUC_Free_slim_title'])) {
-		$options['MM_And_SUC_Free_slim_title'] = __('We’ll Be Back Soon!', 'wp-maintenance-mode-site-under-construction');
-	}
-
-	// Default Slim Mode Description
-	if (!isset($options['MM_And_SUC_Free_slim_text']) || empty($options['MM_And_SUC_Free_slim_text'])) {
-		$options['MM_And_SUC_Free_slim_text'] = __('We’re working hard to improve your experience.', 'wp-maintenance-mode-site-under-construction');
-	}
-
-	update_option('MM_And_SUC_Free_options', $options);
-});
-// Enqueue Color Picker Script and Styles
-add_action('admin_enqueue_scripts', function () {
-	wp_enqueue_style('wp-color-picker');
-	wp_enqueue_script('wp-color-picker');
-});
-add_action('admin_footer', function () {
-	if (isset($_GET['page']) && $_GET['page'] === 'MM_And_SUC_Free_Settings') {
-?>
-<script>
-jQuery(document).ready(function($) {
-    function updateFields() {
-        // Timer Style Logic
-        const selectedStyle = $('#MM_And_SUC_Free_timer_style').val();
-        if (selectedStyle === 'colored_background') {
-            $('#MM_And_SUC_Free_colored_background_color').closest('.MM_And_SUC_Free_row').show();
-            $('#MM_And_SUC_Free_option_type_of_bg').closest('.MM_And_SUC_Free_row').hide();
-            $('.image_upload').hide();
-            $('.image_textures').hide();
-        } else if (selectedStyle === 'background_image') {
-            $('#MM_And_SUC_Free_colored_background_color').closest('.MM_And_SUC_Free_row').hide();
-            $('#MM_And_SUC_Free_option_type_of_bg').closest('.MM_And_SUC_Free_row').show();
-            updateBackgroundType();
-        }
-
-        // Background Type Logic
-        function updateBackgroundType() {
-            const selectedBgType = $('#MM_And_SUC_Free_option_type_of_bg').val();
-            if (selectedBgType === '1') {
-                $('.image_upload').show();
-                $('.image_textures').hide();
-            } else if (selectedBgType === '2') {
-                $('.image_upload').hide();
-                $('.image_textures').show();
-            }
-        }
-
-        // Slim Mode Logic
-        if ($('#MM_And_SUC_Free_slim_mode').is(':checked')) {
-            $('#MM_And_SUC_Free_slim_title').closest('.MM_And_SUC_Free_row').show();
-            $('#MM_And_SUC_Free_slim_text').closest('.MM_And_SUC_Free_row').show();
-        } else {
-            $('#MM_And_SUC_Free_slim_title').closest('.MM_And_SUC_Free_row').hide();
-            $('#MM_And_SUC_Free_slim_text').closest('.MM_And_SUC_Free_row').hide();
-        }
-
-        // CTA Logic
-        if ($('#MM_And_SUC_Free_enable_cta').is(':checked')) {
-            $('.cta-input').closest('.MM_And_SUC_Free_row').show();
-        } else {
-            $('.cta-input').closest('.MM_And_SUC_Free_row').hide();
-        }
-
-        // Timer Mode Logic
-        const selectedMode = $('#MM_And_SUC_Free_timer_mode').val();
-        $('div[id^="MM_And_SUC_Free_section_"]').hide(); // Hide all sections
-        if (selectedMode === 'timer_with_contact') {
-            $('#MM_And_SUC_Free_title').closest('.MM_And_SUC_Free_row').show();
-            $('#MM_And_SUC_Free_description').closest('.MM_And_SUC_Free_row').show();
-            $('#MM_And_SUC_Free_email').closest('.MM_And_SUC_Free_row').show();
-            $('div[id^="MM_And_SUC_Free_section_"]').show();
-        } else if (selectedMode === 'timer_without_contact') {
-            $('#MM_And_SUC_Free_title').closest('.MM_And_SUC_Free_row').show();
-            $('#MM_And_SUC_Free_description').closest('.MM_And_SUC_Free_row').show();
-            $('div[id^="MM_And_SUC_Free_section_"]').show();
-        } else if (selectedMode === 'slim_mode') {
-            $('#MM_And_SUC_Free_slim_title').closest('.MM_And_SUC_Free_row').show();
-            $('#MM_And_SUC_Free_slim_text').closest('.MM_And_SUC_Free_row').show();
-        }
-    }
-
-    // Initial Trigger
-    updateFields();
-
-    // Event Listeners
-    $('#MM_And_SUC_Free_timer_style').on('change', updateFields);
-    $('#MM_And_SUC_Free_option_type_of_bg').on('change', updateFields);
-    $('#MM_And_SUC_Free_slim_mode').on('change', updateFields);
-    $('#MM_And_SUC_Free_enable_cta').on('change', updateFields);
-    $('#MM_And_SUC_Free_timer_mode').on('change', updateFields);
-});
-jQuery(document).ready(function($) {
-    function updateFields() {
-        // Get the selected mode
-        const selectedMode = $('#MM_And_SUC_Free_timer_mode').val();
-
-        if (selectedMode === 'slim_mode') {
-            // Hide all sections by default
-            $('.MM_And_SUC_Free_admin_card').hide();
-
-            // Show only the "Mode Settings" and "Access Control" sections
-            $('.MM_And_SUC_Free_admin_card:has(h2:contains("Mode Settings"))').show();
-            $('.MM_And_SUC_Free_admin_card:has(h2:contains("Access Control"))').show();
-        } else {
-            // Show all sections when not in slim mode
-            $('.MM_And_SUC_Free_admin_card').show();
-        }
-    }
-
-    // Trigger the function on page load and when the dropdown changes
-    updateFields();
-    $('#MM_And_SUC_Free_timer_mode').on('change', updateFields);
-});
-jQuery(document).ready(function($) {
-    function updateFields() {
-        // Get the selected Timer Style
-        const selectedStyle = $('#MM_And_SUC_Free_timer_style').val();
-
-        if (selectedStyle === 'colored_background') {
-            // Show Colored Background settings and hide Background Image/Texture options
-            $('#MM_And_SUC_Free_colored_background_color').closest('.MM_And_SUC_Free_row').show();
-            $('#MM_And_SUC_Free_option_type_of_bg').closest('.MM_And_SUC_Free_row').hide();
-            $('.image_upload').hide();
-            $('.image_textures').hide();
-        } else if (selectedStyle === 'background_image') {
-            // Hide Colored Background settings and show Background Type options
-            $('#MM_And_SUC_Free_colored_background_color').closest('.MM_And_SUC_Free_row').hide();
-            $('#MM_And_SUC_Free_option_type_of_bg').closest('.MM_And_SUC_Free_row').show();
-            updateBackgroundType(); // Call to handle background type visibility
-        }
-    }
-
-    function updateBackgroundType() {
-        // Get the selected Background Type
-        const selectedBgType = $('#MM_And_SUC_Free_option_type_of_bg').val();
-
-        if (selectedBgType === '1') {
-            // Show Image Upload and hide Textures
-            $('.image_upload').show();
-            $('.image_textures').hide();
-        } else if (selectedBgType === '2') {
-            // Show Textures and hide Image Upload
-            $('.image_upload').hide();
-            $('.image_textures').show();
-        }
-    }
-
-    // Trigger the functions on page load
-    $(window).on('load', function() {
-        updateFields(); // Ensure fields are updated based on saved values
-        updateBackgroundType(); // Ensure background type logic is applied initially
-    });
-
-    // Event Listeners for Dropdown Changes
-    $('#MM_And_SUC_Free_timer_style').on('change', updateFields);
-    $('#MM_And_SUC_Free_option_type_of_bg').on('change', updateBackgroundType);
-});
-</script>
-<?php
-	}
-});
-
-
-add_action('admin_enqueue_scripts', function ($hook_suffix) {
-	if (isset($_GET['page']) && $_GET['page'] === 'MM_And_SUC_Free_Settings') {
-		wp_enqueue_style('wp-color-picker'); // Enqueue WordPress color picker styles
-		wp_enqueue_script('wp-color-picker'); // Enqueue WordPress color picker script
-	}
-});
-
-add_action('admin_bar_menu', function ($wp_admin_bar) {
-	$options = get_option('MM_And_SUC_Free_options', []);
-	$status = isset($options['MM_And_SUC_Free_status']) && $options['MM_And_SUC_Free_status'] === '1';
-	$status_text = $status ? __('ON', 'wp-maintenance-mode-site-under-construction') : __('OFF', 'wp-maintenance-mode-site-under-construction');
-	$button_text = $status ? __('Deactivate Maintenance Mode', 'wp-maintenance-mode-site-under-construction') : __('Activate Maintenance Mode', 'wp-maintenance-mode-site-under-construction');
-	$icon = $status ? '&#x2714;' : '&#x2716;';
-	$status_color = $status ? '#28a745' : '#dc3545'; // Green for ON, Red for OFF
-
-	// Add the top-level menu
-	$wp_admin_bar->add_node([
-		'id'    => 'maintenance_mode',
-		'title' => '<div style="display: flex; align-items: center; gap: 8px; padding: 0px 8px; background-color: ' . $status_color . '; color: white; border-radius: 3px;">' .
-			'<span>' . $icon . '</span>' .
-			'<span>' . __('Maintenance Mode', 'wp-maintenance-mode-site-under-construction') . '</span>' .
-			'</div>',
-		'href'  => admin_url('options-general.php?page=MM_And_SUC_Free_Settings'),
-	]);
-
-	// Add the "Status" submenu as a toggle button
-	$wp_admin_bar->add_node([
-		'id'     => 'maintenance_mode_status',
-		'parent' => 'maintenance_mode',
-		'title'  => '<button id="toggle-maintenance-mode" style="background: none; border: none; color: inherit; font: inherit; cursor: pointer;">' .
-			$button_text . '</button>',
-		'href'   => '#',
-	]);
-
-	// Add the "Settings" submenu
-	$wp_admin_bar->add_node([
-		'id'     => 'maintenance_mode_settings',
-		'parent' => 'maintenance_mode',
-		'title'  => __('Settings', 'wp-maintenance-mode-site-under-construction'),
-		'href'   => admin_url('options-general.php?page=MM_And_SUC_Free_Settings'),
-	]);
-}, 100);
-
-// AJAX Handler for Frontend and Admin
-add_action('wp_ajax_toggle_maintenance_mode', 'toggle_maintenance_mode');
-
-function toggle_maintenance_mode()
-{
-	if (!wp_verify_nonce($_POST['_ajax_nonce'], 'toggle-maintenance-mode')) {
-		wp_send_json_error(__('Security verification failed. Please refresh the page and try again.', 'wp-maintenance-mode-site-under-construction'));
+	if ( MM_SUC_P_PAGE_LEGACY !== $page ) {
 		return;
 	}
 
-	if (!current_user_can('manage_options')) {
-		wp_send_json_error(__('Unauthorized access', 'wp-maintenance-mode-site-under-construction'));
+	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 
-	$options = get_option('MM_And_SUC_Free_options', []);
-	$current_status = isset($options['MM_And_SUC_Free_status']) && $options['MM_And_SUC_Free_status'] === '1';
-	$new_status = $current_status ? '0' : '1';
+	wp_safe_redirect( mm_suc_p_settings_url() );
+	exit;
+}
+add_action( 'admin_init', 'mm_suc_p_legacy_slug_redirect' );
 
-	$options['MM_And_SUC_Free_status'] = $new_status;
-	update_option('MM_And_SUC_Free_options', $options);
+/* -------------------------------------------------------------------------
+ * Assets
+ * ---------------------------------------------------------------------- */
 
-	wp_send_json_success([
-		'status' => $new_status,
-		'message' => $new_status === '1' ? __('Maintenance Mode is now ON', 'wp-maintenance-mode-site-under-construction') : __('Maintenance Mode is now OFF', 'wp-maintenance-mode-site-under-construction'),
-	]);
+/**
+ * Enqueue the workspace assets on the editor and messages screens.
+ *
+ * frontend.css is enqueued here too: the live preview renders the real public
+ * document inside the workspace.
+ *
+ * @param string $hook Current admin page hook.
+ * @return void
+ */
+function mm_suc_p_admin_assets( $hook ) {
+	$page             = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only screen check.
+	$is_plugin_screen = in_array( $page, array( MM_SUC_P_PAGE, MM_SUC_P_PAGE_MESSAGES ), true );
+
+	if ( ! $is_plugin_screen && 'toplevel_page_' . MM_SUC_P_PAGE !== $hook && strpos( (string) $hook, MM_SUC_P_PAGE_MESSAGES ) === false ) {
+		return;
+	}
+
+	$options  = mm_suc_p_get_options();
+	$template = MM_SUC_P_Template_Registry::resolve( $options['template'] );
+
+	wp_enqueue_media();
+
+	MM_SUC_P_Template_Controller::register_styles( $template, true );
+
+	wp_enqueue_style(
+		'mm-suc-p-admin',
+		MM_SUC_P_URL . 'assets/css/admin.css',
+		array( 'mm-suc-p-frontend' ),
+		MM_SUC_P_VERSION
+	);
+
+	wp_enqueue_script(
+		'mm-suc-p-admin',
+		MM_SUC_P_URL . 'assets/js/admin.js',
+		array(),
+		MM_SUC_P_VERSION,
+		true
+	);
+
+	$contract = array();
+
+	foreach ( mm_suc_p_style_contract() as $property => $spec ) {
+		$contract[ $spec['option'] ] = $property;
+	}
+
+	wp_localize_script(
+		'mm-suc-p-admin',
+		'mmSucPData',
+		array(
+			'ajaxUrl'             => admin_url( 'admin-ajax.php' ),
+			'nonce'               => wp_create_nonce( 'mm_suc_admin' ),
+			'saveAction'          => 'mm_suc_save_settings',
+			'viewAction'          => 'mm_suc_render_preview',
+			'presetAction'        => 'mm_suc_save_preset',
+			'deleteMessageAction' => 'mm_suc_delete_message',
+			'clearMessagesAction' => 'mm_suc_clear_messages',
+			'markReadAction'      => 'mm_suc_mark_read',
+			'contract'            => $contract,
+			'templates'           => MM_SUC_P_Template_Registry::to_array(),
+			'options'             => mm_suc_p_client_options( $options ),
+			'parts'               => MM_SUC_P_Template_View::parts(),
+			'icons'               => array(
+				'check'        => mm_suc_p_icon( 'check' ),
+				'close'        => mm_suc_p_icon( 'close' ),
+				'warning'      => mm_suc_p_icon( 'warning' ),
+				'contact-mail' => mm_suc_p_icon( 'contact-mail' ),
+				'trash'        => mm_suc_p_icon( 'trash' ),
+			),
+			'strings'             => mm_suc_p_admin_strings(),
+		)
+	);
+}
+add_action( 'admin_enqueue_scripts', 'mm_suc_p_admin_assets' );
+
+/**
+ * The configuration the editor script needs, with nothing sensitive in it.
+ *
+ * @param array $options Configuration.
+ * @return array
+ */
+function mm_suc_p_client_options( $options ) {
+	return array(
+		'enabled'         => (int) $options['enabled'],
+		'template'        => (string) $options['template'],
+		'layout'          => (string) $options['layout'],
+		'countdown'       => (int) $options['countdown'],
+		'contact_enabled' => (int) $options['contact_enabled'],
+		'end_datetime'    => (string) $options['end_datetime'],
+		'endIso'          => mm_suc_p_end_iso( $options ),
+		'timezone'        => mm_suc_p_timezone_label(),
+	);
 }
 
-
-
-
-if (! class_exists('MM_And_SUC_Free_admin_setting')) {
-	class MM_And_SUC_Free_admin_setting
-	{
-		public $before_section;
-		public $before_section_right;
-		public $after_section;
-		public $after_section_right;
-		public function __construct()
-		{
-
-			add_action('admin_menu', array($this, 'MM_And_SUC_Free_options_page'));
-			add_action('admin_init', array($this, 'MM_And_SUC_Free_settings_init'));
-			add_action('admin_footer', array($this, 'add_script'));
-			// Inline JavaScript for Frontend and Backend
-			add_action('admin_footer', array($this, 'maintenance_mode_inline_script'));
-			add_action('wp_footer', array($this, 'maintenance_mode_inline_script'));
-
-
-			$this->before_section = '<div class="col-md-12 col-sm-12 MM_And_SUC_Free_admin_card"><div class="card">';
-			$this->before_section_right = '<div class="col-md-12 col-sm-12 MM_And_SUC_Free_admin_card"><div class="card">';
-			$this->after_section = '</div></div>';
-			$this->after_section_right = '</div></div>';
-		}
-
-
-		public function maintenance_mode_inline_script()
-		{
-		?>
-<script>
-jQuery(document).ready(function($) {
-    $('#toggle-maintenance-mode').on('click', function(e) {
-        e.preventDefault();
-
-        $.ajax({
-            url: '<?php echo admin_url('admin-ajax.php'); ?>',
-            method: 'POST',
-            data: {
-                action: 'toggle_maintenance_mode',
-                _ajax_nonce: '<?php echo wp_create_nonce('toggle-maintenance-mode'); ?>',
-            },
-            success: function(response) {
-                if (response.success) {
-                    // Display the message
-                    const message = $('<div>', {
-                        text: response.data.message,
-                        css: {
-                            position: 'fixed',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            background: '#323232',
-                            color: '#fff',
-                            padding: '20px 40px',
-                            fontSize: '16px',
-                            fontWeight: 'bold',
-                            textAlign: 'center',
-                            borderRadius: '8px',
-                            boxShadow: '0px 4px 6px rgba(0,0,0,0.3)',
-                            zIndex: 9999,
-                        },
-                    }).appendTo('body');
-
-                    setTimeout(function() {
-                        message.fadeOut(500, function() {
-                            $(this).remove();
-                            location
-                                .reload(); // Reload the page after the message fades out
-                        });
-                    }, 3000);
-                } else {
-                    alert(response.data.message || 'An error occurred.');
-                }
-            },
-            error: function() {
-                alert('An unexpected error occurred.');
-            },
-        });
-    });
-});
-</script>
-<?php
-		}
-
-		public function MM_And_SUC_Free_field_type_color_picker2($args)
-		{
-			$options = get_option('MM_And_SUC_Free_options', array());
-			$value = isset($options[$args['label_for']]) ? $options[$args['label_for']] : '#ffffff'; // Default color is white
-		?>
-<input type="text" id="<?php echo esc_attr($args['label_for']); ?>"
-    name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]" value="<?php echo esc_attr($value); ?>"
-    class="color-field" />
-<p class="description"><?php echo esc_html($args['description']); ?></p>
-<script>
-jQuery(document).ready(function($) {
-    $('.color-field').wpColorPicker(); // Initialize WordPress Color Picker
-});
-</script>
-<?php
-		}
-
-
-		public function MM_And_SUC_Free_settings_init()
-		{
-			register_setting('MM_And_SUC_Free_Settings', 'MM_And_SUC_Free_options');
-
-			add_settings_section(
-				'MM_And_SUC_Free_section_Status_developers',
-				__('Mode Settings:', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_section_developers_dev_cb'),
-				'MM_And_SUC_Free_Settings',
-				array(
-					'before_section' => $this->before_section,
-					'after_section' => $this->after_section,
-					'section_class' => 'section_class'
-				)
-			);
-			// Add Timer Type Section
-			add_settings_section(
-				'MM_And_SUC_Free_section_timer_type',
-				__('Countdown Timer Style', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_section_developers_dev_cb'),
-				'MM_And_SUC_Free_Settings',
-				array(
-					'before_section' => $this->before_section_right,
-					'after_section' => $this->after_section_right,
-					'section_class' => 'section_class'
-				)
-			);
-
-			// Add Timer Style Radio Buttons
-			add_settings_field(
-				'MM_And_SUC_Free_timer_style',
-				__('Timer Style', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_dropdown2'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_timer_type',
-				[
-					'label_for' => 'MM_And_SUC_Free_timer_style',
-					'class' => 'MM_And_SUC_Free_row',
-					'description' => 'Choose the timer style you want for the maintenance page.',
-					'options' => [
-						'colored_background' => __('Colored Background (Default)', 'wp-maintenance-mode-site-under-construction'),
-						'background_image' => __('Background Image', 'wp-maintenance-mode-site-under-construction'),
-					]
-				]
-			);
-			// Add Background Type Field (Dropdown)
-			add_settings_field(
-				'MM_And_SUC_Free_select_type_of_bg',
-				__('Background Type', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_select_type_of_bg'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_timer_type', // Update the section to Timer Mode
-				[
-					'label_for' => 'MM_And_SUC_Free_option_type_of_bg',
-					'class' => 'MM_And_SUC_Free_row',
-					'id' => 'showcase-taxonomy-select-id',
-					'MM_And_SUC_Free_custom_data' => 'custom',
-				]
-			);
-
-			// Add Background Image Upload Field
-			add_settings_field(
-				'MM_And_SUC_Free_image',
-				__('Background Image', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_image'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_timer_type', // Update the section to Timer Mode
-				[
-					'label_for' => 'MM_And_SUC_Free_image',
-					'class' => 'MM_And_SUC_Free_row image_upload',
-					'id' => 'showcase-taxonomy-image-id',
-					'MM_And_SUC_Free_custom_data' => 'custom',
-				]
-			);
-
-			// Add Background Textures Field
-			add_settings_field(
-				'MM_And_SUC_Free_textures',
-				__('Background Textures', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_textures'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_timer_type', // Update the section to Timer Mode
-				[
-					'label_for' => 'MM_And_SUC_Free_textures',
-					'class' => 'MM_And_SUC_Free_row image_textures',
-					'id' => 'showcase-taxonomy-textures-id',
-					'MM_And_SUC_Free_custom_data' => 'custom',
-				]
-			);
-
-			add_settings_section(
-				'MM_And_SUC_Free_section_role_developers',
-				__('Access Control:', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_section_developers_dev_cb'),
-				'MM_And_SUC_Free_Settings',
-				array(
-					'before_section' => $this->before_section_right,
-					'after_section' => $this->after_section_right,
-					'section_class' => 'section_class'
-				)
-			);
-			add_settings_section(
-				'MM_And_SUC_Free_section_massage_developers',
-				__('Custom Maintenance Message:', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_section_developers_dev_cb'),
-				'MM_And_SUC_Free_Settings',
-				array(
-					'before_section' => $this->before_section,
-					'after_section' => $this->after_section,
-					'section_class' => 'section_class'
-				)
-			);
-			add_settings_section(
-				'MM_And_SUC_Free_section_CTA_buttons',
-				__('Call-to-Action Buttons:', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_section_developers_dev_cb'),
-				'MM_And_SUC_Free_Settings',
-				array(
-					'before_section' => $this->before_section,
-					'after_section' => $this->after_section,
-					'section_class' => 'section_class'
-				)
-			);
-
-			add_settings_field(
-				'MM_And_SUC_Free_enable_cta',
-				__('Enable Call-to-Action Buttons', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_checkbox'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_CTA_buttons',
-				[
-					'label_for' => 'MM_And_SUC_Free_enable_cta',
-					'class' => 'MM_And_SUC_Free_row',
-					'MM_And_SUC_Free_custom_data' => 'custom',
-
-					'description' => __('Enable or disable Call-to-Action buttons.', 'wp-maintenance-mode-site-under-construction'),
-				]
-			);
-			add_settings_field(
-				'MM_And_SUC_Free_cta_bg_color',
-				__('CTA Buttons Background Color', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_color_picker2'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_CTA_buttons',
-				[
-					'label_for' => 'MM_And_SUC_Free_cta_bg_color',
-					'class' => 'MM_And_SUC_Free_row cta-input',
-					'description' => __('Select the background color for Call-to-Action buttons.', 'wp-maintenance-mode-site-under-construction'),
-					'MM_And_SUC_Free_custom_data' => 'custom',
-				]
-			);
-
-			add_settings_field(
-				'MM_And_SUC_Free_cta_text_color',
-				__('CTA Buttons Text Color', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_color_picker2'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_CTA_buttons',
-				[
-					'label_for' => 'MM_And_SUC_Free_cta_text_color',
-					'class' => 'MM_And_SUC_Free_row cta-input',
-					'description' => __('Select the text color for Call-to-Action buttons.', 'wp-maintenance-mode-site-under-construction'),
-					'MM_And_SUC_Free_custom_data' => 'custom',
-				]
-			);
-
-			for ($i = 1; $i <= 4; $i++) {
-				// Add Slim Mode Title Field
-
-				// Add Label Field
-				add_settings_field(
-					"MM_And_SUC_Free_cta_label_$i",
-					__("Button $i Label", 'wp-maintenance-mode-site-under-construction'),
-					array($this, 'MM_And_SUC_Free_field_type_text'),
-					'MM_And_SUC_Free_Settings',
-					'MM_And_SUC_Free_section_CTA_buttons',
-					[
-						'label_for' => "MM_And_SUC_Free_cta_label_$i",
-						'class' => 'MM_And_SUC_Free_row cta-input',
-						'description' => __("Enter the label for Button $i.", 'wp-maintenance-mode-site-under-construction'),
-						'MM_And_SUC_Free_custom_data' => 'custom',
-
-					]
-				);
-
-				// Add URL Field
-				add_settings_field(
-					"MM_And_SUC_Free_cta_url_$i",
-					__("Button $i URL", 'wp-maintenance-mode-site-under-construction'),
-					array($this, 'MM_And_SUC_Free_field_type_text'),
-					'MM_And_SUC_Free_Settings',
-					'MM_And_SUC_Free_section_CTA_buttons',
-					[
-						'label_for' => "MM_And_SUC_Free_cta_url_$i",
-						'class' => 'MM_And_SUC_Free_row cta-input',
-						'description' => __("Enter the URL for Button $i.", 'wp-maintenance-mode-site-under-construction'),
-						'MM_And_SUC_Free_custom_data' => 'custom',
-
-					]
-				);
-			}
-
-
-
-			add_settings_field(
-				'MM_And_SUC_Free_status',
-				__('Status', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_checkbox'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_Status_developers',
-				[
-					'label_for' => 'MM_And_SUC_Free_status',
-					'class' => 'MM_And_SUC_Free_row',
-					'MM_And_SUC_Free_custom_data' => 'custom',
-					'description' => 'Enable/Disable plugin functionality',
-					'wp-maintenance-mode-site-under-construction',
-				]
-			);
-			// Add Timer Mode Dropdown
-			add_settings_field(
-				'MM_And_SUC_Free_timer_mode',
-				__('Mode', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_dropdown'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_Status_developers',
-				[
-					'label_for' => 'MM_And_SUC_Free_timer_mode',
-					'class' => 'MM_And_SUC_Free_row',
-					'description' => 'Select the desired mode for the maintenance page.',
-				]
-			);
-
-
-			// Add Slim Mode Title Field
-			add_settings_field(
-				'MM_And_SUC_Free_slim_title',
-				__('Slim Mode Title', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_text'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_Status_developers',
-				[
-					'label_for' => 'MM_And_SUC_Free_slim_title',
-					'class' => 'MM_And_SUC_Free_row',
-					'description' => 'Title displayed when Slim Mode is active. This field is only visible when Slim Mode is selected in the Timer Mode dropdown.',
-					'MM_And_SUC_Free_custom_data' => '', // Add this key with a default value
-				]
-			);
-
-
-			// Add Slim Mode Description Field
-			add_settings_field(
-				'MM_And_SUC_Free_slim_text',
-				__('Slim Mode Description', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_textarea'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_Status_developers',
-				[
-					'label_for' => 'MM_And_SUC_Free_slim_text',
-					'class' => 'MM_And_SUC_Free_row',
-					'description' => 'Description displayed when Slim Mode is active. This field is only visible when Slim Mode is selected in the Timer Mode dropdown.',
-					'MM_And_SUC_Free_custom_data' => '', // Add this key with a default value
-				]
-			);
-			add_settings_field(
-				'MM_And_SUC_Free_colored_background_color',
-				__('Background Color', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_color_picker'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_timer_type', // Add under the Timer Type section
-				[
-					'label_for' => 'MM_And_SUC_Free_colored_background_color',
-					'class' => 'MM_And_SUC_Free_row',
-					'description' => 'Choose a background color for the colored style.',
-				]
-			);
-
-			add_settings_field(
-				'MM_And_SUC_Free_title',
-				__('Countdown Title', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_text'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_massage_developers',
-				[
-					'label_for' => 'MM_And_SUC_Free_title',
-					'class' => 'MM_And_SUC_Free_row',
-					'MM_And_SUC_Free_custom_data' => 'custom',
-				]
-			);
-			add_settings_field(
-				'MM_And_SUC_Free_description',
-				__('Countdown Description', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_textarea'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_massage_developers',
-				[
-					'label_for' => 'MM_And_SUC_Free_description',
-					'class' => 'MM_And_SUC_Free_row',
-					'MM_And_SUC_Free_custom_data' => 'custom',
-				]
-			);
-			add_settings_field(
-				'MM_And_SUC_Free_email',
-				__('Email', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_email'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_massage_developers',
-				[
-					'label_for' => 'MM_And_SUC_Free_email',
-					'class' => 'MM_And_SUC_Free_row',
-					'MM_And_SUC_Free_custom_data' => 'custom',
-				]
-			);
-			add_settings_field(
-				'MM_And_SUC_Free_date',
-				__('Countdown End Time', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_date_time'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_timer_type', // Update the section to Timer Type
-				[
-					'label_for' => 'MM_And_SUC_Free_date',
-					'class' => 'MM_And_SUC_Free_row',
-				]
-			);
-
-			add_settings_field(
-				'MM_And_SUC_Free_role',
-				__('Apply on', 'wp-maintenance-mode-site-under-construction'),
-				array($this, 'MM_And_SUC_Free_field_type_roles'),
-				'MM_And_SUC_Free_Settings',
-				'MM_And_SUC_Free_section_role_developers',
-				[
-					'label_for' => 'MM_And_SUC_Free_role',
-					'class' => 'MM_And_SUC_Free_row',
-					'MM_And_SUC_Free_custom_data' => array(),
-				]
-			);
-		}
-		public function MM_And_SUC_Free_field_type_color_picker($args)
-		{
-			$options = get_option('MM_And_SUC_Free_options', array());
-			$value = isset($options[$args['label_for']]) ? $options[$args['label_for']] : '#ffffff'; // Default color is white
-		?>
-<input type="text" id="<?php echo esc_attr($args['label_for']); ?>"
-    name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]" value="<?php echo esc_attr($value); ?>"
-    class="color-field" />
-<p class="description"><?php echo esc_html($args['description']); ?></p>
-<script>
-jQuery(document).ready(function($) {
-    $('.color-field').wpColorPicker(); // Initialize WordPress Color Picker
-});
-</script>
-<?php
-		}
-
-		public function MM_And_SUC_Free_field_type_dropdown2($args)
-		{
-			$options = get_option('MM_And_SUC_Free_options', array());
-			$value = isset($options[$args['label_for']]) ? $options[$args['label_for']] : 'colored_background'; // Default value
-
-			// Define the dropdown options
-			$dropdown_options = [
-				'colored_background' => __('Colored Background', 'wp-maintenance-mode-site-under-construction'),
-				'background_image' => __('Background Image', 'wp-maintenance-mode-site-under-construction'),
-			];
-		?>
-<select class="form-control" name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]"
-    id="<?php echo esc_attr($args['label_for']); ?>">
-    <?php foreach ($dropdown_options as $key => $label): ?>
-    <option value="<?php echo esc_attr($key); ?>" <?php selected($value, $key); ?>>
-        <?php echo esc_html($label); ?>
-    </option>
-    <?php endforeach; ?>
-</select>
-<p class="description">
-    <?php echo esc_html($args['description']); ?>
-</p>
-<?php
-		}
-
-
-		public function MM_And_SUC_Free_field_type_dropdown($args)
-		{
-			$options = get_option('MM_And_SUC_Free_options', array());
-			$value = isset($options[$args['label_for']]) ? $options[$args['label_for']] : 'timer_with_contact'; // Default value
-
-			// Define the dropdown options
-			$dropdown_options = [
-				'timer_with_contact' => __('Timer with Contact Form', 'wp-maintenance-mode-site-under-construction'),
-				'timer_without_contact' => __('Timer without Contact Form', 'wp-maintenance-mode-site-under-construction'),
-				'slim_mode' => __('Slim Mode', 'wp-maintenance-mode-site-under-construction'),
-			];
-		?>
-<select class="form-control" name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]"
-    id="<?php echo esc_attr($args['label_for']); ?>">
-    <?php foreach ($dropdown_options as $key => $label): ?>
-    <option value="<?php echo esc_attr($key); ?>" <?php selected($value, $key); ?>>
-        <?php echo esc_html($label); ?>
-    </option>
-    <?php endforeach; ?>
-</select>
-<p class="description">
-    <?php echo esc_html($args['description']); ?>
-</p>
-<?php
-		}
-
-
-
-
-		public function section_header()
-		{
-			return '<div class="col-md-6 col-sm-12">';
-		}
-		public function section_footer()
-		{
-			return '</div>';
-		}
-		public function MM_And_SUC_Free_field_type_textures($args)
-		{
-			$options = get_option('MM_And_SUC_Free_options', array());
-			$directory = MM_And_SUC_Free_PLUGIN_DIR . '/textures/';
-			$directory_seperator = "/";
-			$allimages = MM_And_SUC_Free_getAllImgs(MM_And_SUC_Free_getAllDirs($directory, $directory_seperator));
-		?>
-<div id="conte_textures">
-    <?php
-				foreach ($allimages as $row) {
-					$text_path = pathinfo($row);
-				?>
-    <label class="tooltip">
-        <input type="radio" name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]"
-            <?php isset($options[$args['label_for']]) ? checked($options[$args['label_for']], $row) : ''; ?>
-            value="<?php echo esc_attr($row); ?>">
-        <img src="<?php esc_attr_e(MM_And_SUC_Free_PLUGIN_URL . 'textures/' . $row); ?>">
-        <span class="tooltiptext tooltip-top">
-            <?php
-							$link = MM_And_SUC_Free_PLUGIN_DIR . 'textures/' . $text_path['dirname'] . '/' . $text_path['filename'] . '.txt';
-							if (file_exists($link)) {
-								$myfile = fopen($link, "r") or die("Unable to open file!");
-								esc_html_e(fread($myfile, filesize($link)));
-								fclose($myfile);
-							}
-							?>
-    </label>
-    <?php
-				}
-				?>
-</div>
-
-
-<?php
-		}
-		public function MM_And_SUC_Free_select_type_of_bg($args)
-		{
-			$options = get_option('MM_And_SUC_Free_options', array());
-		?>
-<select class="form-control" name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]"
-    id="<?php echo esc_attr($args['label_for']); ?>">
-    <option value="1" <?php isset($options[$args['label_for']]) ? selected($options[$args['label_for']], 1) : ''; ?>>
-        image</option>
-    <option value="2" <?php isset($options[$args['label_for']]) ? selected($options[$args['label_for']], 2) : ''; ?>>
-        textures</option>
-</select>
-
-<?php
-		}
-		public function MM_And_SUC_Free_section_developers_cb($args)
-		{
-			/*
-			<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'sssssss', 'wp-maintenance-mode-site-under-construction' ); ?>
-</p>
-*/
+/**
+ * Translatable strings the editor script needs.
+ *
+ * @return array
+ */
+function mm_suc_p_admin_strings() {
+	return array(
+		'saving'        => __( 'Saving…', 'wp-maintenance-mode-site-under-construction' ),
+		'save'          => __( 'Save changes', 'wp-maintenance-mode-site-under-construction' ),
+		'saved'         => __( 'Settings saved.', 'wp-maintenance-mode-site-under-construction' ),
+		'saveFailed'    => __( 'Could not save. Check your connection and try again.', 'wp-maintenance-mode-site-under-construction' ),
+		'expired'       => __( 'Could not save - your session expired. Reload the page and try again.', 'wp-maintenance-mode-site-under-construction' ),
+		'dismiss'       => __( 'Dismiss', 'wp-maintenance-mode-site-under-construction' ),
+		'noticeTray'    => __( 'Notices from other plugins', 'wp-maintenance-mode-site-under-construction' ),
+		'chooseLogo'    => __( 'Choose a logo', 'wp-maintenance-mode-site-under-construction' ),
+		'chooseImage'   => __( 'Choose a background image', 'wp-maintenance-mode-site-under-construction' ),
+		'use'           => __( 'Use this image', 'wp-maintenance-mode-site-under-construction' ),
+		'unsaved'       => __( 'Unsaved change', 'wp-maintenance-mode-site-under-construction' ),
+		'live'          => __( 'Site is live', 'wp-maintenance-mode-site-under-construction' ),
+		'maintenance'   => __( 'Maintenance mode is on', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: contrast ratio number against background, for example 2.4. */
+		'contrastLow'   => __( 'Low contrast (%s:1). Some visitors will not be able to read this.', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: contrast ratio number against background, for example 4.8. */
+		'contrastOk'    => __( 'Contrast %s:1 against this background.', 'wp-maintenance-mode-site-under-construction' ),
+		'durationPast'  => __( 'That time has passed - the countdown reads zero.', 'wp-maintenance-mode-site-under-construction' ),
+		'durationNone'  => __( 'No end time set, so no countdown is shown.', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: time duration until launch, for example "3 days, 4 hours". */
+		'durationFrom'  => __( '%s from now', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: number of days. */
+		'day'           => __( '%s day', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: number of days. */
+		'days'          => __( '%s days', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: number of hours. */
+		'hour'          => __( '%s hour', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: number of hours. */
+		'hours'         => __( '%s hours', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: number of minutes. */
+		'minute'        => __( '%s minute', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: number of minutes. */
+		'minutes'       => __( '%s minutes', 'wp-maintenance-mode-site-under-construction' ),
+		'templateApply' => __( 'Template applied. Its colours are now yours to adjust.', 'wp-maintenance-mode-site-under-construction' ),
+		'colourMap'     => __( 'Colours on this design', 'wp-maintenance-mode-site-under-construction' ),
+		'colourMapEmpty' => __( 'This design paints its own colours, so none of these apply to it.', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: a list of the parts a colour reaches, for example "the headline, the message and the site address". */
+		'colourMapReach' => __( 'Sets %s on this design - they all use this one colour.', 'wp-maintenance-mode-site-under-construction' ),
+		'and'           => __( 'and', 'wp-maintenance-mode-site-under-construction' ),
+		/* translators: %s: a list of the other parts a colour reaches. */
+		'colourMapAlso' => __( 'The same colour also sets %s.', 'wp-maintenance-mode-site-under-construction' ),
+		'presetSaving'         => __( 'Saving…', 'wp-maintenance-mode-site-under-construction' ),
+		'presetSave'           => __( 'Save as preset', 'wp-maintenance-mode-site-under-construction' ),
+		'presetFailed'         => __( 'Could not save the preset. Check your connection and try again.', 'wp-maintenance-mode-site-under-construction' ),
+		'deleteMessageConfirm' => __( 'Are you sure you want to delete this message?', 'wp-maintenance-mode-site-under-construction' ),
+		'clearAllConfirm'      => __( 'Are you sure you want to delete all messages? This cannot be undone.', 'wp-maintenance-mode-site-under-construction' ),
+		'messageDeleted'       => __( 'Message deleted.', 'wp-maintenance-mode-site-under-construction' ),
+		'messagesCleared'      => __( 'All messages cleared.', 'wp-maintenance-mode-site-under-construction' ),
+		'deleteFailed'         => __( 'Could not delete the message. Try again.', 'wp-maintenance-mode-site-under-construction' ),
+		'clearFailed'          => __( 'Could not clear messages. Try again.', 'wp-maintenance-mode-site-under-construction' ),
+	);
 }
-public function MM_And_SUC_Free_section_developers_dev_cb($args)
-{
-/*
-<p id="<?php echo esc_attr( $args['id'] ); ?>">
-    <?php esc_html_e( 'sssssss', 'wp-maintenance-mode-site-under-construction' ); ?></p>
-*/
-}
-public function MM_And_SUC_Free_field_type_image($args)
-{
-$options = get_option('MM_And_SUC_Free_options', array());
-?>
-<?php $image_id = isset($options[$args['label_for']]) ? $options[$args['label_for']] : ''; ?>
-<input type="hidden" id="<?php echo esc_attr($args['id']); ?>"
-    name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]"
-    value="<?php echo esc_attr($image_id); ?>">
-<div id="category-image-wrapper">
-    <?php if ($image_id != '') { ?>
-    <?php
-					echo wp_get_attachment_image($image_id, 'full', false, array("class" => "custom_media_image"));
-					?>
-    <?php } ?>
-</div>
-<p>
-    <input type="button" style="opacity: 1 !important;" class="button button-secondary showcase_tax_media_button"
-        id="showcase_tax_media_button" name="showcase_tax_media_button"
-        value="<?php echo esc_attr__('Add Image', 'codepressfaq'); ?>" />
-    <input type="button" style="opacity: 1 !important;" class="button button-secondary showcase_tax_media_remove"
-        id="showcase_tax_media_remove" name="showcase_tax_media_remove"
-        value="<?php echo esc_attr__('Remove Image', 'codepressfaq'); ?>" />
-</p>
 
-<p class="description">
-    <?php esc_html_e('Try to choose a large image for a good view', 'wp-maintenance-mode-site-under-construction'); ?>
-</p>
+/* -------------------------------------------------------------------------
+ * Sanitization
+ * ---------------------------------------------------------------------- */
 
-<?php
-		}
-		public function MM_And_SUC_Free_field_type_date_time($args)
-		{
-			$options = get_option('MM_And_SUC_Free_options', array());
-		?>
-<input type="text" readonly style="opacity: 1 !important;"
-    name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]" class="datetime-field form-control"
-    data-datetime="{'position':'bottom','dateFormat':'dd-mm-YYYY '}" id="<?php echo esc_attr($args['label_for']); ?>"
-    data-tail-datetime="tail-11"
-    data-value="<?php echo isset($options[$args['label_for']]) ? esc_attr(strtotime($options[$args['label_for']])) : ''; ?>"
-    value="<?php echo isset($options[$args['label_for']]) ? esc_attr($options[$args['label_for']]) : ''; ?>">
-<p class="description">
-    <?php esc_html_e('Example: 22-09-2020  18:07:00', 'wp-maintenance-mode-site-under-construction'); ?>
-</p>
+/**
+ * Sanitize a submitted configuration.
+ *
+ * A field that is not handled here does not exist. Enums are whitelisted,
+ * strings are capped, colours go through sanitize_hex_color().
+ *
+ * The editable-part caps are eyebrow 80, headline 120, message 600 and
+ * contact_button 60 - the same numbers the inline editor truncates at and the
+ * same numbers recorded in design-system/tokens/page.tokens.json.
+ *
+ * @param array $raw     Untrusted input.
+ * @param array $current The configuration being replaced.
+ * @return array
+ */
+function mm_suc_p_sanitize_settings( $raw, $current ) {
+	$out = $current;
 
-<?php
-		}
-		public function MM_And_SUC_Free_field_type_roles($args)
-		{
-			// Fetch the saved options
-			$options = get_option('MM_And_SUC_Free_options', array());			// Retrieve the saved value or default to an empty array
-			$value = isset($options[$args['label_for']]) ? $options[$args['label_for']] : array();
-			global $wp_roles;
-			$wp_roles = new WP_Roles(); // Get all roles
+	$out['schema_version'] = 2;
+	$out['enabled']        = empty( $raw['enabled'] ) ? 0 : 1;
+	$out['auto_disable']   = empty( $raw['auto_disable'] ) ? 0 : 1;
+	$out['countdown']      = empty( $raw['countdown'] ) ? 0 : 1;
+	$out['contact_enabled'] = empty( $raw['contact_enabled'] ) ? 0 : 1;
 
-			// If no values are saved, initialize all roles as checked
-			if (empty($value)) {
-				foreach ($wp_roles->get_names() as $name) {
-					$value["'" . $name . "'"] = $name;
+	// Schedule: a datetime-local value, stored as given, in site time.
+	$end = isset( $raw['end_datetime'] ) ? sanitize_text_field( $raw['end_datetime'] ) : '';
+
+	if ( '' === $end || preg_match( '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/', $end ) ) {
+		$out['end_datetime'] = $end;
+	}
+
+	// Template: only a slug that is actually installed.
+	$template = isset( $raw['template'] ) ? sanitize_key( $raw['template'] ) : '';
+
+	if ( MM_SUC_P_Template_Registry::is_installed( $template ) ) {
+		$out['template'] = $template;
+	} elseif ( ! MM_SUC_P_Template_Registry::is_installed( $out['template'] ) ) {
+		$out['template'] = MM_SUC_P_Template_Registry::default_slug();
+	}
+
+	/*
+	 * A template proposes a palette. When the template changes and the owner is
+	 * still on the previous template's colours, adopt the new ones; anything the
+	 * owner has actually changed is kept. The editor does the same thing live -
+	 * this is what keeps a save without JavaScript coherent.
+	 */
+	if ( $out['template'] !== $current['template'] ) {
+		$previous = MM_SUC_P_Template_Registry::get( $current['template'] );
+		$next     = MM_SUC_P_Template_Registry::get( $out['template'] );
+
+		if ( $next ) {
+			$before = $previous ? $previous->get_palette_options() : array();
+			$after  = $next->get_palette_options();
+
+			foreach ( $after as $field => $value ) {
+				$submitted = isset( $raw[ $field ] ) ? $raw[ $field ] : null;
+				$untouched = ( null === $submitted )
+					|| ( isset( $before[ $field ] ) && (string) $submitted === (string) $before[ $field ] );
+
+				if ( $untouched ) {
+					$raw[ $field ] = $value;
 				}
 			}
-
-			echo '<div class="row">';
-			foreach ($wp_roles->get_names() as $name) {
-				// Set checkbox as checked if the role is in the saved values
-				$is_checked = isset($value["'" . $name . "'"]) ? 'checked' : '';
-			?>
-<div class="wp_roles_list col-lg-12 col-xl-6" style="margin-bottom: 7px;">
-    <label class="switch">
-        <input type="checkbox" id="<?php echo esc_attr($name); ?>"
-            name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]['<?php echo esc_attr($name); ?>']"
-            value="<?php echo esc_attr($name); ?>" <?php echo $is_checked; ?>>
-        <span class="slider round"></span>
-    </label>
-    <?php esc_html_e($name); ?>
-</div>
-<?php
-			}
-			echo '</div>';
-			?>
-<?php
-		}
-
-		public function MM_And_SUC_Free_field_type_text($args)
-		{
-			$options = get_option('MM_And_SUC_Free_options', array());
-		?>
-<input type="text" class="form-control" style="opacity: 1 !important;"
-    value="<?php echo isset($options[$args['label_for']]) ? esc_attr($options[$args['label_for']]) : ''; ?>"
-    id="<?php echo esc_attr($args['label_for']); ?>"
-    data-custom="<?php echo esc_attr($args['MM_And_SUC_Free_custom_data']); ?>"
-    name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]">
-<p class="description"></p>
-
-<?php
-		}
-		public function MM_And_SUC_Free_field_type_email($args)
-		{
-			$options = get_option('MM_And_SUC_Free_options', array());
-		?>
-<input type="email" style="opacity: 1 !important;" class="form-control"
-    value="<?php echo isset($options[$args['label_for']]) ? esc_attr($options[$args['label_for']]) : ''; ?>"
-    id="<?php echo esc_attr($args['label_for']); ?>"
-    data-custom="<?php echo esc_attr($args['MM_And_SUC_Free_custom_data']); ?>"
-    name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]">
-<p class="description">
-    <?php esc_html_e('Emails wil be sent to site admin if you leave this field blank', 'wp-maintenance-mode-site-under-construction'); ?>
-</p>
-
-<?php
-		}
-		public function MM_And_SUC_Free_field_type_textarea($args)
-		{
-			$options = get_option('MM_And_SUC_Free_options', array());
-		?>
-<textarea id="<?php echo esc_attr($args['label_for']); ?>" class="form-control"
-    data-custom="<?php echo esc_attr($args['MM_And_SUC_Free_custom_data']); ?>"
-    name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]" class="mceEditor" rows="3"
-    style="width:100%;"
-    autocomplete="off"><?php echo isset($options[$args['label_for']]) ? esc_attr($options[$args['label_for']]) : ''; ?></textarea>
-<p class="description"></p>
-
-<?php
-		}
-		public function MM_And_SUC_Free_field_type_checkbox($args)
-		{
-			$options = get_option('MM_And_SUC_Free_options', array());
-
-		?>
-<div>
-    <span class="on_off off"><?php esc_html_e('OFF'); ?></span>
-    <label class="switch">
-        <input type="checkbox" id="<?php esc_attr_e($args['label_for']); ?>"
-            name="MM_And_SUC_Free_options[<?php echo esc_attr($args['label_for']); ?>]" value="1"
-            <?php echo isset($options[$args['label_for']]) ? (checked($options[$args['label_for']], '1', false)) : (''); ?>>
-        <span class="slider round"></span>
-    </label>
-    <span class="on_off on"><?php esc_html_e('ON'); ?></span>
-    <p class="description">
-        <?php esc_html_e($args['description']); ?>
-    </p>
-</div>
-
-<?php
-		}
-
-
-		// Callback for the toggle button page
-		function maintenance_mode_toggle_callback()
-		{
-			// Check if the mode is enabled
-			$maintenance_mode = get_option('maintenance_mode_enabled', false);
-			$toggle_status = $maintenance_mode ? 'ON' : 'OFF';
-			$toggle_color = $maintenance_mode ? 'green' : 'red';
-
-			// Toggle form
-		?>
-<div class="wrap">
-    <h1><?php _e('Toggle Maintenance Mode', 'your-textdomain'); ?></h1>
-    <form method="post">
-        <?php wp_nonce_field('toggle_maintenance_mode'); ?>
-        <p>
-            <strong>Status:</strong>
-            <span style="color: <?php echo $toggle_color; ?>; font-weight: bold;"><?php echo $toggle_status; ?></span>
-        </p>
-        <button name="toggle_maintenance_mode" class="button button-primary" type="submit">
-            <?php echo $maintenance_mode ? __('Turn OFF', 'your-textdomain') : __('Turn ON', 'your-textdomain'); ?>
-        </button>
-    </form>
-</div>
-<?php
-
-			// Handle toggle form submission
-			if (isset($_POST['toggle_maintenance_mode']) && check_admin_referer('toggle_maintenance_mode')) {
-				$new_status = !$maintenance_mode;
-				update_option('maintenance_mode_enabled', $new_status);
-				wp_redirect(menu_page_url('maintenance-mode-toggle', false));
-				exit;
-			}
-		}
-
-		// Callback for the settings page
-		public function maintenance_mode_settings_callback()
-		{
-			?>
-<div class="wrap">
-    <h1><?php _e('Maintenance Mode Settings', 'your-textdomain'); ?></h1>
-    <p><?php _e('Settings for the maintenance mode plugin can be configured here.', 'your-textdomain'); ?></p>
-    <a href="<?php echo admin_url('options-general.php?page=MM_And_SUC_Free_Settings'); ?>"
-        class="button button-primary">
-        <?php _e('Go to Settings', 'your-textdomain'); ?>
-    </a>
-</div>
-<?php
-		}
-
-
-		public function MM_And_SUC_Free_options_page()
-		{
-			add_menu_page(
-				'WP Maintenance Mode & Site Under Construction Settings:',
-				'Maintenance Mode',
-				'manage_options',
-				'MM_And_SUC_Free_Settings',
-				array($this, 'MM_And_SUC_Free_options_page_html'),
-				'dashicons-admin-tools'
-			);
-		}
-
-
-		public function MM_And_SUC_Free_options_page_html()
-		{
-
-			if (! current_user_can('manage_options')) {
-				return;
-			}
-
-			if (isset($_GET['settings-updated'])) {
-				add_settings_error('MM_And_SUC_Free_messages', 'MM_And_SUC_Free_message', __('Settings Saved', 'wp-maintenance-mode-site-under-construction'), 'updated');
-			}
-
-			$network_dir_append = "";
-
-			if (is_multisite()) $network_dir_append = "network/";
-
-			$admin_url = admin_url($network_dir_append . 'plugin-install.php');
-
-		?>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Select the <ul> element using its class
-    const ulElement = document.querySelector('.other_plugins_rotator_ul');
-
-    function showRandomElements() {
-        // Hide all list items
-        const listItems = ulElement.querySelectorAll('li');
-        listItems.forEach((li) => {
-            li.style.display = 'none';
-        });
-
-        // Generate three random indices
-        const numItems = listItems.length;
-        const randomIndices = [];
-        while (randomIndices.length < 5) {
-            const randomIndex = Math.floor(Math.random() * numItems);
-            if (!randomIndices.includes(randomIndex)) {
-                randomIndices.push(randomIndex);
-            }
-        }
-
-        // Show the randomly selected list items
-        randomIndices.forEach((index) => {
-            listItems[index].style.display = 'block';
-        });
-    }
-
-    // Show initial random elements
-    showRandomElements();
-
-    // Set interval to change elements every 15 seconds
-    setInterval(showRandomElements, 15000);
-});
-</script>
-<div class="col-lg-12 col-xl-12 col-xxl-12">
-    <h3><?php _e('WP Maintenance Mode & Site Under Construction', 'wp-maintenance-mode-site-under-construction'); ?>
-    </h3>
-    <div id="">
-        <?php settings_errors('MM_And_SUC_Free_messages'); ?>
-        <div id="dashboard-widgets" class="metabox-holder">
-            <div id="" class="">
-                <div id="side-sortables" class="meta-box-sortables ui-sortable">
-                    <div id="dashboard_quick_press">
-                        <h2 class="hndle ui-sortable-handle">
-                            <span>
-                                <span class="hide-if-no-js"><?php esc_html_e(get_admin_page_title()); ?></span>
-                                <span class="hide-if-js"><?php esc_html_e(get_admin_page_title()); ?></span>
-                            </span>
-                        </h2>
-                        <div class="inside">
-                            <form action="options.php" method="post">
-                                <div class="input-text-wrap row" id="title-wrap">
-                                    <div class="col-md-8 col-sm-12">
-                                        <?php
-													settings_fields('MM_And_SUC_Free_Settings');
-													do_settings_sections('MM_And_SUC_Free_Settings');
-													?>
-                                    </div>
-                                    <div class="col-md-4 col-sm-12  ">
-                                        <div class="col-md-12 col-sm-12  MM_And_SUC_Free_admin_card">
-                                            <div class="card">
-                                                <h2
-                                                    style="background-color: hsl(275.56deg 49.69% 31.96%); color: white; margin-bottom: 20px">
-                                                    Other products</h2>
-
-                                                <ul class="other_plugins_rotator_ul">
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=404 Image Redirection Replace Broken Images&tab=search&type=term">404
-                                                                    Image Redirection (Replace Broken Images)</a></h3>
-                                                            <div class="wporg-ratings" title="5 out of 5 stars"
-                                                                style="color:#ffb900;"></div>
-                                                            <p class="active_installs">Active Installs: 600+</p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=Advanced FAQ QA Creator by Category&tab=search&type=term">Advanced
-                                                                    FAQ QA Creator by Category</a></h3>
-                                                            <p class="active_installs">Active Installs: Less than 10</p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=All 404 Redirect to Homepage&tab=search&type=term">All
-                                                                    404 Redirect to Homepage</a></h3>
-                                                            <div class="wporg-ratings" title="4 out of 5 stars"
-                                                                style="color:#ffb900;"></div>
-                                                            <p class="active_installs">Active Installs: 200,000+</p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=Captchinoo, admin login page protection with Google recaptcha&tab=search&type=term">Captchinoo,
-                                                                    admin login page protection with Google
-                                                                    recaptcha</a></h3>
-                                                            <div class="wporg-ratings" title="5 out of 5 stars"
-                                                                style="color:#ffb900;"></div>
-                                                            <p class="active_installs">Active Installs: 300+</p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=Easy Popup Maker&tab=search&type=term">Easy
-                                                                    Popup Maker</a></h3>
-                                                            <p class="active_installs">Active Installs: 10+</p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=Limit Login Attempts Spam Protection&tab=search&type=term">Limit
-                                                                    Login Attempts (Spam Protection)</a></h3>
-                                                            <div class="wporg-ratings" title="3 out of 5 stars"
-                                                                style="color:#ffb900;"></div>
-                                                            <p class="active_installs">Active Installs: 200+</p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=Login as User or Customer&tab=search&type=term">Login
-                                                                    as User or Customer</a></h3>
-                                                            <div class="wporg-ratings" title="3 out of 5 stars"
-                                                                style="color:#ffb900;"></div>
-                                                            <p class="active_installs">Active Installs: 400+</p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=SEO Redirection Plugin - 301 Redirect Manager&tab=search&type=term">SEO
-                                                                    Redirection Plugin - 301 Redirect Manager</a></h3>
-                                                            <div class="wporg-ratings" title="4 out of 5 stars"
-                                                                style="color:#ffb900;"></div>
-                                                            <p class="active_installs">Active Installs: 20,000+</p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=Visitor Traffic Real Time Statistics&tab=search&type=term">Visitor
-                                                                    Traffic Real Time Statistics</a></h3>
-                                                            <div class="wporg-ratings" title="4 out of 5 stars"
-                                                                style="color:#ffb900;"></div>
-                                                            <p class="active_installs">Active Installs: 50,000+</p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=WooCommerce Email Marketing Cart Abandonment Recovery&tab=search&type=term">WooCommerce
-                                                                    Email Marketing & Cart Abandonment Recovery</a></h3>
-                                                            <p class="active_installs">Active Installs: 10+</p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=WP Category Post List wp-buy&tab=search&type=term">WP
-                                                                    Category Post List</a></h3>
-                                                            <div class="wporg-ratings" title="5 out of 5 stars"
-                                                                style="color:#ffb900;"></div>
-                                                            <p class="active_installs">Active Installs: 900+</p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=WP Content Copy Protection No Right Click&tab=search&type=term">WP
-                                                                    Content Copy Protection & No Right Click</a></h3>
-                                                            <div class="wporg-ratings" title="4 out of 5 stars"
-                                                                style="color:#ffb900;"></div>
-                                                            <p class="active_installs">Active Installs: 100,000+</p>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="plugin-info-container">
-                                                            <h3><a target="blank"
-                                                                    href="<?php echo $admin_url; ?>?s=WP Maintenance Mode Site Under Construction&tab=search&type=term">WP
-                                                                    Maintenance Mode & Site Under Construction</a></h3>
-                                                            <div class="wporg-ratings" title="4 out of 5 stars"
-                                                                style="color:#ffb900;"></div>
-                                                            <p class="active_installs">Active Installs: 1,000+</p>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                                <p class="submit">
-                                    <?php
-												submit_button('Apply Changes');
-												?>
-                                    <br class="clear">
-                                </p>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<?php
-		}
-
-		public function add_script()
-		{
-			if (isset($_GET['page']) && $_GET['page'] == 'MM_And_SUC_Free_Settings') {
-			?>
-<script>
-"use strict";
-jQuery(document).ready(function($) {
-    "use strict";
-    _wpMediaViewsL10n.insertIntoPost = '<?php echo esc_js("Insert"); ?>';
-
-    function ct_media_upload(button_class) {
-        var _custom_media = true,
-            _orig_send_attachment = wp.media.editor.send.attachment;
-        $('body').on('click', button_class, function(e) {
-            var button_id = '#' + $(this).attr('id');
-            var send_attachment_bkp = wp.media.editor.send.attachment;
-            var button = $(button_id);
-            _custom_media = true;
-            wp.media.editor.send.attachment = function(props, attachment) {
-                if (_custom_media) {
-                    $('#showcase-taxonomy-image-id').val(attachment.id);
-                    $('#category-image-wrapper').html(
-                        '<img class="custom_media_image" src="" style="margin:0;padding:0;max-height:100px;float:none;" />'
-                    );
-                    $('#category-image-wrapper .custom_media_image').attr('src', attachment.url)
-                        .css('display', 'block');
-                } else {
-                    return _orig_send_attachment.apply(button_id, [props, attachment]);
-                }
-            }
-            wp.media.editor.open(button);
-            return false;
-        });
-    }
-    ct_media_upload('.showcase_tax_media_button.button');
-    $('body').on('click', '.showcase_tax_media_remove', function() {
-        $('#showcase-taxonomy-image-id').val('');
-        $('#category-image-wrapper').html(
-            '<img class="custom_media_image" src="" style="margin:0;padding:0;max-height:100px;float:none;" />'
-        );
-    });
-
-    $(document).ajaxComplete(function(event, xhr, settings) {
-        if (settings.data && typeof settings.data === 'string') {
-            var queryStringArr = settings.data.split('&');
-            if ($.inArray('action=add-tag', queryStringArr) !== -1) {
-                var xml = xhr.responseXML;
-                $response = $(xml).find('term_id').text();
-                if ($response != "") {
-                    // Clear the thumb image
-                    $('#category-image-wrapper').html('');
-                }
-            }
-        }
-    });
-
-    if ($("#MM_And_SUC_Free_option_type_of_bg").val() == 1) {
-        $('.image_upload').show();
-        $('.image_textures').hide();
-    } else if ($("#MM_And_SUC_Free_option_type_of_bg").val() == 2) {
-        $('.image_textures').show();
-        $('.image_upload').hide();
-    } else {
-        $('.image_textures').hide();
-        $('.image_upload').hide();
-    }
-    $("#MM_And_SUC_Free_option_type_of_bg").change(function() {
-        if ($(this).val() == 1) {
-            $('.image_upload').show();
-            $('.image_textures').hide();
-        } else if ($(this).val() == 2) {
-            $('.image_textures').show();
-            $('.image_upload').hide();
-        }
-    });
-});
-</script>
-
-<?php }
 		}
 	}
-	new MM_And_SUC_Free_admin_setting();
+
+	// Layout: stored enum, whitelisted.
+	$layouts = array( 'centered', 'left', 'minimal', 'split' );
+	$layout  = isset( $raw['layout'] ) ? sanitize_key( $raw['layout'] ) : '';
+
+	if ( in_array( $layout, $layouts, true ) ) {
+		$out['layout'] = $layout;
+	} elseif ( $out['template'] !== $current['template'] ) {
+		// A preset records the layout it was saved with. Adopt it when the
+		// caller did not state one, the way the editor does live.
+		$next = MM_SUC_P_Template_Registry::get( $out['template'] );
+
+		if ( $next && $next->get_layout() ) {
+			$out['layout'] = $next->get_layout();
+		}
+	}
+
+	// Background source: stored enum, whitelisted.
+	$sources    = array( 'template', 'custom', 'none' );
+	$background = isset( $raw['background'] ) ? sanitize_key( $raw['background'] ) : '';
+
+	if ( in_array( $background, $sources, true ) ) {
+		$out['background'] = $background;
+	}
+
+	$out['custom_background_id'] = isset( $raw['custom_background_id'] ) ? absint( $raw['custom_background_id'] ) : 0;
+	$out['logo_id']              = isset( $raw['logo_id'] ) ? absint( $raw['logo_id'] ) : 0;
+
+	// Editable parts. The caps match the inline editor exactly.
+	$caps = array(
+		'eyebrow'        => 80,
+		'headline'       => 120,
+		'message'        => 600,
+		'contact_button' => 60,
+	);
+
+	foreach ( $caps as $field => $cap ) {
+		if ( ! isset( $raw[ $field ] ) ) {
+			continue;
+		}
+
+		$value = ( 'message' === $field )
+			? sanitize_textarea_field( $raw[ $field ] )
+			: sanitize_text_field( $raw[ $field ] );
+
+		$out[ $field ] = mm_suc_p_truncate( $value, $cap );
+	}
+
+	// Contact address: empty means the site admin address.
+	$email = isset( $raw['contact_email'] ) ? sanitize_email( $raw['contact_email'] ) : '';
+
+	if ( '' === $email || is_email( $email ) ) {
+		$out['contact_email'] = mm_suc_p_truncate( $email, MM_SUC_P_CAP_EMAIL );
+	}
+
+	// Palette.
+	$accent = isset( $raw['accent_color'] ) ? sanitize_hex_color( $raw['accent_color'] ) : '';
+	$ink    = isset( $raw['text_color'] ) ? sanitize_hex_color( $raw['text_color'] ) : '';
+
+	if ( $accent ) {
+		$out['accent_color'] = $accent;
+	}
+
+	if ( $ink ) {
+		$out['text_color'] = $ink;
+	}
+
+	if ( isset( $raw['overlay_opacity'] ) ) {
+		$out['overlay_opacity'] = min( 100, absint( $raw['overlay_opacity'] ) );
+	}
+
+	if ( isset( $raw['glass_strength'] ) ) {
+		$out['glass_strength'] = min( 40, absint( $raw['glass_strength'] ) );
+	}
+
+	// Roles: only roles that exist, and the administrator is added back whatever was posted.
+	$editable = array_keys( get_editable_roles() );
+	$roles    = isset( $raw['bypass_roles'] ) ? (array) $raw['bypass_roles'] : array();
+	$clean    = array();
+
+	foreach ( $roles as $role ) {
+		$role = sanitize_key( $role );
+
+		if ( in_array( $role, $editable, true ) ) {
+			$clean[] = $role;
+		}
+	}
+
+	if ( ! in_array( 'administrator', $clean, true ) ) {
+		$clean[] = 'administrator';
+	}
+
+	$out['bypass_roles'] = array_values( array_unique( $clean ) );
+
+	return $out;
 }
 
-function MM_And_SUC_Free_hkdc_admin_styles($page)
-{
-	if (isset($_GET['page']) && $_GET['page'] == 'MM_And_SUC_Free_Settings') {
-		wp_enqueue_style('tail-datetime-red', MM_And_SUC_Free_PLUGIN_URL . '/assets/css/tail.datetime-default-red.css');
-		wp_enqueue_style('admin-css', MM_And_SUC_Free_PLUGIN_URL . '/assets/css/admin-css.css?r=2');
-		wp_enqueue_style('bootstrap', MM_And_SUC_Free_PLUGIN_URL . '/assets/css/bootstrap.min.css');
+/* -------------------------------------------------------------------------
+ * AJAX
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Save the configuration.
+ *
+ * @return void
+ */
+function mm_suc_p_ajax_save() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+	if ( ! wp_verify_nonce( $nonce, 'mm_suc_admin' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Could not save - your session expired. Reload the page and try again.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
 	}
-}
-add_action('admin_print_styles', 'MM_And_SUC_Free_hkdc_admin_styles');
-function MM_And_SUC_Free_hkdc_admin_scripts()
-{
-	if (isset($_GET['page']) && $_GET['page'] == 'MM_And_SUC_Free_Settings') {
-		wp_enqueue_script('tail-datetime', MM_And_SUC_Free_PLUGIN_URL . '/assets/js/js/tail.datetime.js', array('jquery'), '4.0', true);
-		wp_enqueue_script('tail-datetime-all', MM_And_SUC_Free_PLUGIN_URL . '/assets/js/langs/tail.datetime-all.js', array('jquery'), '4.0', true);
-		wp_enqueue_script('wp-jquery-date-picker', MM_And_SUC_Free_PLUGIN_URL . '/assets/js/custom.js', array('jquery'), '4.0', true);
-		wp_enqueue_media();
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to change these settings.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
 	}
-}
-add_action('admin_enqueue_scripts', 'MM_And_SUC_Free_hkdc_admin_scripts');
 
-function MM_And_SUC_Free_getAllDirs($directory, $directory_seperator)
-{
+	$raw = isset( $_POST['settings'] ) ? json_decode( wp_unslash( $_POST['settings'] ), true ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- decoded then sanitized field by field below.
 
-	$dirs = array_map(function ($item) use ($directory_seperator) {
-		return $item . $directory_seperator;
-	}, array_filter(glob($directory . '*'), 'is_dir'));
-
-	foreach ($dirs as $dir) {
-		$dirs = array_merge($dirs, MM_And_SUC_Free_getAllDirs($dir, $directory_seperator));
+	if ( ! is_array( $raw ) ) {
+		wp_send_json_error( array( 'message' => __( 'Could not save - the settings did not arrive intact. Try again.', 'wp-maintenance-mode-site-under-construction' ) ), 400 );
 	}
-	return $dirs;
-}
 
-function MM_And_SUC_Free_getAllImgs($directory)
-{
-	$resizedFilePath = array();
-	foreach ($directory as $dir) {
-		foreach (glob($dir . '*.{jpg,JPG,jpeg,JPEG,png,PNG}', GLOB_BRACE) as $filename) {
-			$filename_big = pathinfo($filename);
-			if (!strstr($filename_big['filename'], 'big')) {
-				array_push($resizedFilePath, explode('/textures/', $filename)[1]);
+	$current = mm_suc_p_get_options();
+	$clean   = mm_suc_p_sanitize_settings( $raw, $current );
+
+	mm_suc_p_update_options( $clean );
+
+	wp_send_json_success(
+		array(
+			'message' => __( 'Settings saved.', 'wp-maintenance-mode-site-under-construction' ),
+			'options' => mm_suc_p_client_options( $clean ),
+		)
+	);
+}
+add_action( 'wp_ajax_mm_suc_save_settings', 'mm_suc_p_ajax_save' );
+
+/**
+ * Render the preview for a configuration that has not been saved yet.
+ *
+ * The preview is the real template view, rendered by the same controller the
+ * public page uses - that is what makes it trustworthy when the template
+ * changes.
+ *
+ * @return void
+ */
+function mm_suc_p_ajax_preview() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+	if ( ! wp_verify_nonce( $nonce, 'mm_suc_admin' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Your session expired. Reload the page.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to preview this.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	$raw = isset( $_POST['settings'] ) ? json_decode( wp_unslash( $_POST['settings'] ), true ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- decoded then sanitized field by field below.
+
+	if ( ! is_array( $raw ) ) {
+		$raw = array();
+	}
+
+	$options  = mm_suc_p_sanitize_settings( $raw, mm_suc_p_get_options() );
+	$template = MM_SUC_P_Template_Registry::resolve( $options['template'] );
+
+	wp_send_json_success(
+		array(
+			'html'     => MM_SUC_P_Template_Controller::render( $options, 'editor' ),
+			'styleUrl' => $template ? $template->get_style_url() : '',
+			'styleId'  => $template ? 'mm-suc-p-template-' . $template->get_slug() . '-css' : '',
+			'template' => $template ? $template->get_slug() : '',
+		)
+	);
+}
+add_action( 'wp_ajax_mm_suc_render_preview', 'mm_suc_p_ajax_preview' );
+
+
+/**
+ * Save the current design as a new template folder.
+ *
+ * This is the template generator: it writes a real template - manifest,
+ * stylesheet and background - into uploads/mm-suc-p-templates/<slug>/, where
+ * the registry finds it exactly like a bundled one. The folder can be copied to
+ * another site, or deleted to remove the preset.
+ *
+ * No PHP is written: the manifest names the bundled template whose arrangement
+ * it reuses, so nothing executable is ever created in the uploads directory.
+ *
+ * @return void
+ */
+function mm_suc_p_ajax_save_preset() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+	if ( ! wp_verify_nonce( $nonce, 'mm_suc_admin' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Your session expired. Reload the page and try again.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to save a preset.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	$root = mm_suc_p_preset_root();
+
+	if ( ! $root ) {
+		wp_send_json_error( array( 'message' => __( 'Presets need the uploads folder, and WordPress could not find it.', 'wp-maintenance-mode-site-under-construction' ) ), 500 );
+	}
+
+	$raw = isset( $_POST['settings'] ) ? json_decode( wp_unslash( $_POST['settings'] ), true ) : null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- decoded then sanitized field by field.
+
+	if ( ! is_array( $raw ) ) {
+		$raw = array();
+	}
+
+	$options = mm_suc_p_sanitize_settings( $raw, mm_suc_p_get_options() );
+	$source  = MM_SUC_P_Template_Registry::resolve( $options['template'] );
+	$name    = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+	$name    = mm_suc_p_truncate( $name, 60 );
+
+	if ( '' === $name ) {
+		$name = $source
+			/* translators: %s: the name of the template the preset was made from. */
+			? sprintf( __( '%s copy', 'wp-maintenance-mode-site-under-construction' ), $source->get_name() )
+			: __( 'Saved preset', 'wp-maintenance-mode-site-under-construction' );
+	}
+
+	$slug = mm_suc_p_unique_preset_slug( $name, $root['dir'] );
+	$dir  = trailingslashit( $root['dir'] . $slug );
+
+	if ( ! wp_mkdir_p( $dir ) ) {
+		wp_send_json_error(
+			array( 'message' => __( 'Could not write to the uploads folder. Check its permissions and try again.', 'wp-maintenance-mode-site-under-construction' ) ),
+			500
+		);
+	}
+
+	$manifest = array(
+		'name'        => $name,
+		'description' => $source
+			/* translators: %s: the name of the template the preset was made from. */
+			? sprintf( __( 'Saved from %s, with your own colours.', 'wp-maintenance-mode-site-under-construction' ), $source->get_name() )
+			: __( 'A design saved from the editor.', 'wp-maintenance-mode-site-under-construction' ),
+		'version'     => MM_SUC_P_VERSION,
+		'author'      => get_bloginfo( 'name' ),
+		'order'       => 900,
+		'layout'      => $options['layout'],
+		'style'       => '',
+		'background'  => '',
+		'thumbnail'   => '',
+		'supports'    => array( 'countdown' => true, 'contact' => true, 'logo' => true ),
+	);
+
+	$palette = $source ? $source->get_palette() : MM_SUC_P_Template::default_palette();
+
+	$palette['accent']    = $options['accent_color'];
+	$palette['ink']       = $options['text_color'];
+	$palette['overlay']   = (int) $options['overlay_opacity'];
+	$palette['blur']      = (int) $options['glass_strength'];
+	$palette['on_accent'] = mm_suc_p_readable_on( $options['accent_color'] );
+
+	$manifest['palette'] = $palette;
+
+	if ( $source ) {
+		$manifest['base']     = $source->get_slug();
+		$manifest['supports'] = array(
+			'countdown' => $source->supports( 'countdown' ),
+			'contact'   => $source->supports( 'contact' ),
+			'logo'      => $source->supports( 'logo' ),
+		);
+
+		// The stylesheet, rescoped so the copy styles itself and nothing else.
+		$style = $source->get_file_path( 'style' );
+
+		if ( $style ) {
+			$css = file_get_contents( $style ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- bundled asset.
+
+			if ( is_string( $css ) ) {
+				$css = str_replace(
+					'.mm-suc-p-page--tpl-' . $source->get_slug(),
+					'.mm-suc-p-page--tpl-' . $slug,
+					$css
+				);
+
+				if ( false !== file_put_contents( $dir . 'style.css', $css ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_put_contents -- writing inside our own uploads folder.
+					$manifest['style'] = 'style.css';
+				}
 			}
 		}
 	}
-	return $resizedFilePath;
+
+	$image = mm_suc_p_preset_background( $options, $source, $dir );
+
+	if ( $image ) {
+		$manifest['background'] = $image;
+	}
+
+	$written = file_put_contents( // phpcs:ignore WordPress.WP.AlternativeFunctions.file_put_contents -- writing inside our own uploads folder.
+		$dir . 'template.json',
+		wp_json_encode( $manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . "\n"
+	);
+
+	if ( false === $written ) {
+		wp_send_json_error(
+			array( 'message' => __( 'Could not write the preset file. Check the uploads folder permissions.', 'wp-maintenance-mode-site-under-construction' ) ),
+			500
+		);
+	}
+
+	MM_SUC_P_Template_Registry::flush();
+
+	$template = MM_SUC_P_Template_Registry::get( $slug );
+
+	if ( ! $template ) {
+		wp_send_json_error(
+			array( 'message' => __( 'The preset was written but could not be read back. Check the uploads folder.', 'wp-maintenance-mode-site-under-construction' ) ),
+			500
+		);
+	}
+
+	wp_send_json_success(
+		array(
+			'message'  => __( 'Preset saved. It is in your template list now - save changes to keep using it.', 'wp-maintenance-mode-site-under-construction' ),
+			'template' => $template->to_array(),
+			'row'      => mm_suc_p_library_row( $template, true ),
+		)
+	);
+}
+add_action( 'wp_ajax_mm_suc_save_preset', 'mm_suc_p_ajax_save_preset' );
+
+/**
+ * Copy the background a preset should carry into its own folder.
+ *
+ * The owner's own upload when they chose one, the source template's image
+ * otherwise, and nothing at all when the design uses no image. Only image
+ * extensions are accepted and only from a path WordPress resolved for us.
+ *
+ * @param array                  $options Sanitized configuration.
+ * @param MM_SUC_P_Template|null $source  The template being copied.
+ * @param string                 $dir     The preset folder, with a trailing slash.
+ * @return string The file name written, or an empty string.
+ */
+function mm_suc_p_preset_background( $options, $source, $dir ) {
+	if ( 'none' === $options['background'] ) {
+		return '';
+	}
+
+	if ( 'custom' === $options['background'] && ! empty( $options['custom_background_id'] ) ) {
+		$file = get_attached_file( (int) $options['custom_background_id'] );
+
+		if ( $file && is_readable( $file ) ) {
+			$extension = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+			$size      = filesize( $file );
+
+			if ( in_array( $extension, array( 'jpg', 'jpeg', 'png', 'webp', 'avif' ), true ) && $size && $size <= 4 * MB_IN_BYTES ) {
+				if ( copy( $file, $dir . 'background.' . $extension ) ) {
+					return 'background.' . $extension;
+				}
+			}
+		}
+	}
+
+	if ( ! $source ) {
+		return '';
+	}
+
+	$background = $source->get_file_path( 'background' );
+
+	if ( ! $background ) {
+		return '';
+	}
+
+	$extension = strtolower( pathinfo( $background, PATHINFO_EXTENSION ) );
+
+	if ( ! in_array( $extension, array( 'jpg', 'jpeg', 'png', 'webp', 'avif' ), true ) ) {
+		return '';
+	}
+
+	return copy( $background, $dir . 'background.' . $extension ) ? 'background.' . $extension : '';
+}
+
+/* -------------------------------------------------------------------------
+ * The editor screen
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Print a field wrapper opening tag.
+ *
+ * @param string $extra Extra class names.
+ * @return void
+ */
+function mm_suc_p_field_open( $extra = '' ) {
+	echo '<div class="mm-suc-p-field' . ( $extra ? ' ' . esc_attr( $extra ) : '' ) . '">';
+}
+
+/**
+ * Print an accordion panel header.
+ *
+ * The icon arrives as markup rather than a slug so every icon this plugin uses
+ * is a literal mm_suc_p_icon() call that tooling can find.
+ *
+ * @param string $id       Panel id.
+ * @param string $icon     Icon markup from mm_suc_p_icon().
+ * @param string $title    Panel title.
+ * @param bool   $expanded Whether it starts open.
+ * @return void
+ */
+function mm_suc_p_panel_head( $id, $icon, $title, $expanded ) {
+	printf(
+		'<h2 class="mm-suc-p-panel-head"><button type="button" class="mm-suc-p-panel-toggle" aria-expanded="%1$s" aria-controls="mm-suc-p-panel-%2$s">%3$s<span class="mm-suc-p-panel-title">%4$s</span>%5$s</button></h2>',
+		$expanded ? 'true' : 'false',
+		esc_attr( $id ),
+		$icon, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- registry-controlled inline SVG.
+		esc_html( $title ),
+		mm_suc_p_icon( 'chevron-down', 'mm-suc-p-panel-chevron' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- registry-controlled inline SVG.
+	);
+}
+
+/**
+ * One row of the template library.
+ *
+ * Shared by the editor screen and the save-preset endpoint, so a preset added
+ * without a reload is the same markup as one rendered on load.
+ *
+ * @param MM_SUC_P_Template $template The template.
+ * @param bool              $checked  Whether it is the current choice.
+ * @return string
+ */
+function mm_suc_p_library_row( $template, $checked ) {
+	$slug = $template->get_slug();
+
+	$visual = '';
+
+	if ( $template->get_thumbnail_url() ) {
+		$visual = sprintf(
+			'<img src="%s" alt="" loading="lazy" decoding="async" />',
+			esc_url( $template->get_thumbnail_url() )
+		);
+	}
+
+	$badge = '';
+
+	if ( 'preset' === $template->get_origin() ) {
+		$badge = sprintf(
+			'<span class="mm-suc-p-tpl-badge">%s</span>',
+			esc_html__( 'Preset', 'wp-maintenance-mode-site-under-construction' )
+		);
+	}
+
+	return sprintf(
+		'<label class="mm-suc-p-tpl"><input type="radio" name="template" value="%1$s" data-mm-suc-p-field="template"%2$s />'
+		. '<span class="mm-suc-p-tpl-visual" aria-hidden="true">%3$s</span>'
+		. '<span class="mm-suc-p-tpl-body"><span class="mm-suc-p-tpl-name">%4$s%5$s</span><span class="mm-suc-p-tpl-desc">%6$s</span></span>'
+		. '<span class="mm-suc-p-tpl-check" aria-hidden="true">%7$s</span></label>',
+		esc_attr( $slug ),
+		$checked ? ' checked' : '',
+		$visual, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped above.
+		esc_html( $template->get_name() ),
+		$badge, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped above.
+		esc_html( $template->get_description() ),
+		mm_suc_p_icon( 'check' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- registry-controlled inline SVG.
+	);
+}
+
+/**
+ * A foreground that stays readable on a given fill.
+ *
+ * The page never assumes white on an accent: an owner who picks a pale accent
+ * would get a button nobody can read.
+ *
+ * @param string $hex Background colour.
+ * @return string Hex colour.
+ */
+function mm_suc_p_readable_on( $hex ) {
+	$hex = sanitize_hex_color( (string) $hex );
+
+	if ( ! $hex ) {
+		return '#ffffff';
+	}
+
+	$hex = ltrim( $hex, '#' );
+
+	if ( 3 === strlen( $hex ) ) {
+		$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+	}
+
+	$channels = array(
+		hexdec( substr( $hex, 0, 2 ) ) / 255,
+		hexdec( substr( $hex, 2, 2 ) ) / 255,
+		hexdec( substr( $hex, 4, 2 ) ) / 255,
+	);
+
+	foreach ( $channels as $index => $value ) {
+		$channels[ $index ] = ( $value <= 0.03928 ) ? $value / 12.92 : pow( ( $value + 0.055 ) / 1.055, 2.4 );
+	}
+
+	$luminance = ( 0.2126 * $channels[0] ) + ( 0.7152 * $channels[1] ) + ( 0.0722 * $channels[2] );
+
+	$onWhite = 1.05 / ( $luminance + 0.05 );
+	$onDark  = ( $luminance + 0.05 ) / 0.10;
+
+	return ( $onDark >= $onWhite ) ? '#111111' : '#ffffff';
+}
+
+/**
+ * A folder name for a preset that no installed template already uses.
+ *
+ * @param string $name Human name.
+ * @param string $dir  The preset root.
+ * @return string
+ */
+function mm_suc_p_unique_preset_slug( $name, $dir ) {
+	$base = sanitize_key( sanitize_title( $name ) );
+
+	if ( '' === $base ) {
+		$base = 'preset';
+	}
+
+	$base = mm_suc_p_truncate( $base, 48 );
+	$slug = $base;
+	$n    = 1;
+
+	while ( MM_SUC_P_Template_Registry::is_installed( $slug ) || is_dir( $dir . $slug ) ) {
+		$n++;
+		$slug = $base . '-' . $n;
+	}
+
+	return $slug;
+}
+
+/**
+ * Render the editor.
+ *
+ * @return void
+ */
+function mm_suc_p_render_editor() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( esc_html__( 'You do not have permission to access this screen.', 'wp-maintenance-mode-site-under-construction' ), 403 );
+	}
+
+	$options   = mm_suc_p_get_options();
+	$templates = MM_SUC_P_Template_Registry::all();
+	$enabled   = ! empty( $options['enabled'] );
+
+	require MM_SUC_P_DIR . 'admin/views/editor.php';
+}
+
+/**
+ * Render the messages list screen.
+ *
+ * @return void
+ */
+function mm_suc_p_render_messages() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( esc_html__( 'You do not have permission to access this screen.', 'wp-maintenance-mode-site-under-construction' ), 403 );
+	}
+
+	$options  = mm_suc_p_get_options();
+	$messages = mm_suc_p_get_messages();
+	$counts   = mm_suc_p_get_messages_count();
+
+	require MM_SUC_P_DIR . 'admin/views/messages.php';
+}
+
+/**
+ * AJAX handler to delete a single message.
+ *
+ * @return void
+ */
+function mm_suc_p_ajax_delete_message() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+	if ( ! wp_verify_nonce( $nonce, 'mm_suc_admin' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Your session expired. Reload the page.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to delete this message.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	$id = isset( $_POST['id'] ) ? sanitize_text_field( wp_unslash( $_POST['id'] ) ) : '';
+
+	if ( '' === $id ) {
+		wp_send_json_error( array( 'message' => __( 'Invalid message ID.', 'wp-maintenance-mode-site-under-construction' ) ), 400 );
+	}
+
+	$deleted = mm_suc_p_delete_message( $id );
+	$counts  = mm_suc_p_get_messages_count();
+
+	if ( ! $deleted ) {
+		wp_send_json_error( array( 'message' => __( 'Could not find or delete that message.', 'wp-maintenance-mode-site-under-construction' ) ), 404 );
+	}
+
+	wp_send_json_success(
+		array(
+			'message' => __( 'Message deleted.', 'wp-maintenance-mode-site-under-construction' ),
+			'counts'  => $counts,
+		)
+	);
+}
+add_action( 'wp_ajax_mm_suc_delete_message', 'mm_suc_p_ajax_delete_message' );
+
+/**
+ * AJAX handler to delete all messages.
+ *
+ * @return void
+ */
+function mm_suc_p_ajax_clear_messages() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+	if ( ! wp_verify_nonce( $nonce, 'mm_suc_admin' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Your session expired. Reload the page.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to clear messages.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	mm_suc_p_clear_all_messages();
+
+	wp_send_json_success(
+		array(
+			'message' => __( 'All messages cleared.', 'wp-maintenance-mode-site-under-construction' ),
+			'counts'  => array(
+				'total'  => 0,
+				'unread' => 0,
+			),
+		)
+	);
+}
+add_action( 'wp_ajax_mm_suc_clear_messages', 'mm_suc_p_ajax_clear_messages' );
+
+/**
+ * AJAX handler to mark a message as read.
+ *
+ * @return void
+ */
+function mm_suc_p_ajax_mark_read() {
+	$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+	if ( ! wp_verify_nonce( $nonce, 'mm_suc_admin' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Your session expired. Reload the page.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You do not have permission to update this message.', 'wp-maintenance-mode-site-under-construction' ) ), 403 );
+	}
+
+	$id = isset( $_POST['id'] ) ? sanitize_text_field( wp_unslash( $_POST['id'] ) ) : '';
+
+	if ( '' !== $id ) {
+		mm_suc_p_mark_message_read( $id );
+	}
+
+	$counts = mm_suc_p_get_messages_count();
+
+	wp_send_json_success(
+		array(
+			'counts' => $counts,
+		)
+	);
+}
+add_action( 'wp_ajax_mm_suc_mark_read', 'mm_suc_p_ajax_mark_read' );
+
+/**
+ * A line diagram standing in for a layout preset.
+ *
+ * Diagrams rather than screenshots: they show the arrangement, survive any
+ * colour scheme, weigh nothing and never go stale when a template changes.
+ *
+ * @param string $key Layout key.
+ * @return string Inline SVG markup.
+ */
+function mm_suc_p_layout_diagram( $key ) {
+	$shapes = array(
+		'centered' => '<rect x="14" y="10" width="28" height="4" rx="2"/><rect x="8" y="18" width="40" height="6" rx="3"/><rect x="16" y="28" width="24" height="3" rx="1.5"/><rect x="20" y="35" width="16" height="4" rx="2"/>',
+		'left'     => '<rect x="6" y="10" width="20" height="4" rx="2"/><rect x="6" y="18" width="28" height="6" rx="3"/><rect x="6" y="28" width="22" height="3" rx="1.5"/><rect x="6" y="35" width="14" height="4" rx="2"/>',
+		'minimal'  => '<rect x="12" y="16" width="32" height="5" rx="2.5"/><rect x="16" y="25" width="24" height="3" rx="1.5"/>',
+		'split'    => '<rect x="4" y="8" width="24" height="32" rx="3" opacity=".35"/><rect x="32" y="12" width="20" height="4" rx="2"/><rect x="32" y="20" width="20" height="5" rx="2.5"/><rect x="32" y="29" width="14" height="3" rx="1.5"/>',
+	);
+
+	if ( ! isset( $shapes[ $key ] ) ) {
+		return '';
+	}
+
+	return '<svg viewBox="0 0 56 48" width="56" height="48" fill="currentColor" aria-hidden="true" focusable="false">' . $shapes[ $key ] . '</svg>';
 }

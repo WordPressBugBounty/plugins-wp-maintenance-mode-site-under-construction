@@ -1,0 +1,70 @@
+/*
+ * Template: Soft Spectrum
+ *
+ * Scoped to .mm-suc-p-page--tpl-soft-spectrum so it can only ever restyle its own
+ * template. Delete this folder and the template disappears from the library
+ * with no other change anywhere in the plugin.
+ *
+ * Page layer: this file may use raw colour values, and may only declare or read
+ * --mm-suc-p-page-* custom properties.
+ */
+
+.mm-suc-p-page--tpl-soft-spectrum .mm-suc-p-page-card {
+	display: grid;
+	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+	gap: 32px;
+	align-items: center;
+	max-width: 980px;
+	border-radius: 24px;
+	box-shadow: 0 24px 64px rgba(60, 40, 90, 0.16);
+}
+
+.mm-suc-p-page--tpl-soft-spectrum .mm-suc-p-tpl-copy {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	min-width: 0;
+}
+
+.mm-suc-p-page--tpl-soft-spectrum .mm-suc-p-tpl-aside {
+	min-width: 0;
+	padding: 24px;
+	border: 1px solid var(--mm-suc-p-page-line);
+	border-radius: 14px;
+	background-color: rgba(255, 255, 255, 0.55);
+}
+
+.mm-suc-p-page--tpl-soft-spectrum .mm-suc-p-page-countdown {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	margin: 0;
+}
+
+.mm-suc-p-page--tpl-soft-spectrum .mm-suc-p-page-unit {
+	border: 0;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+.mm-suc-p-page--tpl-soft-spectrum .mm-suc-p-page-rule {
+	width: 40px;
+	height: 4px;
+}
+
+.mm-suc-p-page--tpl-soft-spectrum .mm-suc-p-page-contact {
+	align-self: start;
+}
+
+.mm-suc-p-page--tpl-soft-spectrum .mm-suc-p-page-sheet-inner {
+	background-color: #f7f3f6;
+}
+
+.mm-suc-p-page--tpl-soft-spectrum .mm-suc-p-page-row input,
+.mm-suc-p-page--tpl-soft-spectrum .mm-suc-p-page-row textarea {
+	background-color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 768px) {
+	.mm-suc-p-page--tpl-soft-spectrum .mm-suc-p-page-card {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 24px;
+	}
+}

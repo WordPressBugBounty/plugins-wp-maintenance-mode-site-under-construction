@@ -1,0 +1,76 @@
+/*
+ * Template: Crimson Ribbon
+ *
+ * Scoped to .mm-suc-p-page--tpl-crimson-ribbon so it can only ever restyle its own
+ * template. Delete this folder and the template disappears from the library
+ * with no other change anywhere in the plugin.
+ *
+ * Page layer: this file may use raw colour values, and may only declare or read
+ * --mm-suc-p-page-* custom properties.
+ */
+
+.mm-suc-p-page--tpl-crimson-ribbon .mm-suc-p-page-shell {
+	justify-content: flex-start;
+	padding-inline: 64px;
+}
+
+.mm-suc-p-page--tpl-crimson-ribbon .mm-suc-p-page-card {
+	max-width: 620px;
+	padding-inline-start: 32px;
+	border: 0;
+	border-inline-start: 4px solid var(--mm-suc-p-page-accent);
+	border-radius: 0;
+	background-color: transparent;
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+}
+
+.mm-suc-p-page--tpl-crimson-ribbon .mm-suc-p-tpl-head {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.mm-suc-p-page--tpl-crimson-ribbon .mm-suc-p-page-headline {
+	font-size: clamp(32px, 5.5vw, 60px);
+	line-height: 1.02;
+}
+
+.mm-suc-p-page--tpl-crimson-ribbon .mm-suc-p-page-rule {
+	display: none;
+}
+
+.mm-suc-p-page--tpl-crimson-ribbon .mm-suc-p-tpl-foot {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	margin-block-start: 8px;
+}
+
+.mm-suc-p-page--tpl-crimson-ribbon .mm-suc-p-page-countdown {
+	gap: 24px;
+	margin: 0;
+}
+
+.mm-suc-p-page--tpl-crimson-ribbon .mm-suc-p-page-unit {
+	align-items: flex-start;
+	padding: 0;
+	border: 0;
+	border-inline-start: 1px solid var(--mm-suc-p-page-line);
+	padding-inline-start: 16px;
+	border-radius: 0;
+	text-align: start;
+}
+
+.mm-suc-p-page--tpl-crimson-ribbon .mm-suc-p-page-contact {
+	align-self: start;
+	border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+	.mm-suc-p-page--tpl-crimson-ribbon .mm-suc-p-page-shell {
+		padding-inline: 24px;
+	}
+}

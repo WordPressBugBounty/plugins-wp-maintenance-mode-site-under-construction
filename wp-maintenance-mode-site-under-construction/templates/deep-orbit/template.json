@@ -1,0 +1,27 @@
+{
+	"name": "Deep Orbit",
+	"description": "A deep navy field with a teal glow behind a glass panel. Dark, calm and legible.",
+	"version": "1.0.0",
+	"author": "wp-buy",
+	"order": 10,
+	"view": "view.php",
+	"style": "style.css",
+	"background": "background.jpg",
+	"thumbnail": "thumbnail.jpg",
+	"palette": {
+		"accent": "#3fd8de",
+		"ink": "#ffffff",
+		"on_accent": "#04121c",
+		"veil": "#04102a",
+		"card": "#04122e",
+		"card_alpha": 55,
+		"line_alpha": 24,
+		"overlay": 45,
+		"blur": 18
+	},
+	"supports": {
+		"countdown": true,
+		"contact": true,
+		"logo": true
+	}
+}

@@ -1,0 +1,27 @@
+{
+	"name": "Amber Glow",
+	"description": "Golden bokeh over a dark ground, split between copy and a stacked countdown.",
+	"version": "1.0.0",
+	"author": "wp-buy",
+	"order": 30,
+	"view": "view.php",
+	"style": "style.css",
+	"background": "background.jpg",
+	"thumbnail": "thumbnail.jpg",
+	"palette": {
+		"accent": "#f7b64a",
+		"ink": "#ffffff",
+		"on_accent": "#1a1204",
+		"veil": "#06121c",
+		"card": "#07141f",
+		"card_alpha": 55,
+		"line_alpha": 22,
+		"overlay": 48,
+		"blur": 18
+	},
+	"supports": {
+		"countdown": true,
+		"contact": true,
+		"logo": true
+	}
+}

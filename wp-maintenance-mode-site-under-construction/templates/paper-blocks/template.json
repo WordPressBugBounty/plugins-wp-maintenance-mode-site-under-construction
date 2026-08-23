@@ -1,0 +1,27 @@
+{
+	"name": "Paper Blocks",
+	"description": "Bright overlapping paper shapes with a flat editorial card and a hard shadow.",
+	"version": "1.0.0",
+	"author": "wp-buy",
+	"order": 90,
+	"view": "view.php",
+	"style": "style.css",
+	"background": "background.jpg",
+	"thumbnail": "thumbnail.jpg",
+	"palette": {
+		"accent": "#0b5f7a",
+		"ink": "#152233",
+		"on_accent": "#ffffff",
+		"veil": "#ffffff",
+		"card": "#ffffff",
+		"card_alpha": 66,
+		"line_alpha": 14,
+		"overlay": 50,
+		"blur": 12
+	},
+	"supports": {
+		"countdown": true,
+		"contact": true,
+		"logo": true
+	}
+}

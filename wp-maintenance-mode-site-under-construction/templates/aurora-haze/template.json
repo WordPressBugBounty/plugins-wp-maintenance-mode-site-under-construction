@@ -1,0 +1,27 @@
+{
+	"name": "Aurora Haze",
+	"description": "A pale aurora gradient behind a bright frosted card. Light and airy.",
+	"version": "1.0.0",
+	"author": "wp-buy",
+	"order": 70,
+	"view": "view.php",
+	"style": "style.css",
+	"background": "background.jpg",
+	"thumbnail": "thumbnail.jpg",
+	"palette": {
+		"accent": "#6d28d9",
+		"ink": "#141327",
+		"on_accent": "#ffffff",
+		"veil": "#ffffff",
+		"card": "#ffffff",
+		"card_alpha": 58,
+		"line_alpha": 14,
+		"overlay": 38,
+		"blur": 18
+	},
+	"supports": {
+		"countdown": true,
+		"contact": true,
+		"logo": true
+	}
+}

@@ -1,0 +1,27 @@
+{
+	"name": "Crimson Ribbon",
+	"description": "A lilac ground crossed by a red ribbon, with a bold bar marking the copy.",
+	"version": "1.0.0",
+	"author": "wp-buy",
+	"order": 60,
+	"view": "view.php",
+	"style": "style.css",
+	"background": "background.jpg",
+	"thumbnail": "thumbnail.jpg",
+	"palette": {
+		"accent": "#b4102a",
+		"ink": "#1a1030",
+		"on_accent": "#ffffff",
+		"veil": "#ffffff",
+		"card": "#ffffff",
+		"card_alpha": 62,
+		"line_alpha": 16,
+		"overlay": 40,
+		"blur": 14
+	},
+	"supports": {
+		"countdown": true,
+		"contact": true,
+		"logo": true
+	}
+}
