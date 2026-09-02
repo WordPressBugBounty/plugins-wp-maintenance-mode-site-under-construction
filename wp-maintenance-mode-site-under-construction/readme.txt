@@ -4,7 +4,7 @@ Tags: maintenance mode, under construction, coming soon, countdown timer, site u
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 5.2
+Stable tag: 5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -103,6 +103,11 @@ If you enable **Auto-Disable**, the plugin will automatically turn off maintenan
 Customize your layout, background, and colors in the visual editor. Then scroll to the bottom of the **Design & Styling** panel and click **Save as preset**. Your design is saved into your `wp-content/uploads/mm-suc-p-templates/` directory as an independent, update-safe template folder.
 
 == Changelog ==
+
+= 5.3 =
+* Fix: Prevented PHP stat warning when custom template presets directory does not exist yet.
+* Fix: Added directory existence checks prior to filesystem modification time queries.
+* Fix: Defensive safeguards for filesystem operations during legacy message migration.
 
 = 5.2 =
 * Fix: Resolved message management actions where View modal and Delete buttons were unresponsive.

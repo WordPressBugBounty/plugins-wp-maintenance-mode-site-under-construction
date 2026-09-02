@@ -3,7 +3,7 @@
  * Plugin Name: WP Maintenance Mode & Site Under Construction
  * Plugin URI: https://wordpress.org/plugins/wp-maintenance-mode-site-under-construction
  * Description: A lightweight visual maintenance-mode editor with live preview, countdown, contact form, responsive layouts, and secure access rules.
- * Version: 5.2
+ * Version: 5.3
  * Author: wp-buy
  * Author URI: https://www.wp-buy.com/
  * Text Domain: wp-maintenance-mode-site-under-construction
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Constants
  * ---------------------------------------------------------------------- */
 
-define( 'MM_SUC_P_VERSION', '5.2' );
+define( 'MM_SUC_P_VERSION', '5.3' );
 define( 'MM_SUC_P_FILE', __FILE__ );
 define( 'MM_SUC_P_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MM_SUC_P_URL', plugin_dir_url( __FILE__ ) );

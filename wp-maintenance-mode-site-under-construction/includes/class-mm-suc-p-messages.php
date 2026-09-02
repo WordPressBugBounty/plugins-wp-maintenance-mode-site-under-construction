@@ -134,10 +134,18 @@ class MM_SUC_P_Messages {
 		}
 
 		// Clean up the legacy JSON file and directory once migrated.
-		@unlink( $file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-		@unlink( $dir . '.htaccess' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-		@unlink( $dir . 'index.php' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-		@rmdir( $dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		if ( file_exists( $file ) ) {
+			@unlink( $file ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		}
+		if ( file_exists( $dir . '.htaccess' ) ) {
+			@unlink( $dir . '.htaccess' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		}
+		if ( file_exists( $dir . 'index.php' ) ) {
+			@unlink( $dir . 'index.php' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		}
+		if ( is_dir( $dir ) ) {
+			@rmdir( $dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		}
 	}
 
 	/**

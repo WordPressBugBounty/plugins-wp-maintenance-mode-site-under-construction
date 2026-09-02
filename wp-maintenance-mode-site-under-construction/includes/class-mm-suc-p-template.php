@@ -379,7 +379,13 @@ class MM_SUC_P_Template {
 			return MM_SUC_P_VERSION;
 		}
 
-		$time = @filemtime( $this->dir . $this->data['style'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- a missing file simply falls back.
+		$style_path = $this->get_file_path( 'style' );
+
+		if ( '' === $style_path ) {
+			return MM_SUC_P_VERSION;
+		}
+
+		$time = @filemtime( $style_path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- a missing file simply falls back.
 
 		return $time ? (string) $time : MM_SUC_P_VERSION;
 	}

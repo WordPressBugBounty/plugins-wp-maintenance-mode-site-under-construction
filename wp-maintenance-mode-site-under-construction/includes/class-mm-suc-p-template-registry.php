@@ -91,7 +91,8 @@ class MM_SUC_P_Template_Registry {
 		$fingerprint = MM_SUC_P_VERSION;
 
 		foreach ( $roots as $root ) {
-			$fingerprint .= '|' . $root['dir'] . ':' . (string) @filemtime( $root['dir'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- a missing root simply contributes nothing.
+			$mtime        = is_dir( $root['dir'] ) ? (string) @filemtime( $root['dir'] ) : '0'; // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- fallback when unreadable.
+			$fingerprint .= '|' . $root['dir'] . ':' . $mtime;
 		}
 
 		$cached = get_transient( self::CACHE_KEY );
